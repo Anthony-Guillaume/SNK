@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "*/**/**.tscn": true,
+        "**/**/**.import": true,
+        "**/**/**.cfg": true,
+        "**/**/**.godot": true,
+        "**/**/**.tres": true
+      },
+      "godot_tools.editor_path": "C:\\Users\\aguil\\OneDrive\\Desktop\\Godot"
+}
