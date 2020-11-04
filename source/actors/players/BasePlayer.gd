@@ -6,15 +6,20 @@ enum STATES { 	RUNNING,
 				JUMPING, 
 				DIVING, 
 				CLIMBING,
-				HOOKING
-			}
+				HOOKING }
 
-enum DIRECTION { LEFT = -1, UNDEFINED = 0, RIGHT = 1}
+enum DIRECTION { 	LEFT = -1,
+					UNDEFINED = 0,
+					RIGHT = 1 }
+
 var state : int = STATES.RUNNING
 var skidCoefficient : float = GRAVITY * 0.2
+var skidCoefficientMin : float = skidCoefficient * 0.1
+var diveForce : float = 500.0
+var wallJumpForce : Vector2 = Vector2(300, 0)
+var lengthOfRaycastClimbableDetector : float = 15.0
 onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
-var diveForce : float = 500.0
 
 func get_class() -> String:
 	return "BasePlayer"
@@ -30,9 +35,9 @@ func setSkills() -> void:
 func setGrapplingHook() -> void:
 	hookHandler.shooter = self
 
-func _process(_delta) -> void:
-	handleGrappleInput()
-	handleAttackInput()
+# func _process(_delta) -> void:
+# 	handleGrappleInput()
+# 	handleAttackInput()
 
 func _physics_process(delta : float) -> void:
 	match state:
@@ -51,11 +56,11 @@ func _physics_process(delta : float) -> void:
 
 func getWallCollisionSide() -> int:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-	var castTo : Vector2 = global_position + Vector2.LEFT * 25
+	var castTo : Vector2 = global_position + Vector2.LEFT * lengthOfRaycastClimbableDetector
 	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
 	if not collisionInfo.empty():
 		return DIRECTION.LEFT
-	castTo = global_position + Vector2.RIGHT * 25
+	castTo = global_position + Vector2.RIGHT * lengthOfRaycastClimbableDetector
 	collisionInfo = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
 	if not collisionInfo.empty():
 		return DIRECTION.RIGHT
@@ -68,7 +73,7 @@ func isOnClimbable() -> bool:
 
 func changeStateTo(newState : int) -> void:
 	state = newState
-	print(state)
+	print(STATES.keys()[state])
 
 func handleRunningState(delta : float) -> void:
 	if is_on_floor():
@@ -80,14 +85,10 @@ func handleRunningState(delta : float) -> void:
 	if is_on_wall():
 		preventSinkingIntoWall()
 	endureGravity(delta)
-	handleDiveAttack()
 	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 	snap = SNAP
-	if not is_on_floor() and isOnClimbable():
-		changeStateTo(STATES.CLIMBING)
-		velocity.y = 0
 
-func handleJumpingState(_delta : float) -> void:
+func handleJumpingState(delta : float) -> void:
 	if is_on_wall():
 		preventSinkingIntoWall()
 	if is_on_ceiling():
@@ -100,11 +101,13 @@ func handleJumpingState(_delta : float) -> void:
 			velocity.y = 0
 		else:
 			handleDiveAttack()
+	endureGravity(delta)
 	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func handleDivingState(_delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
+	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func handleClimbingState(delta : float) -> void:
 	_wallSkid(delta)
@@ -113,17 +116,17 @@ func handleClimbingState(delta : float) -> void:
 		move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 		return
 	if isOnClimbable():
-		handleClimbInput()
+		handleWallJumpInput()
 	handleDiveAttack()
 	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
-	
+
 func handleHookingState(delta : float) -> void:
 	hookHandler.handle(delta)
 
 # INPUT HANDLERS
 
 func handleDiveAttack() -> void:
-	if Input.is_action_pressed("jump") and Input.is_action_just_pressed("move_down"):
+	if Input.is_action_pressed("jump") and Input.is_action_pressed("move_down"):
 		_diveAttack()
 		changeStateTo(STATES.DIVING)
 
@@ -134,6 +137,7 @@ func handleRunInputs() -> void:
 func handleJumpInput() -> void:
 	if Input.is_action_just_pressed("jump"):
 		_jump()
+		changeStateTo(STATES.JUMPING)
 
 func handleGrappleInput() -> void:
 	if Input.is_action_just_pressed("use_grappel"):
@@ -147,10 +151,11 @@ func handleAttackInput() -> void:
 	elif Input.is_action_pressed("range_attack"):
 		_shoot()
 
-func handleClimbInput() -> void:
+func handleWallJumpInput() -> void:
 	var direction : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
 	if Input.is_action_just_pressed("jump") and direction == - getWallCollisionSide():
 		_wallJump(direction)
+		changeStateTo(STATES.JUMPING)
 
 # ACTIONS
 
@@ -167,6 +172,10 @@ func _jump() -> void:
 	velocity.y -= jumpForce
 	snap = Vector2.ZERO
 
+func _wallJump(direction : float) -> void:
+	velocity = wallJumpForce * direction
+	_jump()
+
 func _cut() -> void:
 	attackDirection = (get_global_mouse_position() - global_position).normalized()
 	skillSet.activate("Cut")
@@ -182,9 +191,9 @@ func _removeHook() -> void:
 	hookHandler.removeHook()
 
 func _wallSkid(delta : float) -> void:
-	velocity.y += skidCoefficient * delta
-
-func _wallJump(direction : float) -> void:
-	velocity.y = 0
-	velocity.x += 500 * direction
-	_jump()
+	var direction : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
+	if direction == getWallCollisionSide():
+		velocity.y += skidCoefficientMin * delta
+	else:
+		velocity.y += skidCoefficient * delta
+	
