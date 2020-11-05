@@ -35,7 +35,7 @@ func setStats() -> void:
 	var runSpeed : Attribute = Attribute.new(baseSpeed, 0, maxSpeed)
 	stats = ActorStats.new(health, runSpeed)
 	stats.health.connect("valueChanged", self, "_on_health_changed")
-	runAcceleration = baseSpeed * 0.3
+	runAcceleration = baseSpeed * 0.5
 
 func setSkills() -> void:
 	pass

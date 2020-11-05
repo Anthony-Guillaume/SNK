@@ -16,8 +16,9 @@ var state : int = STATES.RUNNING
 var skidCoefficient : float = GRAVITY * 0.2
 var skidCoefficientMin : float = skidCoefficient * 0.1
 var diveForce : float = 500.0
+var airRunningCoefficient : float = 0.5
 var wallJumpForce : Vector2 = Vector2(300, 0)
-var lengthOfRaycastClimbableDetector : float = 15.0
+var lengthOfRaycastClimbableDetector : float = 5.0 # from vertical hitbox edge
 onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
 
@@ -25,6 +26,7 @@ func get_class() -> String:
 	return "BasePlayer"
 
 func _ready() -> void:
+	lengthOfRaycastClimbableDetector += $CollisionShape2D.shape.radius
 	setGrapplingHook()
 
 func setSkills() -> void:
@@ -53,6 +55,7 @@ func _physics_process(delta : float) -> void:
 			handleHookingState(delta)
 		_:
 			assert(false)
+	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func getWallCollisionSide() -> int:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
@@ -76,6 +79,7 @@ func changeStateTo(newState : int) -> void:
 	print(STATES.keys()[state])
 
 func handleRunningState(delta : float) -> void:
+	snap = SNAP
 	if is_on_floor():
 		handleRunInputs()
 		handleJumpInput()
@@ -85,8 +89,6 @@ func handleRunningState(delta : float) -> void:
 	if is_on_wall():
 		preventSinkingIntoWall()
 	endureGravity(delta)
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
-	snap = SNAP
 
 func handleJumpingState(delta : float) -> void:
 	if is_on_wall():
@@ -101,24 +103,20 @@ func handleJumpingState(delta : float) -> void:
 			velocity.y = 0
 		else:
 			handleDiveAttack()
+	handleAirRunInputs()
 	endureGravity(delta)
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func handleDivingState(_delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func handleClimbingState(delta : float) -> void:
 	_wallSkid(delta)
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
-		move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
-		return
-	if isOnClimbable():
+	elif isOnClimbable():
 		handleWallJumpInput()
 	handleDiveAttack()
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func handleHookingState(delta : float) -> void:
 	hookHandler.handle(delta)
@@ -133,6 +131,10 @@ func handleDiveAttack() -> void:
 func handleRunInputs() -> void:
 	var newDirection : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
 	_run(newDirection)
+
+func handleAirRunInputs() -> void:
+	var newDirection : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
+	_runInAir(newDirection)
 
 func handleJumpInput() -> void:
 	if Input.is_action_just_pressed("jump"):
@@ -163,10 +165,33 @@ func _diveAttack() -> void:
 	velocity = Vector2.DOWN * diveForce
 
 func _run(direction : int) -> void:
-	runDirection = direction
-	var runGain : float = runDirection * stats.runSpeed.getValue() - velocity.x
+	var runSpeed : float = stats.runSpeed.getValue()
+	if direction == DIRECTION.UNDEFINED:
+		var runGain : float =  - velocity.x
+		runGain = clamp(runGain, -runAcceleration, runAcceleration)
+		velocity.x += runGain
+		runDirection = direction
+		return
+	if direction == runDirection and abs(velocity.x) > runSpeed:
+		return
+	var runGain : float = direction * runSpeed - velocity.x
 	runGain = clamp(runGain, -runAcceleration, runAcceleration)
 	velocity.x += runGain
+	runDirection = direction
+
+func _runInAir(direction : int) -> void:
+	var runSpeedInAir : float = stats.runSpeed.getValue() * airRunningCoefficient
+	var runAccelerationInAir : float = runAcceleration #* airRunningCoefficient
+	if direction == DIRECTION.UNDEFINED:
+		runDirection = direction
+		return
+	if direction == runDirection and abs(velocity.x) > runSpeedInAir:
+		return
+	var runGain : float = runDirection * runSpeedInAir - velocity.x
+	runGain = clamp(runGain, -runAccelerationInAir, runAccelerationInAir)
+	velocity.x += runGain
+	runDirection = direction
+
 
 func _jump() -> void:
 	velocity.y -= jumpForce
