@@ -6,7 +6,17 @@ enum STATES { 	RUNNING,
 				JUMPING, 
 				DIVING, 
 				CLIMBING,
-				HOOKING }
+				HOOKING,
+				FALLING }
+
+var stateHandlers : Dictionary = {	STATES.RUNNING: "handleRunningState",
+									STATES.JUMPING: "handleJumpingState",
+									STATES.DIVING: "handleDivingState",
+									STATES.CLIMBING: "handleClimbingState",
+									STATES.HOOKING: "handleHookingState",
+									STATES.FALLING: "handleFallingState" }					
+											
+var stateHandler : FuncRef = funcref(self, stateHandlers[STATES.RUNNING]);
 
 enum DIRECTION { 	LEFT = -1,
 					UNDEFINED = 0,
@@ -16,11 +26,17 @@ var state : int = STATES.RUNNING
 var skidCoefficient : float = GRAVITY * 0.2
 var skidCoefficientMin : float = skidCoefficient * 0.1
 var diveForce : float = 500.0
-var airRunningCoefficient : float = 0.5
-var wallJumpForce : Vector2 = Vector2(300, 0)
+var airRunningCoefficient : float = 0.41
+var wallJumpForce : Vector2 = Vector2(280, 0)
+var minimalVelocityToBeFalling : float = 850.0
 var lengthOfRaycastClimbableDetector : float = 5.0 # from vertical hitbox edge
+
 onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
+
+# DEBUG PART
+onready var labelState : Label = $Label
+#
 
 func get_class() -> String:
 	return "BasePlayer"
@@ -42,19 +58,7 @@ func setGrapplingHook() -> void:
 # 	handleAttackInput()
 
 func _physics_process(delta : float) -> void:
-	match state:
-		STATES.RUNNING:
-			handleRunningState(delta)
-		STATES.JUMPING:
-			handleJumpingState(delta)
-		STATES.DIVING:
-			handleDivingState(delta)
-		STATES.CLIMBING:
-			handleClimbingState(delta)
-		STATES.HOOKING:
-			handleHookingState(delta)
-		_:
-			assert(false)
+	stateHandler.call_func(delta)
 	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 func getWallCollisionSide() -> int:
@@ -72,11 +76,15 @@ func getWallCollisionSide() -> int:
 func isOnClimbable() -> bool:
 	return getWallCollisionSide() != DIRECTION.UNDEFINED
 
+func isFalling() -> bool:
+	return not is_on_floor() and velocity.y > minimalVelocityToBeFalling
+
 # STATE HANDLERS
 
 func changeStateTo(newState : int) -> void:
 	state = newState
-	print(STATES.keys()[state])
+	stateHandler.set_function(stateHandlers[newState])
+	labelState.set_text(STATES.keys()[state])
 
 func handleRunningState(delta : float) -> void:
 	snap = SNAP
@@ -84,7 +92,12 @@ func handleRunningState(delta : float) -> void:
 		handleRunInputs()
 		handleJumpInput()
 		preventSinkingIntoFloor()
-	elif is_on_ceiling():
+	else:
+		if velocity.y > minimalVelocityToBeFalling:
+			changeStateTo(STATES.FALLING)
+		elif velocity.y > 10: # epsilon
+			changeStateTo(STATES.JUMPING)
+	if is_on_ceiling():
 		preventSinkingIntoCeilling()
 	if is_on_wall():
 		preventSinkingIntoWall()
@@ -100,26 +113,42 @@ func handleJumpingState(delta : float) -> void:
 	else: 
 		if isOnClimbable():
 			changeStateTo(STATES.CLIMBING)
-			velocity.y = 0
+			velocity = Vector2.ZERO
 		else:
 			handleDiveAttack()
+		if velocity.y > minimalVelocityToBeFalling:
+			changeStateTo(STATES.FALLING)
 	handleAirRunInputs()
 	endureGravity(delta)
 
-func handleDivingState(_delta : float) -> void:
+func handleDivingState(delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
+	endureGravity(delta)
 
 func handleClimbingState(delta : float) -> void:
 	_wallSkid(delta)
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
-	elif isOnClimbable():
-		handleWallJumpInput()
-	handleDiveAttack()
+	else:
+		if isOnClimbable():
+			handleWallJumpInput()
+			handleDiveAttack()
+		else:
+			if velocity.y > minimalVelocityToBeFalling:
+				velocity.x = 0
+				changeStateTo(STATES.FALLING)
+			elif velocity.y > 10: # epsilon
+				velocity.x = 0
+				changeStateTo(STATES.JUMPING)
 
 func handleHookingState(delta : float) -> void:
 	hookHandler.handle(delta)
+	
+func handleFallingState(delta : float) -> void:
+	if is_on_floor():
+		changeStateTo(STATES.RUNNING)
+	endureGravity(delta)
 
 # INPUT HANDLERS
 
@@ -165,32 +194,35 @@ func _diveAttack() -> void:
 	velocity = Vector2.DOWN * diveForce
 
 func _run(direction : int) -> void:
+	var runDirection : int = int(sign(velocity.x))
+	labelState.self_modulate = Color.white
 	var runSpeed : float = stats.runSpeed.getValue()
 	if direction == DIRECTION.UNDEFINED:
 		var runGain : float =  - velocity.x
 		runGain = clamp(runGain, -runAcceleration, runAcceleration)
 		velocity.x += runGain
-		runDirection = direction
 		return
 	if direction == runDirection and abs(velocity.x) > runSpeed:
 		return
 	var runGain : float = direction * runSpeed - velocity.x
 	runGain = clamp(runGain, -runAcceleration, runAcceleration)
 	velocity.x += runGain
-	runDirection = direction
 
 func _runInAir(direction : int) -> void:
+	var runDirection : int = int(sign(velocity.x))
 	var runSpeedInAir : float = stats.runSpeed.getValue() * airRunningCoefficient
-	var runAccelerationInAir : float = runAcceleration #* airRunningCoefficient
+	var runAccelerationInAir : float = runAcceleration * 0.4
 	if direction == DIRECTION.UNDEFINED:
-		runDirection = direction
+		labelState.self_modulate = Color.blue
 		return
 	if direction == runDirection and abs(velocity.x) > runSpeedInAir:
+		labelState.self_modulate = Color.red
 		return
-	var runGain : float = runDirection * runSpeedInAir - velocity.x
-	runGain = clamp(runGain, -runAccelerationInAir, runAccelerationInAir)
-	velocity.x += runGain
-	runDirection = direction
+	if direction != runDirection:
+		labelState.self_modulate = Color.green
+		var runGain : float = direction * runSpeedInAir - velocity.x
+		runGain = clamp(runGain, -runAccelerationInAir, runAccelerationInAir)
+		velocity.x += runGain
 
 
 func _jump() -> void:

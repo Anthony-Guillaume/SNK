@@ -23,5 +23,4 @@ func _physics_process(_delta : float) -> void:
 		if target.get_collision_layer() == WorldInfo.LAYER.ACTOR:
 			ActorStatusHandler.applyDamage(_shooter.stats, target.stats, damage)
 			_hit = true
-		print(target.name)
 	queue_free()

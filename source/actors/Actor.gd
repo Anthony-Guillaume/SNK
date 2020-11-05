@@ -9,7 +9,6 @@ const SNAP : Vector2 = Vector2(0, 10)
 const GRAVITY : float = 500.0
 
 var velocity : Vector2 = Vector2.ZERO
-var runDirection : int = 0
 var runAcceleration : float
 var attackDirection : Vector2
 
@@ -35,7 +34,7 @@ func setStats() -> void:
 	var runSpeed : Attribute = Attribute.new(baseSpeed, 0, maxSpeed)
 	stats = ActorStats.new(health, runSpeed)
 	stats.health.connect("valueChanged", self, "_on_health_changed")
-	runAcceleration = baseSpeed * 0.5
+	runAcceleration = baseSpeed * 0.35
 
 func setSkills() -> void:
 	pass

@@ -7,10 +7,13 @@
 [ext_resource path="res://icon.png" type="Texture" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
+radius = 30.0
+height = 30.0
 
 [node name="BasePlayer" type="KinematicBody2D"]
 collision_layer = 4
 collision_mask = 5
+collision/safe_margin = 1.0
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -18,8 +21,7 @@ shape = SubResource( 1 )
 
 [node name="PlayerGraphics" type="Sprite" parent="."]
 self_modulate = Color( 0.262745, 1, 0.054902, 1 )
-position = Vector2( 7.62939e-06, -0.794604 )
-scale = Vector2( 0.255065, 0.536485 )
+scale = Vector2( 0.907666, 1.3845 )
 texture = ExtResource( 5 )
 script = ExtResource( 1 )
 
@@ -33,3 +35,12 @@ current = true
 
 [node name="DebugGraphical" type="Node2D" parent="Node"]
 script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -20.7652
+margin_top = -63.2396
+margin_right = 19.2348
+margin_bottom = -49.2396
+__meta__ = {
+"_edit_use_anchors_": false
+}
