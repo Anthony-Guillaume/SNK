@@ -24,12 +24,15 @@ enum DIRECTION { 	LEFT = -1,
 
 var state : int = STATES.RUNNING
 var skidCoefficient : float = GRAVITY * 0.2
-var skidCoefficientMin : float = skidCoefficient * 0.1
-var diveForce : float = 500.0
+var skidCoefficientMin : float = skidCoefficient * 0.05
+var diveForce : float = 700.0
 var airRunningCoefficient : float = 0.41
 var wallJumpForce : Vector2 = Vector2(280, 0)
+var climbSpeed : float = 300
 var minimalVelocityToBeFalling : float = 850.0
 var lengthOfRaycastClimbableDetector : float = 5.0 # from vertical hitbox edge
+var hitboxHalfWidth : float = 0.0
+var hitboxHalfHeight : float = 0.0
 
 onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
@@ -42,7 +45,9 @@ func get_class() -> String:
 	return "BasePlayer"
 
 func _ready() -> void:
-	lengthOfRaycastClimbableDetector += $CollisionShape2D.shape.radius
+	hitboxHalfWidth = $CollisionShape2D.shape.get_radius()
+	hitboxHalfHeight = $CollisionShape2D.shape.get_height()
+	lengthOfRaycastClimbableDetector += hitboxHalfWidth
 	setGrapplingHook()
 
 func setSkills() -> void:
@@ -73,8 +78,18 @@ func getWallCollisionSide() -> int:
 		return DIRECTION.RIGHT
 	return DIRECTION.UNDEFINED
 
-func isOnClimbable() -> bool:
-	return getWallCollisionSide() != DIRECTION.UNDEFINED
+func isThereEnvironnementCollision(direction : int, height : float) -> bool:
+	# height is distance between global_position and the y value to raycast (raycast supposed to be above player)
+	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
+	var castTo : Vector2 = global_position + Vector2(hitboxHalfWidth * 3 * direction, -height)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
+	return not collisionInfo.empty()
+
+func canClimbOnPlatform(direction : int) -> bool:
+	return not isThereEnvironnementCollision(direction, hitboxHalfHeight * 2) and not isThereEnvironnementCollision(direction, hitboxHalfHeight * 3)
+
+func isOnClimbable(direction : int) -> bool:
+	return direction != DIRECTION.UNDEFINED
 
 func isFalling() -> bool:
 	return not is_on_floor() and velocity.y > minimalVelocityToBeFalling
@@ -111,7 +126,7 @@ func handleJumpingState(delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
 	else: 
-		if isOnClimbable():
+		if isOnClimbable(getWallCollisionSide()):
 			changeStateTo(STATES.CLIMBING)
 			velocity = Vector2.ZERO
 		else:
@@ -127,12 +142,19 @@ func handleDivingState(delta : float) -> void:
 	endureGravity(delta)
 
 func handleClimbingState(delta : float) -> void:
-	_wallSkid(delta)
+	var wallCollisionSide : int = getWallCollisionSide()
+	_wallSkid(wallCollisionSide, delta)
+	labelState.self_modulate = Color.white
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
 	else:
-		if isOnClimbable():
-			handleWallJumpInput()
+		if canClimbOnPlatform(wallCollisionSide):
+			labelState.self_modulate = Color.red
+			_climbToPlatform(wallCollisionSide)
+			return
+		if isOnClimbable(wallCollisionSide):
+			handleWallJumpInput(wallCollisionSide)
+			handleClimbInput()
 			handleDiveAttack()
 		else:
 			if velocity.y > minimalVelocityToBeFalling:
@@ -140,6 +162,8 @@ func handleClimbingState(delta : float) -> void:
 				changeStateTo(STATES.FALLING)
 			elif velocity.y > 10: # epsilon
 				velocity.x = 0
+				changeStateTo(STATES.JUMPING)
+			else:
 				changeStateTo(STATES.JUMPING)
 
 func handleHookingState(delta : float) -> void:
@@ -182,11 +206,15 @@ func handleAttackInput() -> void:
 	elif Input.is_action_pressed("range_attack"):
 		_shoot()
 
-func handleWallJumpInput() -> void:
+func handleWallJumpInput(wallCollisionSide : int) -> void:
 	var direction : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
-	if Input.is_action_just_pressed("jump") and direction == - getWallCollisionSide():
+	if Input.is_action_just_pressed("jump") and direction == - wallCollisionSide:
 		_wallJump(direction)
 		changeStateTo(STATES.JUMPING)
+
+func handleClimbInput() -> void:
+	if Input.is_action_pressed("move_up"):
+		_climb()
 
 # ACTIONS
 
@@ -195,7 +223,6 @@ func _diveAttack() -> void:
 
 func _run(direction : int) -> void:
 	var runDirection : int = int(sign(velocity.x))
-	labelState.self_modulate = Color.white
 	var runSpeed : float = stats.runSpeed.getValue()
 	if direction == DIRECTION.UNDEFINED:
 		var runGain : float =  - velocity.x
@@ -213,17 +240,13 @@ func _runInAir(direction : int) -> void:
 	var runSpeedInAir : float = stats.runSpeed.getValue() * airRunningCoefficient
 	var runAccelerationInAir : float = runAcceleration * 0.4
 	if direction == DIRECTION.UNDEFINED:
-		labelState.self_modulate = Color.blue
 		return
 	if direction == runDirection and abs(velocity.x) > runSpeedInAir:
-		labelState.self_modulate = Color.red
 		return
 	if direction != runDirection:
-		labelState.self_modulate = Color.green
 		var runGain : float = direction * runSpeedInAir - velocity.x
 		runGain = clamp(runGain, -runAccelerationInAir, runAccelerationInAir)
 		velocity.x += runGain
-
 
 func _jump() -> void:
 	velocity.y -= jumpForce
@@ -247,10 +270,25 @@ func _addHook() -> void:
 func _removeHook() -> void:
 	hookHandler.removeHook()
 
-func _wallSkid(delta : float) -> void:
+func _wallSkid(wallCollisionSide : int, delta : float) -> void:
 	var direction : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
-	if direction == getWallCollisionSide():
+	velocity.y = max(0, velocity.y)
+	if direction == wallCollisionSide:
 		velocity.y += skidCoefficientMin * delta
 	else:
 		velocity.y += skidCoefficient * delta
 	
+func _climb() -> void:
+	if velocity.y < -climbSpeed:
+		return
+	var climbGain : float = -climbSpeed - velocity.y
+	var climbAcceleration : float = climbSpeed * 0.4
+	climbGain = clamp(climbGain, -climbAcceleration, climbAcceleration)
+	velocity.y += climbGain
+
+func _climbToPlatform(platformDirection : int) -> void:
+	_climb()
+	var runSpeed : float = stats.runSpeed.getValue()
+	if platformDirection == DIRECTION.UNDEFINED:
+		platformDirection = int(sign(velocity.x))
+	velocity.x = runSpeed * platformDirection
