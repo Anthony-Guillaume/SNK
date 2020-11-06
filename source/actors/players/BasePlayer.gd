@@ -86,7 +86,14 @@ func isThereEnvironnementCollision(direction : int, height : float) -> bool:
 	return not collisionInfo.empty()
 
 func canClimbOnPlatform(direction : int) -> bool:
-	return not isThereEnvironnementCollision(direction, hitboxHalfHeight * 2) and not isThereEnvironnementCollision(direction, hitboxHalfHeight * 3)
+	return (not isThereEnvironnementCollision(direction, hitboxHalfHeight * 2) and
+			not isThereEnvironnementCollision(direction, hitboxHalfHeight * 3))
+
+func haveToDropFromWall(direction : int) -> bool:
+	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
+	var castTo : Vector2 = global_position + Vector2(lengthOfRaycastClimbableDetector * direction, hitboxHalfHeight)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
+	return (collisionInfo.empty() or direction == DIRECTION.UNDEFINED) and velocity.y > 5 # epsilon
 
 func isOnClimbable(direction : int) -> bool:
 	return direction != DIRECTION.UNDEFINED
@@ -103,6 +110,7 @@ func changeStateTo(newState : int) -> void:
 
 func handleRunningState(delta : float) -> void:
 	snap = SNAP
+	handleAttackInput()
 	if is_on_floor():
 		handleRunInputs()
 		handleJumpInput()
@@ -119,6 +127,7 @@ func handleRunningState(delta : float) -> void:
 	endureGravity(delta)
 
 func handleJumpingState(delta : float) -> void:
+	handleAttackInput()
 	if is_on_wall():
 		preventSinkingIntoWall()
 	if is_on_ceiling():
@@ -148,7 +157,9 @@ func handleClimbingState(delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
 	else:
-		if canClimbOnPlatform(wallCollisionSide):
+		if haveToDropFromWall(wallCollisionSide):			
+			labelState.self_modulate = Color.green
+		elif canClimbOnPlatform(wallCollisionSide):
 			labelState.self_modulate = Color.red
 			_climbToPlatform(wallCollisionSide)
 			return
@@ -277,7 +288,7 @@ func _wallSkid(wallCollisionSide : int, delta : float) -> void:
 		velocity.y += skidCoefficientMin * delta
 	else:
 		velocity.y += skidCoefficient * delta
-	
+
 func _climb() -> void:
 	if velocity.y < -climbSpeed:
 		return
