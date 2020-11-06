@@ -33,7 +33,7 @@ func addHook() -> void:
 func removeHook() -> void:
 	if grapplingHook == null:
 		return
-	shooter.state = BasePlayer.STATES.RUNNING
+	shooter.changeStateTo(BasePlayer.STATES.RUNNING)
 	var pivot : Vector2 = grapplingHook.getCurrentPivot()
 	var theta : float = pendulum.computeTheta(shooter.global_position, pivot)
 	var hookLenght : float = computeHookLength(shooter.global_position, pivot)
@@ -44,7 +44,7 @@ func removeHook() -> void:
 	grapplingHook.queue_free()
 
 func _on_hook_hit() -> void:
-	shooter.state = BasePlayer.STATES.HOOKING
+	shooter.changeStateTo(BasePlayer.STATES.HOOKING)
 	var pivot : Vector2 = hook.global_position
 	direction = pendulum.computeDirectionTowardEquilibriumPoint(shooter.global_position, pivot)
 	theta0 = min(abs(pendulum.computeTheta(shooter.global_position, pivot)), PI * 0.5)

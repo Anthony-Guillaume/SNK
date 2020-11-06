@@ -87,13 +87,14 @@ func isThereEnvironnementCollision(direction : int, height : float) -> bool:
 
 func canClimbOnPlatform(direction : int) -> bool:
 	return (not isThereEnvironnementCollision(direction, hitboxHalfHeight * 2) and
-			not isThereEnvironnementCollision(direction, hitboxHalfHeight * 3))
+			not isThereEnvironnementCollision(direction, hitboxHalfHeight * 3) and
+			velocity.y < 5) # must be climbing up so vy < 0, epsilon = 5
 
-func haveToDropFromWall(direction : int) -> bool:
-	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-	var castTo : Vector2 = global_position + Vector2(lengthOfRaycastClimbableDetector * direction, hitboxHalfHeight)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
-	return (collisionInfo.empty() or direction == DIRECTION.UNDEFINED) and velocity.y > 5 # epsilon
+# func haveToDropFromWall(direction : int) -> bool:
+# 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
+# 	var castTo : Vector2 = global_position + Vector2(lengthOfRaycastClimbableDetector * direction, hitboxHalfHeight)
+# 	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
+# 	return collisionInfo.empty() and velocity.y > 5 # epsilon
 
 func isOnClimbable(direction : int) -> bool:
 	return direction != DIRECTION.UNDEFINED
@@ -157,13 +158,10 @@ func handleClimbingState(delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
 	else:
-		if haveToDropFromWall(wallCollisionSide):			
-			labelState.self_modulate = Color.green
-		elif canClimbOnPlatform(wallCollisionSide):
+		if canClimbOnPlatform(wallCollisionSide):
 			labelState.self_modulate = Color.red
 			_climbToPlatform(wallCollisionSide)
-			return
-		if isOnClimbable(wallCollisionSide):
+		elif isOnClimbable(wallCollisionSide):
 			handleWallJumpInput(wallCollisionSide)
 			handleClimbInput()
 			handleDiveAttack()
