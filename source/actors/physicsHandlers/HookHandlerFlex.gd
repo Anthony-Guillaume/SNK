@@ -12,11 +12,11 @@ var direction : int = ROTATION.UNDEFINED
 var theta0 : float
 const grapplingHookScene : PackedScene = preload("res://source/objects/hooks/FlexibleGrapplingHook.tscn")
 var pendulum : PendulumSolver = PendulumSolver.new()
-var ascentSpeed : float = 200
-var tangentialSpeedMin : float = 200
-onready var debug = get_node("../Node/DebugGraphical")
-
+const ascentSpeed : float = 200.0
+const tangentialSpeedMin : float = 200.0
 var time : float = 0.0
+
+onready var debug = get_node("../Node/DebugGraphical")
 
 func get_class() -> String:
 	return "HookHandlerFlex"
@@ -58,7 +58,6 @@ func handle(delta : float) -> void:
 	var pivot : Vector2 = grapplingHook.getCurrentPivot()
 	# var pivot : Vector2 = grapplingHook.getFirstPivot()
 	var hookLenght : float = computeHookLength(shooter.global_position, pivot)
-	# shooter.global_position = pivot + pendulum.computePosition(theta0, time, hookLenght)
 	shooter.velocity = pendulum.computeVelocity(theta0, time, hookLenght)
 	handleAscensionInputs()
 	handleRemoveGrapplingHookInput()
@@ -84,12 +83,10 @@ func handleAscensionInputs() -> void:
 
 func ascend() -> void:
 	var theta : float = pendulum.computeTheta(shooter.global_position, grapplingHook.getCurrentPivot())
-	# shooter.global_position += - pendulum.computeNormal(theta) * 10
 	shooter.velocity -= pendulum.computeNormal(theta) * ascentSpeed
 
 func descend() -> void:
 	var theta : float = pendulum.computeTheta(shooter.global_position, grapplingHook.getCurrentPivot())
-	# shooter.global_position +=  pendulum.computeNormal(theta) * 10
 	shooter.velocity +=  pendulum.computeNormal(theta) * ascentSpeed
 
 func computeHookLength(shooterPosition : Vector2, pivotPosition : Vector2) -> float:

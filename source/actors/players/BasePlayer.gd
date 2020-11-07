@@ -61,7 +61,7 @@ func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)
 	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
-func getWallCollisionSide() -> int:
+func computeWallCollisionSide() -> int:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var castTo : Vector2 = global_position + Vector2.LEFT * lengthOfRaycastClimbableDetector
 	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
@@ -127,7 +127,7 @@ func handleJumpingState(delta : float) -> void:
 	if is_on_floor():
 		changeStateTo(STATES.RUNNING)
 	else: 
-		if isOnClimbable(getWallCollisionSide()):
+		if isOnClimbable(computeWallCollisionSide()):
 			changeStateTo(STATES.CLIMBING)
 			velocity = Vector2.ZERO
 		else:
@@ -143,7 +143,7 @@ func handleDivingState(delta : float) -> void:
 	endureGravity(delta)
 
 func handleClimbingState(delta : float) -> void:
-	var wallCollisionSide : int = getWallCollisionSide()
+	var wallCollisionSide : int = computeWallCollisionSide()
 	_wallSkid(wallCollisionSide, delta)
 	labelState.self_modulate = Color.white
 	if is_on_floor():
