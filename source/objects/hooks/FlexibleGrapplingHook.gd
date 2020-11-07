@@ -12,8 +12,10 @@ onready var timer : Timer = $Timer
 var shooter = null
 var pivots : PoolVector2Array = PoolVector2Array()
 var direction : Vector2 = Vector2.ZERO
-var speed : float = 45.0
 var hooked : bool = false
+const speed : float = 45.0
+const ropeWidth : float = 1.5
+const aliased : bool = true
 
 func get_class() -> String:
 	return "FlexibleGrapplingHook"
@@ -37,6 +39,9 @@ func _on_timer_timeout() -> void:
 func _on_hook_hit() -> void:
 	hooked = true
 	addPivot(hook.global_position)
+
+func getFirstPivot() -> Vector2:
+	return pivots[0]
 
 func getCurrentPivot() -> Vector2:
 	return pivots[pivots.size() - 1]
@@ -65,9 +70,9 @@ func _process(_delta : float) -> void:
 func _draw():
 	for i in pivots.size():
 		if i != pivots.size() - 1:
-			draw_line(pivots[i] - global_position, pivots[i+1] - global_position, Color.aqua)
+			draw_line(pivots[i] - global_position, pivots[i+1] - global_position, Color.aqua, ropeWidth, aliased)
 		else:
-			draw_line(pivots[i] - global_position, shooter.global_position - global_position, Color.aqua)
+			draw_line(pivots[i] - global_position, shooter.global_position - global_position, Color.aqua, ropeWidth, aliased)
 
 func _physics_process(_delta : float) -> void:
 	if pivots.empty():

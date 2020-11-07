@@ -9,12 +9,12 @@ enum STATES { 	RUNNING,
 				HOOKING,
 				FALLING }
 
-var stateHandlers : Dictionary = {	STATES.RUNNING: "handleRunningState",
-									STATES.JUMPING: "handleJumpingState",
-									STATES.DIVING: "handleDivingState",
-									STATES.CLIMBING: "handleClimbingState",
-									STATES.HOOKING: "handleHookingState",
-									STATES.FALLING: "handleFallingState" }					
+const stateHandlers : Dictionary = {	STATES.RUNNING: "handleRunningState",
+										STATES.JUMPING: "handleJumpingState",
+										STATES.DIVING: "handleDivingState",
+										STATES.CLIMBING: "handleClimbingState",
+										STATES.HOOKING: "handleHookingState",
+										STATES.FALLING: "handleFallingState" }					
 											
 var stateHandler : FuncRef = funcref(self, stateHandlers[STATES.RUNNING]);
 
@@ -23,16 +23,18 @@ enum DIRECTION { 	LEFT = -1,
 					RIGHT = 1 }
 
 var state : int = STATES.RUNNING
-var skidCoefficient : float = GRAVITY * 0.2
-var skidCoefficientMin : float = skidCoefficient * 0.05
-var diveForce : float = 700.0
-var airRunningCoefficient : float = 0.41
-var wallJumpForce : Vector2 = Vector2(280, 0)
-var climbSpeed : float = 300
-var minimalVelocityToBeFalling : float = 850.0
-var lengthOfRaycastClimbableDetector : float = 5.0 # from vertical hitbox edge
-var hitboxHalfWidth : float = 0.0
-var hitboxHalfHeight : float = 0.0
+
+const skidCoefficient : float = GRAVITY * 0.2
+const skidCoefficientMin : float = skidCoefficient * 0.05
+const diveForce : float = 700.0
+const airRunningCoefficient : float = 0.41
+const wallJumpForce : Vector2 = Vector2(280, 0)
+const climbSpeed : float = 300.0
+const minimalVelocityToBeFalling : float = 850.0
+
+onready var hitboxHalfWidth : float = $CollisionShape2D.shape.get_radius()
+onready var hitboxHalfHeight : float = $CollisionShape2D.shape.get_height()
+onready var lengthOfRaycastClimbableDetector : float = hitboxHalfWidth + 5.0
 
 onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
@@ -45,9 +47,6 @@ func get_class() -> String:
 	return "BasePlayer"
 
 func _ready() -> void:
-	hitboxHalfWidth = $CollisionShape2D.shape.get_radius()
-	hitboxHalfHeight = $CollisionShape2D.shape.get_height()
-	lengthOfRaycastClimbableDetector += hitboxHalfWidth
 	setGrapplingHook()
 
 func setSkills() -> void:
@@ -56,11 +55,7 @@ func setSkills() -> void:
 	add_child(skillSet)
 
 func setGrapplingHook() -> void:
-	hookHandler.shooter = self
-
-# func _process(_delta) -> void:
-# 	handleGrappleInput()
-# 	handleAttackInput()
+	hookHandler.setup(self)
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)
@@ -90,12 +85,6 @@ func canClimbOnPlatform(direction : int) -> bool:
 			not isThereEnvironnementCollision(direction, hitboxHalfHeight * 3) and
 			velocity.y < 5) # must be climbing up so vy < 0, epsilon = 5
 
-# func haveToDropFromWall(direction : int) -> bool:
-# 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-# 	var castTo : Vector2 = global_position + Vector2(lengthOfRaycastClimbableDetector * direction, hitboxHalfHeight)
-# 	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, castTo, [], WorldInfo.LAYER.CLIMBABLE)
-# 	return collisionInfo.empty() and velocity.y > 5 # epsilon
-
 func isOnClimbable(direction : int) -> bool:
 	return direction != DIRECTION.UNDEFINED
 
@@ -112,6 +101,7 @@ func changeStateTo(newState : int) -> void:
 func handleRunningState(delta : float) -> void:
 	snap = SNAP
 	handleAttackInput()
+	handleLaunchGrapplingHookInput()
 	if is_on_floor():
 		handleRunInputs()
 		handleJumpInput()
@@ -129,6 +119,7 @@ func handleRunningState(delta : float) -> void:
 
 func handleJumpingState(delta : float) -> void:
 	handleAttackInput()
+	handleLaunchGrapplingHookInput()
 	if is_on_wall():
 		preventSinkingIntoWall()
 	if is_on_ceiling():
@@ -203,10 +194,12 @@ func handleJumpInput() -> void:
 		_jump()
 		changeStateTo(STATES.JUMPING)
 
-func handleGrappleInput() -> void:
+func handleLaunchGrapplingHookInput() -> void:
 	if Input.is_action_just_pressed("use_grappel"):
 		_addHook()
-	elif Input.is_action_just_pressed("release_hook"):
+
+func handleRemoveGrapplingHookInput() -> void:
+	if Input.is_action_just_pressed("release_hook"):
 		_removeHook()
 
 func handleAttackInput() -> void:

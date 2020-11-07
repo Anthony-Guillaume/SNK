@@ -3,6 +3,8 @@ extends Resource
 class_name PendulumSolver
 
 const verticalAxis : Vector2 = Vector2.DOWN
+const omega : float = 2.0
+const damping : float = 0.1
 
 func get_class() -> String:
 	return "PendulumSolver"
@@ -10,11 +12,23 @@ func get_class() -> String:
 func computeDirectionTowardEquilibriumPoint(weightPosition : Vector2, pivotPosition : Vector2) -> int:
 	return int(sign(pivotPosition.x - weightPosition.x))
 
+func computePosition(theta0 : float, time : float, length : float) -> Vector2:
+	# Pendule simple amorti
+	var theta : float = theta0 * exp(-damping * omega * time) * cos(sqrt(1.0 - pow(damping, 2.0)) * omega * time)
+	return computeNormal(theta) * length
+
+func computeVelocity(theta0 : float, time : float, length : float) -> Vector2:
+	# Pendule simple amorti
+	var a : float = sqrt(1.0 - pow(damping, 2.0))
+	var theta : float = theta0 * exp(-damping * omega * time) * cos(a * omega * time)
+	var angularVelocity : float = -theta0 * omega * exp(-damping * omega * time) * ( damping * cos(sqrt(1.0 - pow(damping, 2.0)) * omega * time) + sqrt(1.0 - pow(damping, 2.0)) * sin(sqrt(1.0 - pow(damping, 2.0)) * omega * time) )
+	return computeTangente(theta) * length * angularVelocity
+
 func computeTangentialForce(theta : float, theta0 : float, rodLength : float) -> Vector2:
 	return computeTangente(theta) * computeCoefficient(theta, theta0, rodLength)
 
 func computeCoefficient(theta : float, theta0 : float, rodLength : float) -> float:
-	return 40 * sqrt(rodLength) * computeGaussian(theta) * computeLorentz(theta0)#//abs(sin(theta0)) 
+	return 40 * sqrt(rodLength) * computeGaussian(theta) * abs(sin(theta0)) 
 
 func computeGaussian(x : float) -> float:
 	return exp(-pow(x * 0.5, 2))
