@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/objects/hooks/Links.gd"
 }, {
+"base": "Actor",
+"class": "Patroller",
+"language": "GDScript",
+"path": "res://source/actors/ais/Patroller.gd"
+}, {
 "base": "Resource",
 "class": "PendulumSolver",
 "language": "GDScript",
@@ -172,6 +177,7 @@ _global_script_class_icons={
 "HookHandlerFlex": "",
 "Idle": "",
 "Links": "",
+"Patroller": "",
 "PendulumSolver": "",
 "PendulumSolver2": "",
 "PistolBall": "",
@@ -201,6 +207,10 @@ WorldInfo="*res://singletons/WorldInfo.gd"
 
 gdscript/warnings/return_value_discarded=false
 gdscript/warnings/unsafe_cast=true
+
+[editor_plugins]
+
+enabled=PoolStringArray( "btree" )
 
 [input]
 

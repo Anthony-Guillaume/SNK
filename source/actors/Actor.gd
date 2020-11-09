@@ -28,6 +28,7 @@ export var maxSpeed : float = 500
 func _ready() -> void:
 	setStats()
 	setSkills()
+	add_child(skillSet)
 
 func setStats() -> void:
 	var health : Attribute = Attribute.new(baseHealth, 0, maxHealth)

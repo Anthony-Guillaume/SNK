@@ -2,18 +2,14 @@ extends Node
 
 class_name HookHandlerFlex
 
-enum ROTATION { CLOCKWISE = 1, ANTICLOCKWISE = -1, UNDEFINED = 0}
-const verticalAxis : Vector2 = Vector2.DOWN
 
-var shooter
+var shooter : BasePlayer
 var grapplingHook
 var hook : Hook
-var direction : int = ROTATION.UNDEFINED
 var theta0 : float
 const grapplingHookScene : PackedScene = preload("res://source/objects/hooks/FlexibleGrapplingHook.tscn")
 var pendulum : PendulumSolver = PendulumSolver.new()
 const ascentSpeed : float = 200.0
-const tangentialSpeedMin : float = 200.0
 var time : float = 0.0
 
 onready var debug = get_node("../Node/DebugGraphical")
@@ -23,6 +19,9 @@ func get_class() -> String:
 
 func setup(shooter) -> void:
 	self.shooter = shooter
+
+func computeHookLength(shooterPosition : Vector2, pivotPosition : Vector2) -> float:
+	return (shooterPosition - pivotPosition).length()
 
 func addHook() -> void:
 	if grapplingHook != null:
@@ -37,12 +36,6 @@ func removeHook() -> void:
 	if grapplingHook == null:
 		return
 	shooter.changeStateTo(BasePlayer.STATES.RUNNING)
-	# var pivot : Vector2 = grapplingHook.getCurrentPivot()
-	# var theta : float = pendulum.computeTheta(shooter.global_position, pivot)
-	# var hookLenght : float = computeHookLength(shooter.global_position, pivot)
-	# var force = pendulum.computeTangentialForce(theta, theta0, hookLenght) * direction
-	# shooter.velocity += force * 0.25
-	# debug.setup(shooter.global_position, shooter.global_position + force)
 	remove_child(grapplingHook)
 	grapplingHook.queue_free()
 
@@ -54,26 +47,22 @@ func _on_hook_hit() -> void:
 	shooter.velocity = Vector2.ZERO
 
 func handle(delta : float) -> void:
-	time += delta
 	var pivot : Vector2 = grapplingHook.getCurrentPivot()
-	# var pivot : Vector2 = grapplingHook.getFirstPivot()
-	var hookLenght : float = computeHookLength(shooter.global_position, pivot)
-	shooter.velocity = pendulum.computeVelocity(theta0, time, hookLenght)
+	if shooter.is_on_floor() or shooter.is_on_wall():
+		removeHook()
+	elif shooter.global_position.y < pivot.y:
+		shooter.endureGravity(delta)
+		theta0 = pendulum.computeTheta(shooter.global_position, pivot)
+	else:
+		time += delta
+		var hookLenght : float = computeHookLength(shooter.global_position, pivot)
+		shooter.velocity = pendulum.computeVelocity(theta0, time, hookLenght)
+	shooter.handleAttackInput()
 	handleAscensionInputs()
 	handleRemoveGrapplingHookInput()
 
-func applyTangentielForceToShooter(theta : float, hookLength : float) -> void:
-	var tangentialForce : Vector2 = pendulum.computeTangentialForce(theta, theta0, hookLength) * direction
-	var gain : Vector2 = tangentialForce - shooter.velocity
-	shooter.velocity += gain
-
 func handleRemoveGrapplingHookInput() -> void:
 	shooter.handleRemoveGrapplingHookInput()
-
-func handleLateralInputs(theta : float) -> void:
-	if abs(theta) < PI * 0.10:
-		var sens : int = int(Input.get_action_strength("move_right") - Input.get_action_strength("move_left"))
-		shooter.velocity += pendulum.computeTangente(theta) * sens * 100
 
 func handleAscensionInputs() -> void:
 	if Input.is_action_pressed("ascend_hook"):
@@ -88,6 +77,3 @@ func ascend() -> void:
 func descend() -> void:
 	var theta : float = pendulum.computeTheta(shooter.global_position, grapplingHook.getCurrentPivot())
 	shooter.velocity +=  pendulum.computeNormal(theta) * ascentSpeed
-
-func computeHookLength(shooterPosition : Vector2, pivotPosition : Vector2) -> float:
-	return (shooterPosition - pivotPosition).length()

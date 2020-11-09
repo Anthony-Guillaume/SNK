@@ -52,7 +52,6 @@ func _ready() -> void:
 func setSkills() -> void:
 	skillSet.create("PistolBall", 0.5)
 	skillSet.create("Cut", 0.3)
-	add_child(skillSet)
 
 func setGrapplingHook() -> void:
 	hookHandler.setup(self)
@@ -116,6 +115,7 @@ func handleRunningState(delta : float) -> void:
 	if is_on_wall():
 		preventSinkingIntoWall()
 	endureGravity(delta)
+	velocity = velocity.clamped(stats.runSpeed.getMaxValue())
 
 func handleJumpingState(delta : float) -> void:
 	handleAttackInput()

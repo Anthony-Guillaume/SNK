@@ -8,19 +8,22 @@ onready var ray2 : RayCast2D = $Ray2
 onready var links : Node2D = $Links
 onready var hook : Area2D = $Hook
 onready var timer : Timer = $Timer
+onready var line : Line2D = $Line2D
 
 var shooter = null
 var pivots : PoolVector2Array = PoolVector2Array()
 var direction : Vector2 = Vector2.ZERO
 var hooked : bool = false
-const speed : float = 45.0
+const speed : float = 25.0
 const ropeWidth : float = 1.5
 const aliased : bool = true
+var time : float = 0.0
 
 func get_class() -> String:
 	return "FlexibleGrapplingHook"
 
 func _ready() -> void:
+	hook.shooter = shooter
 	hook.connect("hookHit", self, "_on_hook_hit")
 	timer.connect("timeout", self, "_on_timer_timeout")
 	timer.start()
@@ -39,6 +42,8 @@ func _on_timer_timeout() -> void:
 func _on_hook_hit() -> void:
 	hooked = true
 	addPivot(hook.global_position)
+	time = 0.0
+	line.clear_points()
 
 func getFirstPivot() -> Vector2:
 	return pivots[0]
@@ -64,6 +69,8 @@ func getRopeLength() -> float:
 func _process(_delta : float) -> void:
 	links.global_position = hook.global_position
 	update()
+	# if not hooked:
+	# 	drawWave()
 #	ajustLinksNumber()
 #	ajustLinksRotation()
 
@@ -74,7 +81,8 @@ func _draw():
 		else:
 			draw_line(pivots[i] - global_position, shooter.global_position - global_position, Color.aqua, ropeWidth, aliased)
 
-func _physics_process(_delta : float) -> void:
+func _physics_process(delta : float) -> void:
+	time += delta
 	if pivots.empty():
 		return
 	if ray1.is_colliding():
@@ -88,6 +96,21 @@ func _physics_process(_delta : float) -> void:
 	ray1.set_cast_to(getCurrentPivot() - ray1.global_position)
 	ray2.set_cast_to(getBeforeLastPivot() - ray2.global_position)
 
+func drawWave() -> void:
+	var n : int = 100
+	line.clear_points()
+	var length : float = hook.global_position.distance_to(shooter.global_position)
+	var dx : float = length / n
+	var a : float = 0.0001 / length
+	for i in range(n + 1):
+		var x : float = i * dx
+		var amplitude : float = 50 * (1.0 - x * a) * sin(2 * PI * x / length)
+		var y : float = amplitude * sin(2 * PI * time)
+		var point : Vector2 = Vector2(x, y)
+		line.add_point(point)
+	line.global_position = shooter.global_position
+	var shooterToHookDirection : Vector2 = hook.global_position.direction_to(shooter.global_position)
+	line.rotate(shooterToHookDirection.angle() - line.rotation + PI)
 
 #func ajustLinksNumber() -> void:
 #	var distance : float = pivot.distance_to(shooter.global_position) + distanceBeforePivot
