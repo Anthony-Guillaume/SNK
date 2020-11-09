@@ -2,6 +2,8 @@ extends Actor
 
 class_name BasePlayer
 
+signal stateChanged(newState)
+
 enum STATES { 	RUNNING,
 				JUMPING, 
 				DIVING, 
@@ -38,6 +40,8 @@ onready var lengthOfRaycastClimbableDetector : float = hitboxHalfWidth + 5.0
 
 onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
+onready var camera : Camera2D = $Camera2D
+onready var hud : HUD = $CanvasLayer/HUD
 
 # DEBUG PART
 onready var labelState : Label = $Label
@@ -48,6 +52,7 @@ func get_class() -> String:
 
 func _ready() -> void:
 	setGrapplingHook()
+	hud.initialize(stats.health)
 
 func setSkills() -> void:
 	skillSet.create("PistolBall", 0.5)
@@ -96,6 +101,7 @@ func changeStateTo(newState : int) -> void:
 	state = newState
 	stateHandler.set_function(stateHandlers[newState])
 	labelState.set_text(STATES.keys()[state])
+	emit_signal("stateChanged", newState)
 
 func handleRunningState(delta : float) -> void:
 	snap = SNAP

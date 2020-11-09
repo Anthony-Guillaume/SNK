@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/menus/PauseMenu.gd" type="Script" id=1]
+
+[node name="InGameMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResumeButton" type="Button" parent="."]
+margin_left = 387.339
+margin_top = 106.998
+margin_right = 557.339
+margin_bottom = 163.998
+text = "Resume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsButton" type="Button" parent="."]
+margin_left = 395.238
+margin_top = 229.839
+margin_right = 571.238
+margin_bottom = 290.839
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainMenuButton" type="Button" parent="."]
+margin_left = 391.114
+margin_top = 344.478
+margin_right = 580.114
+margin_bottom = 411.478
+text = "Back to menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}

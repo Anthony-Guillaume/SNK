@@ -1,0 +1,82 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/menus/OptionsMenu.gd" type="Script" id=1]
+
+[node name="OptionsMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolumeSlider" type="HSlider" parent="."]
+margin_left = 572.0
+margin_top = 387.0
+margin_right = 841.0
+margin_bottom = 403.0
+min_value = -60.0
+max_value = 0.0
+value = -20.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SoundEffectVolumeSlider" type="HSlider" parent="."]
+margin_left = 571.401
+margin_top = 421.128
+margin_right = 840.401
+margin_bottom = 437.128
+min_value = -60.0
+max_value = 0.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackToMainMenuButton" type="Button" parent="."]
+margin_left = 635.0
+margin_top = 533.0
+margin_right = 962.0
+margin_bottom = 626.0
+text = "Back to menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolumeLabel" type="Label" parent="."]
+margin_left = 461.091
+margin_top = 386.07
+margin_right = 551.091
+margin_bottom = 400.07
+text = "Music volume"
+
+[node name="SoundEffectVolumeLabel" type="Label" parent="."]
+margin_left = 419.053
+margin_top = 422.196
+margin_right = 550.053
+margin_bottom = 436.196
+text = "Sound effect volume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FullScreenCheckBox" type="CheckBox" parent="."]
+margin_left = 569.115
+margin_top = 343.486
+margin_right = 593.115
+margin_bottom = 367.486
+text = "Fullscreen"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}

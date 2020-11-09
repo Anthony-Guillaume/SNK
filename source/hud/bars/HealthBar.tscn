@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/hud/lifebar_bg.png" type="Texture" id=1]
+[ext_resource path="res://assets/hud/lifebar_fill.png" type="Texture" id=2]
+[ext_resource path="res://source/hud/bars/ValueBar.gd" type="Script" id=3]
+
+[node name="HealthBar" type="TextureProgress"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 2 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 399.894
+margin_top = 18.5317
+margin_right = 439.894
+margin_bottom = 32.5317
+text = "15"

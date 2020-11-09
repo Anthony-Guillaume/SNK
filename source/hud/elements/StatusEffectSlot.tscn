@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://source/hud/elements/StatusEffectSlot.gd" type="Script" id=1]
+[ext_resource path="res://assets/godot.png" type="Texture" id=2]
+
+[node name="StatusEffectSlot" type="TextureProgress"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture_under = ExtResource( 2 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 0.707108
+margin_top = 51.2652
+margin_right = 40.7071
+margin_bottom = 65.2652

@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/menus/ScoreMenu.gd" type="Script" id=1]
+
+[node name="ScoreMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.840881
+margin_top = -0.840897
+margin_right = 0.84082
+margin_bottom = -0.840881
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -181.5
+margin_top = -181.5
+margin_right = 181.5
+margin_bottom = 181.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+margin_left = 1.05948
+margin_right = 187.059
+margin_bottom = 50.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Result" type="Label" parent="Panel/VBoxContainer"]
+margin_right = 186.0
+margin_bottom = 14.0
+text = "Victoire ou défaite"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumberOfEnemiesKilled" type="Label" parent="Panel/VBoxContainer"]
+margin_top = 18.0
+margin_right = 186.0
+margin_bottom = 32.0
+text = "Nombre d'ennemis abattus : "
+
+[node name="NumberOfSecretsFound" type="Label" parent="Panel/VBoxContainer"]
+margin_top = 36.0
+margin_right = 186.0
+margin_bottom = 50.0
+text = "Secrets découverts : "
+
+[node name="LevelDuration" type="Label" parent="Panel/VBoxContainer"]
+margin_top = 54.0
+margin_right = 186.0
+margin_bottom = 68.0
+text = "Durée du niveau : "
+
+[node name="PlayAgainButton" type="Button" parent="."]
+margin_left = 694.885
+margin_top = 159.231
+margin_right = 808.885
+margin_bottom = 211.231
+text = "Play again"
+
+[node name="PlayNextButton" type="Button" parent="."]
+margin_left = 694.644
+margin_top = 258.311
+margin_right = 801.644
+margin_bottom = 300.311
+text = "Play next"
+
+[node name="BackToMenuButton" type="Button" parent="."]
+margin_left = 694.854
+margin_top = 348.922
+margin_right = 839.854
+margin_bottom = 408.922
+text = "Back to menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}

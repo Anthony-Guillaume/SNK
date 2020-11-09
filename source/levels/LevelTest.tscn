@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://source/actors/players/BasePlayer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://source/levels/levelHelpers/SceneTransitor.tscn" type="PackedScene" id=3]
 [ext_resource path="res://source/actors/ais/Patroller.tscn" type="PackedScene" id=4]
 [ext_resource path="res://source/levels/BaseLevel.gd" type="Script" id=5]
 
@@ -77,6 +78,14 @@ tile_data = PoolIntArray( -196596, 0, 0, -131060, 0, 0, -65528, 0, 0, -65524, 0,
 
 [node name="BasePlayer" parent="Actors" instance=ExtResource( 1 )]
 position = Vector2( 930.267, 1871.63 )
+baseHealth = null
+baseSpeed = null
+maxHealth = null
+maxSpeed = null
 
-[node name="Patroller" parent="Actors" instance=ExtResource( 4 )]
+[node name="Ais" type="Node2D" parent="Actors"]
+
+[node name="Patroller" parent="Actors/Ais" instance=ExtResource( 4 )]
 position = Vector2( 1029.56, 2206.98 )
+
+[node name="SceneTransitor" parent="." instance=ExtResource( 3 )]
