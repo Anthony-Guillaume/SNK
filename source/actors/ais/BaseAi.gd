@@ -33,10 +33,13 @@ func setup(player : BasePlayer) -> void:
 	self.player = player
 
 func _physics_process(delta : float) -> void:
+	handlePhysicsProcess(delta)
+	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
+
+func handlePhysicsProcess(delta : float) -> void:
 	endureGravity(delta)
 	if is_on_floor():
 		preventSinkingIntoFloor()
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
 
 ################################################################################
 # BASIC TASKS
@@ -92,19 +95,19 @@ func canFall() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var from : Vector2 = global_position + Vector2(hitboxHalfWidth * 1.5, 0.0) * sign(velocity.x)
 	var to : Vector2 = from + Vector2(0.0, hitboxHalfHeight + 10.0)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.GRAPPABLE)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE)
 	return collisionInfo.empty()
 
 func isPlayerOnSamePlatform() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var from : Vector2 = global_position
 	var to : Vector2 = from + Vector2(sightDistance, 0.0) * sign(velocity.x)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.ACTOR)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.ACTOR)
 	return not collisionInfo.empty() and collisionInfo.collider == player
 
 func isPlayerIsInSight() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.ACTOR)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.ACTOR)
 	return collisionInfo.collider == player and isPlayerWithinSightDistance()
 
 func isPlayerWithinSightDistance() -> bool:

@@ -3,7 +3,7 @@ extends RayCast2D
 class_name Cut
 
 var damage : float = 35.0
-var reach : float = 55
+var reach : float = 55.0
 var _shooter = null
 var _hit : bool = false
 

@@ -2,9 +2,10 @@ extends Node2D
 
 class_name BaseLevel
 
-onready var _player = $Actors.get_child(1)
+onready var _player = $Actors.get_child(0)
 onready var _ais : Node2D = $Actors/Ais
 onready var sceneTransitor : SceneTransitor = $SceneTransitor
+onready var skillStore : Node = $SkillStore
 
 var duration : float = 0
 var secretFound : int = 0
@@ -39,19 +40,21 @@ func setupCamera() -> void:
 
 func setupActors() -> void:
 	setupPlayer()
-	for actor in _ais.get_children():
-		setupAi(actor)
+	for ai in _ais.get_children():
+		setupAi(ai)
 
 func activateAis() -> void:
-	for actor in _ais.get_children():
-		actor.activateLogicTree()
+	for ai in _ais.get_children():
+		ai.activateLogicTree()
 
 func setupPlayer() -> void:
 	_player.connect("death", self, "_on_player_death")
+	_player.skillSet.skillStore = skillStore
 
 func setupAi(ai) -> void:
 	ai.setup(_player)
 	ai.connect("death", self, "_on_ai_death", [ai])
+	ai.skillSet.skillStore = skillStore
 
 func addAi(ai) -> void:
 	yield(get_tree().create_timer(1), "timeout") # wait if caller is freeing

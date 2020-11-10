@@ -96,13 +96,14 @@ func changeSceneToCurrentLevel() -> void:
 	changeSceneTo(currentLevelScene)
 
 func updateCurrentLevelReference(newScene : String) -> void:
+	if previousScene == "pauseMenu" and newScene == "mainMenu":
+		scenes[currentLevelScene].freeInstance()
 	if not newScene.begins_with("Level"):
 		return
 	if newScene == currentLevelScene:
 		return
 	if currentLevelScene != "null":
 		scenes[currentLevelScene].freeInstance()
-		getNextLevelName()
 	currentLevelScene = newScene
 
 func getNextLevelName() -> String:
@@ -119,7 +120,6 @@ func getLastLevelName() -> String:
 	return "Level" + str(lastLevel)
 
 func restartCurrentLevel() -> void:
-	var currentLevelSceneCopy : String = currentLevelScene
 	scenes[currentLevelScene].freeInstance()
 	changeSceneTo(currentLevelScene)
 

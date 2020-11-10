@@ -31,8 +31,8 @@ const skidCoefficientMin : float = skidCoefficient * 0.05
 const diveForce : float = 700.0
 const airRunningCoefficient : float = 0.41
 const wallJumpForce : Vector2 = Vector2(280, 0)
-const climbSpeed : float = 300.0
-const minimalVelocityToBeFalling : float = 850.0
+const climbSpeed : float = 450.0
+const minimalVelocityToBeFalling : float = 1500.0
 
 onready var hitboxHalfWidth : float = $CollisionShape2D.shape.get_radius()
 onready var hitboxHalfHeight : float = $CollisionShape2D.shape.get_height()
@@ -158,6 +158,8 @@ func handleClimbingState(delta : float) -> void:
 		if canClimbOnPlatform(wallCollisionSide):
 			labelState.self_modulate = Color.red
 			_climbToPlatform(wallCollisionSide)
+			if not is_on_wall():
+				changeStateTo(STATES.RUNNING)
 		elif isOnClimbable(wallCollisionSide):
 			handleWallJumpInput(wallCollisionSide)
 			handleClimbInput()

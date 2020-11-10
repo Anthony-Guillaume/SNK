@@ -20,7 +20,7 @@ var skillSet : SkillSet = SkillSet.new(self)
 
 # TEMPORARY BEFORE EXPORT FEATURE GODOT 4.0
 export var baseHealth : float = 100
-export var baseSpeed : float = 300
+export var baseSpeed : float = 400
 export var maxHealth : float = 100
 export var maxSpeed : float = 500
 #
