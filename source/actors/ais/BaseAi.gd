@@ -105,9 +105,7 @@ func isPlayerOnSamePlatform() -> bool:
 func isPlayerIsInSight() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.ACTOR)
-	if collisionInfo.collider != player:
-		return false
-	return isPlayerWithinSightDistance()
+	return collisionInfo.collider == player and isPlayerWithinSightDistance()
 
 func isPlayerWithinSightDistance() -> bool:
 	return player.global_position.distance_to(global_position) < sightDistance

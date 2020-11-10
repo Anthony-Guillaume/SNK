@@ -76,16 +76,12 @@ tile_data = PoolIntArray( -196596, 0, 0, -131060, 0, 0, -65528, 0, 0, -65524, 0,
 
 [node name="Actors" type="Node2D" parent="."]
 
-[node name="BasePlayer" parent="Actors" instance=ExtResource( 1 )]
-position = Vector2( 930.267, 1871.63 )
-baseHealth = null
-baseSpeed = null
-maxHealth = null
-maxSpeed = null
-
 [node name="Ais" type="Node2D" parent="Actors"]
 
 [node name="Patroller" parent="Actors/Ais" instance=ExtResource( 4 )]
 position = Vector2( 1029.56, 2206.98 )
+
+[node name="BasePlayer" parent="Actors" instance=ExtResource( 1 )]
+position = Vector2( 674.634, 2107.08 )
 
 [node name="SceneTransitor" parent="." instance=ExtResource( 3 )]

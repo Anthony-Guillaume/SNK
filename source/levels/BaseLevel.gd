@@ -2,10 +2,8 @@ extends Node2D
 
 class_name BaseLevel
 
-onready var _player = $Actors.get_child(0)
+onready var _player = $Actors.get_child(1)
 onready var _ais : Node2D = $Actors/Ais
-
-# onready var _navigation : Navigation2D = $Navigation2D
 onready var sceneTransitor : SceneTransitor = $SceneTransitor
 
 var duration : float = 0
