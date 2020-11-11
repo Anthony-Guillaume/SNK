@@ -98,11 +98,9 @@ tree = {
 "data": {
 "fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall
-PistolBall", 1 ] ],
+"params": [ [ "PistolBall", 1 ] ],
 "size": Vector2( 490, 109 ),
-"values": [ "PistolBall
-PistolBall" ]
+"values": [ "PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -198,11 +196,9 @@ PistolBall" ]
 "data": {
 "fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall
-PistolBall", 1 ] ],
+"params": [ [ "PistolBall", 1 ] ],
 "size": Vector2( 490, 109 ),
-"values": [ "PistolBall
-PistolBall" ]
+"values": [ "PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -354,11 +350,9 @@ PistolBall" ]
 "data": {
 "fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall
-PistolBall", 1 ] ],
+"params": [ [ "PistolBall", 1 ] ],
 "size": Vector2( 490, 109 ),
-"values": [ "PistolBall
-PistolBall" ]
+"values": [ "PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -426,11 +420,9 @@ PistolBall" ]
 "data": {
 "fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall
-PistolBall", 1 ] ],
+"params": [ [ "PistolBall", 1 ] ],
 "size": Vector2( 490, 109 ),
-"values": [ "PistolBall
-PistolBall" ]
+"values": [ "PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -458,11 +450,9 @@ PistolBall" ]
 "data": {
 "fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall
-PistolBall", 1 ] ],
+"params": [ [ "PistolBall", 1 ] ],
 "size": Vector2( 490, 109 ),
-"values": [ "PistolBall
-PistolBall" ]
+"values": [ "PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -487,11 +477,9 @@ PistolBall" ]
 "data": {
 "fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall
-PistolBall", 1 ] ],
+"params": [ [ "PistolBall", 1 ] ],
 "size": Vector2( 490, 109 ),
-"values": [ "PistolBall
-PistolBall" ]
+"values": [ "PistolBall" ]
 },
 "name": "task4",
 "type": 1

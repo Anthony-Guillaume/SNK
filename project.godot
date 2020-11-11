@@ -293,6 +293,7 @@ config/icon="res://icon.png"
 ActorStatusHandler="*res://singletons/ActorStatusHandler.gd"
 WorldInfo="*res://singletons/WorldInfo.gd"
 SceneManager="*res://singletons/SceneManager.tscn"
+BTDebugServer="*res://addons/btree/script/bt_debug_server.gd"
 
 [debug]
 
@@ -371,6 +372,11 @@ move_up={
 2d_physics/layer_6="grappable"
 2d_physics/layer_7="lootable"
 2d_physics/layer_8="platform_on_way"
+
+[network]
+
+limits/websocket_server/max_in_buffer_kb=4096
+limits/websocket_server/max_out_buffer_kb=4096
 
 [rendering]
 

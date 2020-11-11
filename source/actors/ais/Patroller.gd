@@ -9,6 +9,7 @@ func get_class() -> String:
 
 func setSkills() -> void:
 	skillSet.create("PistolBall", 0.5)
+	print(skillSet.skills)
 
 func _physics_process(delta : float) -> void:
 	endureGravity(delta)
