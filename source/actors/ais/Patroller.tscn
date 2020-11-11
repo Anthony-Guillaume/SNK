@@ -8,7 +8,8 @@
 extents = Vector2( 30.9557, 29.646 )
 
 [node name="Patroller" type="KinematicBody2D"]
-collision_layer = 4
+collision_layer = 8
+collision_mask = 131
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -95,11 +96,13 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_cast_skill_against_player",
+"fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [  ],
-"size": Vector2( 490, 85.0002 ),
-"values": [  ]
+"params": [ [ "PistolBall
+PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall
+PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -118,7 +121,7 @@ tree = {
 "fn": "task_check_if_player_is_on_same_platform",
 "offset": Vector2( 850, -190 ),
 "params": [  ],
-"size": Vector2( 490.001, 84.9999 ),
+"size": Vector2( 490.001, 84.9998 ),
 "values": [  ]
 },
 "name": "task",
@@ -193,11 +196,13 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_cast_skill_against_player",
+"fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [  ],
-"size": Vector2( 490, 85.0002 ),
-"values": [  ]
+"params": [ [ "PistolBall
+PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall
+PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -216,7 +221,7 @@ tree = {
 "fn": "task_check_if_player_is_on_same_platform",
 "offset": Vector2( 850, -190 ),
 "params": [  ],
-"size": Vector2( 490.001, 84.9999 ),
+"size": Vector2( 490.001, 84.9998 ),
 "values": [  ]
 },
 "name": "task",
@@ -284,7 +289,7 @@ tree = {
 "fn": "task_check_if_player_is_on_same_platform",
 "offset": Vector2( 850, -190 ),
 "params": [  ],
-"size": Vector2( 490.001, 84.9999 ),
+"size": Vector2( 490.001, 84.9998 ),
 "values": [  ]
 },
 "name": "task",
@@ -307,7 +312,7 @@ tree = {
 "fn": "task_check_if_player_is_on_same_platform",
 "offset": Vector2( 850, -190 ),
 "params": [  ],
-"size": Vector2( 490.001, 84.9999 ),
+"size": Vector2( 490.001, 84.9998 ),
 "values": [  ]
 },
 "name": "task",
@@ -347,11 +352,13 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_cast_skill_against_player",
+"fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [  ],
-"size": Vector2( 490, 85.0002 ),
-"values": [  ]
+"params": [ [ "PistolBall
+PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall
+PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -370,7 +377,7 @@ tree = {
 "fn": "task_check_if_player_is_on_same_platform",
 "offset": Vector2( 850, -190 ),
 "params": [  ],
-"size": Vector2( 490.001, 84.9999 ),
+"size": Vector2( 490.001, 84.9998 ),
 "values": [  ]
 },
 "name": "task",
@@ -417,11 +424,13 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_cast_skill_against_player",
+"fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [  ],
-"size": Vector2( 490, 85.0002 ),
-"values": [  ]
+"params": [ [ "PistolBall
+PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall
+PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -447,11 +456,13 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_cast_skill_against_player",
+"fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [  ],
-"size": Vector2( 490, 85.0002 ),
-"values": [  ]
+"params": [ [ "PistolBall
+PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall
+PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -474,11 +485,13 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_cast_skill_against_player",
+"fn": "task_attack_player",
 "offset": Vector2( 850, -310 ),
-"params": [  ],
-"size": Vector2( 490, 85.0002 ),
-"values": [  ]
+"params": [ [ "PistolBall
+PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall
+PistolBall" ]
 },
 "name": "task4",
 "type": 1
@@ -497,7 +510,7 @@ tree = {
 "fn": "task_check_if_player_is_on_same_platform",
 "offset": Vector2( 850, -190 ),
 "params": [  ],
-"size": Vector2( 490.001, 84.9999 ),
+"size": Vector2( 490.001, 84.9998 ),
 "values": [  ]
 },
 "name": "task",

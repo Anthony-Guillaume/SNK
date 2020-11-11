@@ -13,7 +13,7 @@ func get_class() -> String:
 	return "Tracker"
 
 func setSkills() -> void:
-	skillSet.create("PistolBall", 0.5)
+	skillSet.create("PhantomPistolBall", 0.75)
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func()
@@ -32,8 +32,4 @@ func waitForPlayer() -> void:
 func moveAroundPlayer() -> void:
 	var theta : float =  2.0 * PI * time * roundPerSecond + theta0
 	global_position = player.global_position + sightDistance * Vector2(cos(theta), sin(theta))
-	shoot()
-
-func shoot() -> void:
-	attackDirection = (player.global_position - global_position).normalized()
-	skillSet.activate("PistolBall")
+	attackPlayer("PhantomPistolBall")

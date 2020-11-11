@@ -1,4 +1,9 @@
-extends Control
+extends Menu
+
+class_name MainMenu
+
+func get_class() -> String:
+	return "MainMenu"
 
 func _ready() -> void:
 	$PlayButton.connect("pressed", self, "_on_SinglePlayerButton_pressed")
@@ -6,10 +11,12 @@ func _ready() -> void:
 	$QuitButton.connect("pressed", self, "_on_QuitButton_pressed")
 
 func _on_SinglePlayerButton_pressed() -> void:
-	SceneManager.changeSceneTo("levelMenu")
+	var context : Dictionary = {}
+	SceneManager.changeSceneTo("LevelMenu", context)
 
 func _on_OptionsButton_pressed() -> void:
-	SceneManager.changeSceneTo("optionsMenu")
+	var context : Dictionary = {}
+	SceneManager.changeSceneTo("OptionsMenu", context)
 
 func _on_QuitButton_pressed() -> void:
 	SceneManager.exit()

@@ -1,21 +1,27 @@
-extends Control
+extends Menu
 
-onready var _levels : VBoxContainer = $Levels
+class_name LevelMenu
+	
+onready var _levelButtons : VBoxContainer = $Levels
+
+func get_class() -> String:
+	return "LevelMenu"
 
 func _ready() -> void:
 	$BackToMenu.connect("pressed", self, "_on_BackToMenuButton_pressed")
-	setLevels(SceneManager.getLevelSceneNames())
+	_setLevelButtons(SceneManager.getLevelNames())
 
 func _on_levelButton_pressed(level) -> void:
-	SceneManager.changeSceneTo(level.name)
+	SceneManager.launchLevel(level.name)
 
 func _on_BackToMenuButton_pressed() -> void:
-	SceneManager.changeSceneTo("mainMenu")
+	var context : Dictionary = {}
+	SceneManager.changeSceneTo("MainMenu", context)
 
-func setLevels(levels : Array) -> void:
-	for level in levels:
+func _setLevelButtons(levelNames : Array) -> void:
+	for levelName in levelNames:
 		var levelButton : Button = Button.new()
-		levelButton.name = level
-		levelButton.text = levelButton.name
+		levelButton.set_name(levelName)
+		levelButton.set_text(levelName)
 		levelButton.connect("pressed", self, "_on_levelButton_pressed", [levelButton])
-		_levels.add_child(levelButton)
+		_levelButtons.add_child(levelButton)

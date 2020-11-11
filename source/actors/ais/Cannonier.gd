@@ -1,14 +1,15 @@
 extends BaseAi
 
-class_name Patroller
+class_name Cannonier
 
 var casting : bool = false
 
 func get_class() -> String:
-	return "Patroller"
+	return "Cannonier"
 
 func setSkills() -> void:
-	skillSet.create("PistolBall", 0.5)
+	skillSet.create("Cut", 1.25)
+	skillSet.create("ExplosiveBall", 1.25)
 
 func _physics_process(delta : float) -> void:
 	endureGravity(delta)
@@ -20,6 +21,11 @@ func _physics_process(delta : float) -> void:
 # TASKS
 ################################################################################
 
+func task_cast_skill_against_player(task) -> void:
+	var skillName : String = task.get_param(0)
+	castSpell(skillName)
+	task.succeed()
+
 ################################################################################
 # CONDITIONS
 ################################################################################
@@ -28,3 +34,18 @@ func _physics_process(delta : float) -> void:
 # ACTIONS
 ################################################################################
 
+func patrol() -> void:
+	if abs(velocity.x) < 1.0:
+		velocity.x = stats.runSpeed.getValue()
+	if is_on_wall() or canFall():
+		changeDirection()
+
+func castSpell(attackName : String) -> void:
+	stand()
+	if casting:
+		return
+	casting = true
+	yield(get_tree().create_timer(1.0), "timeout")
+	attackDirection = (player.global_position - global_position).normalized()
+	skillSet.activate("ExplosiveBall")
+	casting = false

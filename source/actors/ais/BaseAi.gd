@@ -71,7 +71,8 @@ func task_move_toward_player(task) -> void:
 	task.succeed()
 
 func task_attack_player(task) -> void:
-	attackPlayer()
+	var skillName : String = task.get_param(0)
+	attackPlayer(skillName)
 	task.succeed()
 
 func task_patrol(task) -> void:
@@ -86,19 +87,19 @@ func canFall() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var from : Vector2 = global_position + Vector2(hitboxHalfWidth * 1.5, 0.0) * sign(velocity.x)
 	var to : Vector2 = from + Vector2(0.0, hitboxHalfHeight + 10.0)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE)
 	return collisionInfo.empty()
 
 func isPlayerOnSamePlatform() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var from : Vector2 = global_position
 	var to : Vector2 = from + Vector2(sightDistance, 0.0) * sign(velocity.x)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.ACTOR)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.PLAYER)
 	return not collisionInfo.empty() and collisionInfo.collider == player
 
 func isPlayerIsInSight() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [self], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.ACTOR)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.PLAYER)
 	return collisionInfo.collider == player and isPlayerWithinSightDistance()
 
 func isPlayerWithinSightDistance() -> bool:
@@ -123,8 +124,10 @@ func moveTo(globalPosition : Vector2) -> void:
 func moveTowardPlayer() -> void:
 	moveTo(player.global_position)
 
-func attackPlayer() -> void:
-	pass
+func attackPlayer(attackName : String) -> void:
+	stand()
+	attackDirection = (player.global_position - global_position).normalized()
+	skillSet.activate(attackName)
 
 func stand() -> void:
 	velocity = Vector2.ZERO

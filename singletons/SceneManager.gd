@@ -1,31 +1,49 @@
 extends Node
 
-const pathToLevelDirectory : String = "res://source/levels/"
-const pathToMenuDirectory : String = "res://source/menus/"
-const sceneExtension : String = "tscn"
+var _menuScenes : Dictionary = {}
+var _levelScenes : Dictionary = {}
 
-var scenes : Dictionary = { "mainMenu" : SceneData.new(),
-							"pauseMenu" : SceneData.new(),
-							"optionsMenu" : SceneData.new(),
-							"scoreMenu" : SceneData.new(),
-							"levelMenu" : SceneData.new()
-							}
+var _currentMenuScene : String = ""
+var _currentLevelScene : String = ""
 
-var currentScene : String = "null"
-var previousScene : String = "null"
-var currentLevelScene : String = "null"
-
-onready var menuCamera : Camera2D = $Camera2D
-var _currentCamera : Camera2D = menuCamera
+onready var _menuCamera : Camera2D = $Camera2D
+var _currentCamera : Camera2D = _menuCamera
 var _previousCamera : Camera2D = null
 
 func _ready() -> void:
-	setMenuScenes()
-	setLevelScenes()
-	scenes["pauseMenu"].create(get_tree().get_root())
-	scenes["optionsMenu"].create(get_tree().get_root())
-	scenes["scoreMenu"].create(get_tree().get_root())
-	currentScene = "mainMenu"
+	_setMenuScenes()
+	_setLevelScenes()
+
+func _setMenuScenes() -> void:
+	_menuScenes["MainMenu"] = SceneData.new(preload("res://source/menus/MainMenu.tscn"))
+	_menuScenes["PauseMenu"] = SceneData.new(preload("res://source/menus/PauseMenu.tscn"))
+	_menuScenes["OptionsMenu"] = SceneData.new(preload("res://source/menus/OptionsMenu.tscn"))
+	_menuScenes["ScoreMenu"] = SceneData.new(preload("res://source/menus/ScoreMenu.tscn"))
+	_menuScenes["LevelMenu"] = SceneData.new(preload("res://source/menus/LevelMenu.tscn"))
+	_menuScenes["MainMenu"].setInstance(get_tree().get_root().get_node("MainMenu"))
+	_createMenu("PauseMenu")
+	_createMenu("OptionsMenu")
+	_createMenu("ScoreMenu")
+	_createMenu("LevelMenu")
+	_currentMenuScene = "MainMenu"
+
+func _setLevelScenes() -> void:
+	_levelScenes["Level0"] = SceneData.new(preload("res://source/levels/Level0.tscn"))
+	_levelScenes["Level1"] = SceneData.new(preload("res://source/levels/Level1.tscn"))
+	_levelScenes["Level2"] = SceneData.new(preload("res://source/levels/Level2.tscn"))
+
+func getCurrentLevelName() -> String:
+	return _currentLevelScene
+
+func getLevelNames() -> Array:
+	return _levelScenes.keys()
+
+func getNextLevelName() -> String:
+	var levelSceneNames : Array = _levelScenes.keys()
+	var currentLevelIndex : int = levelSceneNames.find(_currentLevelScene)
+	if currentLevelIndex == levelSceneNames.size() - 1:
+		return ""
+	return levelSceneNames[currentLevelIndex + 1]
 
 func getCurrentCamera() -> Camera2D:
 	return _currentCamera
@@ -43,85 +61,46 @@ func makeCurrentCameraPrevious() -> void:
 	_currentCamera = _previousCamera
 	_previousCamera = camera
 
-func getFilesInDirectory(path : String, extension : String) -> Array:
-	var directory : Directory = Directory.new()
-	directory.open(path)
-	directory.list_dir_begin()
-	var files : Array = Array()
-	var file : String = directory.get_next()
-	while file != "":
-		if file.get_extension() == extension:
-			file = file.get_basename()
-			if not files.has(file):
-				files.push_back(file)
-		file = directory.get_next()
-	directory.list_dir_end()
-	return files
-
-func setMenuScenes() -> void:
-	var startScene : Node = get_tree().get_root().get_node("MainMenu")
-	scenes["mainMenu"].setup(preload("res://source/menus/MainMenu.tscn"), SceneData.CESSATION.DELETE, startScene)
-	scenes["pauseMenu"].setup(preload("res://source/menus/PauseMenu.tscn"), SceneData.CESSATION.HIDE)
-	scenes["optionsMenu"].setup(preload("res://source/menus/OptionsMenu.tscn"), SceneData.CESSATION.HIDE)
-	scenes["scoreMenu"].setup(preload("res://source/menus/ScoreMenu.tscn"), SceneData.CESSATION.HIDE)
-	scenes["levelMenu"].setup(preload("res://source/menus/LevelMenu.tscn"), SceneData.CESSATION.DELETE)
-
-func setLevelScenes() -> void:
-	for file in getFilesInDirectory(pathToLevelDirectory, sceneExtension):
-		var levelScene : PackedScene = load(pathToLevelDirectory + file + "." + sceneExtension)
-		var data : SceneData = SceneData.new()
-		data.setup(levelScene, SceneData.CESSATION.REMOVE)
-		scenes[file] = data
-
-func getLevelSceneNames() -> Array:
-	var levelSceneNames : Array = Array()
-	for sceneName in scenes.keys():
-		if sceneName.begins_with("Level"):
-			levelSceneNames.push_back(sceneName)
-	return levelSceneNames
-
-func changeSceneTo(newScene : String, data=null) -> void:
-	scenes[newScene].run(get_tree().get_root())
-	scenes[currentScene].cease(get_tree().get_root())
-	previousScene = currentScene
-	currentScene = newScene
-	updateCurrentLevelReference(newScene)
-	if data != null:
-		scenes[currentScene].handleData(data)
-
-func changeSceneToPrevious() -> void:
-	changeSceneTo(previousScene)
-
-func changeSceneToCurrentLevel() -> void:
-	changeSceneTo(currentLevelScene)
-
-func updateCurrentLevelReference(newScene : String) -> void:
-	if previousScene == "pauseMenu" and newScene == "mainMenu":
-		scenes[currentLevelScene].freeInstance()
-	if not newScene.begins_with("Level"):
-		return
-	if newScene == currentLevelScene:
-		return
-	if currentLevelScene != "null":
-		scenes[currentLevelScene].freeInstance()
-	currentLevelScene = newScene
-
-func getNextLevelName() -> String:
-	var currentLevelNumber : int = int(currentLevelScene.right(4))
-	return "Level" + str(currentLevelNumber + 1)
-
-func getCurrentLevelName() -> String:
-	return currentLevelScene
-
-func getLastLevelName() -> String:
-	var lastLevel : int = -1
-	for levelName in getLevelSceneNames():
-		lastLevel = max(int(levelName.right(4)), lastLevel)
-	return "Level" + str(lastLevel)
-
-func restartCurrentLevel() -> void:
-	scenes[currentLevelScene].freeInstance()
-	changeSceneTo(currentLevelScene)
-
 func exit() -> void:
 	get_tree().quit()
+
+func changeSceneTo(sceneName : String, context : Dictionary) -> void:
+	context["senderName"] = _currentMenuScene
+	if _currentMenuScene != "":
+		_removeMenu(_currentMenuScene)
+	_addMenuToTree(sceneName)
+	_menuScenes[sceneName].handleContext(context)
+	_currentMenuScene = sceneName
+
+func launchLevel(levelName : String) -> void:
+	_removeMenu(_currentMenuScene)
+	_currentMenuScene = ""
+	_currentLevelScene = levelName
+	_levelScenes[levelName].createInstance()
+	get_tree().get_root().call_deferred("add_child", _levelScenes[levelName].getInstance())
+
+func deleteCurrentLevel() -> void:
+	_levelScenes[_currentLevelScene].freeInstance()
+	_currentLevelScene = ""
+
+func backToCurrentLevel() -> void:
+	unpauseLevel()
+	_removeMenu(_currentMenuScene)
+	_currentMenuScene = ""
+
+func pauseLevel() -> void:
+	var root : Viewport = get_tree().get_root()
+	_levelScenes[_currentLevelScene].removeInstanceFromTree(root)
+
+func unpauseLevel() -> void:
+	get_tree().get_root().add_child(_levelScenes[_currentLevelScene].getInstance())
+
+func _createMenu(menuName : String) -> void:
+   _menuScenes[menuName].createInstance()
+
+func _addMenuToTree(menuName : String) -> void:
+	get_tree().get_root().call_deferred("add_child", _menuScenes[menuName].getInstance())
+
+func _removeMenu(menuName : String) -> void:
+	var root : Viewport = get_tree().get_root()
+	_menuScenes[menuName].removeInstanceFromTree(root)

@@ -8,6 +8,7 @@ const FLOOR_NORMAL : Vector2 = Vector2(0, -1)
 const SNAP : Vector2 = Vector2(0, 10)
 const GRAVITY : float = 750.0
 
+var muzzle : float = 50.0
 var velocity : Vector2 = Vector2.ZERO
 var runAcceleration : float
 var attackDirection : Vector2

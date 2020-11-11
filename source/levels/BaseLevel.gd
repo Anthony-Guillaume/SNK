@@ -2,7 +2,7 @@ extends Node2D
 
 class_name BaseLevel
 
-onready var _player = $Actors.get_child(0)
+var _player : BasePlayer = null
 onready var _ais : Node2D = $Actors/Ais
 onready var sceneTransitor : SceneTransitor = $SceneTransitor
 onready var skillStore : Node = $SkillStore
@@ -26,14 +26,17 @@ func _input(event : InputEvent) -> void:
 			showInGameMenu()
 
 func showInGameMenu() -> void:
-	SceneManager.changeSceneTo("pauseMenu")
+	var context : Dictionary = {}
+	SceneManager.pauseLevel()
+	SceneManager.changeSceneTo("PauseMenu", context)
 
 func goToScoreMenu() -> void:
-	var data : Dictionary = {	"win" : win,
-								"deadAisCount" : deadAisCount,
-								"secretFound" : secretFound,
-								"duration" : int(duration) }
-	SceneManager.changeSceneTo("scoreMenu", data)
+	var context : Dictionary = {	"win" : win,
+									"deadAisCount" : deadAisCount,
+									"secretFound" : secretFound,
+									"duration" : int(duration) }
+	SceneManager.pauseLevel()
+	SceneManager.changeSceneTo("ScoreMenu", context)
 
 func setupCamera() -> void:
 	SceneManager.makeCurrentCamera(_player.camera)
@@ -48,6 +51,9 @@ func activateAis() -> void:
 		ai.activateLogicTree()
 
 func setupPlayer() -> void:
+	for node in $Actors.get_children():
+		if node.get_class() == "BasePlayer":
+			_player = node
 	_player.connect("death", self, "_on_player_death")
 	_player.skillSet.skillStore = skillStore
 
