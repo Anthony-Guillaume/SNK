@@ -34,12 +34,6 @@ func task_cast_skill_against_player(task) -> void:
 # ACTIONS
 ################################################################################
 
-func patrol() -> void:
-	if abs(velocity.x) < 1.0:
-		velocity.x = stats.runSpeed.getValue()
-	if is_on_wall() or canFall():
-		changeDirection()
-
 func castSpell(attackName : String) -> void:
 	stand()
 	if casting:
@@ -47,5 +41,5 @@ func castSpell(attackName : String) -> void:
 	casting = true
 	yield(get_tree().create_timer(1.0), "timeout")
 	attackDirection = (player.global_position - global_position).normalized()
-	skillSet.activate("ExplosiveBall")
+	skillSet.activate(attackName)
 	casting = false

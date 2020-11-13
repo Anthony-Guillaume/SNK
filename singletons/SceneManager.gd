@@ -32,6 +32,14 @@ func _setLevelScenes() -> void:
 	_levelScenes["Level1"] = SceneData.new(preload("res://source/levels/Level1.tscn"))
 	_levelScenes["Level2"] = SceneData.new(preload("res://source/levels/Level2.tscn"))
 
+func getLoadAndSaveNode() -> Array:
+	var nodes : Array = []
+	for menu in _menuScenes.values():
+		var menuInstance : Menu = menu.getInstance()
+		if menuInstance.has_method("saveData"):
+			nodes.push_back(menuInstance)
+	return nodes
+
 func getCurrentLevelName() -> String:
 	return _currentLevelScene
 
@@ -62,6 +70,7 @@ func makeCurrentCameraPrevious() -> void:
 	_previousCamera = camera
 
 func exit() -> void:
+	FileManager.saveSettingData()
 	get_tree().quit()
 
 func changeSceneTo(sceneName : String, context : Dictionary) -> void:

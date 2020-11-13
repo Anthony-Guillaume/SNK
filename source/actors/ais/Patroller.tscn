@@ -157,7 +157,7 @@ tree = {
 "fn": "task_patrol",
 "offset": Vector2( 400, 110 ),
 "params": [  ],
-"size": Vector2( 420.001, 85.0002 ),
+"size": Vector2( 420.001, 85.0001 ),
 "values": [  ]
 },
 "name": "task2",
@@ -255,7 +255,7 @@ tree = {
 "fn": "task_patrol",
 "offset": Vector2( 400, 110 ),
 "params": [  ],
-"size": Vector2( 420.001, 85.0002 ),
+"size": Vector2( 420.001, 85.0001 ),
 "values": [  ]
 },
 "name": "task2",
@@ -274,7 +274,7 @@ tree = {
 "fn": "task_patrol",
 "offset": Vector2( 400, 110 ),
 "params": [  ],
-"size": Vector2( 420.001, 85.0002 ),
+"size": Vector2( 420.001, 85.0001 ),
 "values": [  ]
 },
 "name": "task2",
@@ -536,7 +536,7 @@ tree = {
 "fn": "task_patrol",
 "offset": Vector2( 400, 110 ),
 "params": [  ],
-"size": Vector2( 420.001, 85.0002 ),
+"size": Vector2( 420.001, 85.0001 ),
 "values": [  ]
 },
 "name": "task2",
@@ -558,3 +558,4 @@ tree = {
 "type": 0
 }
 }
+_tree_id = "22368670813966041155"

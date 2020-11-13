@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/menus/subMenus/elements/HotkeyButton.gd" type="Script" id=1]
+
+[node name="HotkeyButton" type="Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 59.2379
+margin_top = 7.34222
+margin_right = -822.762
+margin_bottom = -529.658
+text = "HOTKEY"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = -0.386
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.0673218
+margin_top = 24.5407
+margin_right = -156.745
+margin_bottom = -24.4593
+text = "ACTION"
+__meta__ = {
+"_edit_use_anchors_": false
+}

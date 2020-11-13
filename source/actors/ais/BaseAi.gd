@@ -133,4 +133,7 @@ func stand() -> void:
 	velocity = Vector2.ZERO
 
 func patrol() -> void:
-	pass
+	if abs(velocity.x) < 1.0:
+		velocity.x = stats.runSpeed.getValue()
+	if is_on_wall() or canFall():
+		changeDirection()

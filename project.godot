@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/actors/ais/Cannonier.gd"
 }, {
+"base": "Resource",
+"class": "ConfigData",
+"language": "GDScript",
+"path": "res://singletons/ConfigData.gd"
+}, {
 "base": "Timer",
 "class": "Cooldown",
 "language": "GDScript",
@@ -108,6 +113,16 @@ _global_script_classes=[ {
 "class": "HookHandlerFlex",
 "language": "GDScript",
 "path": "res://source/actors/physicsHandlers/HookHandlerFlex.gd"
+}, {
+"base": "Button",
+"class": "HotkeyButton",
+"language": "GDScript",
+"path": "res://source/menus/subMenus/elements/HotkeyButton.gd"
+}, {
+"base": "SubMenu",
+"class": "HotkeyMenu",
+"language": "GDScript",
+"path": "res://source/menus/subMenus/HotkeyMenu.gd"
 }, {
 "base": "Menu",
 "class": "LevelMenu",
@@ -209,6 +224,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/actors/ais/SolidHitbox.gd"
 }, {
+"base": "SubMenu",
+"class": "SoundMenu",
+"language": "GDScript",
+"path": "res://source/menus/subMenus/SoundMenu.gd"
+}, {
 "base": "HBoxContainer",
 "class": "StatusEffectBar",
 "language": "GDScript",
@@ -218,6 +238,11 @@ _global_script_classes=[ {
 "class": "StatusEffectSlot",
 "language": "GDScript",
 "path": "res://source/hud/elements/StatusEffectSlot.gd"
+}, {
+"base": "Control",
+"class": "SubMenu",
+"language": "GDScript",
+"path": "res://source/menus/subMenus/SubMenu.gd"
 }, {
 "base": "Area2D",
 "class": "SuicideExplosion",
@@ -233,6 +258,11 @@ _global_script_classes=[ {
 "class": "ValueBar",
 "language": "GDScript",
 "path": "res://source/hud/bars/ValueBar.gd"
+}, {
+"base": "SubMenu",
+"class": "VideoMenu",
+"language": "GDScript",
+"path": "res://source/menus/subMenus/VideoMenu.gd"
 } ]
 _global_script_class_icons={
 "AbilitieAnimation": "",
@@ -244,6 +274,7 @@ _global_script_class_icons={
 "BaseLevel": "",
 "BasePlayer": "",
 "Cannonier": "",
+"ConfigData": "",
 "Cooldown": "",
 "Cut": "",
 "DebugDrawNode": "",
@@ -255,6 +286,8 @@ _global_script_class_icons={
 "HUD": "",
 "Hook": "",
 "HookHandlerFlex": "",
+"HotkeyButton": "",
+"HotkeyMenu": "",
 "LevelMenu": "",
 "Links": "",
 "MainMenu": "",
@@ -275,11 +308,14 @@ _global_script_class_icons={
 "SkillSet": "",
 "SkillSlot": "",
 "SolidHibox": "",
+"SoundMenu": "",
 "StatusEffectBar": "",
 "StatusEffectSlot": "",
+"SubMenu": "",
 "SuicideExplosion": "",
 "Tracker": "",
-"ValueBar": ""
+"ValueBar": "",
+"VideoMenu": ""
 }
 
 [application]
@@ -294,6 +330,8 @@ ActorStatusHandler="*res://singletons/ActorStatusHandler.gd"
 WorldInfo="*res://singletons/WorldInfo.gd"
 SceneManager="*res://singletons/SceneManager.tscn"
 BTDebugServer="*res://addons/btree/script/bt_debug_server.gd"
+FileManager="*res://singletons/FileManager.gd"
+AudioManager="*res://singletons/AudioManager.gd"
 
 [debug]
 

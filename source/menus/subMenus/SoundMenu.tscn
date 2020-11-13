@@ -1,0 +1,89 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://source/menus/subMenus/SoundMenu.gd" type="Script" id=1]
+
+[node name="SoundMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolumeSlider" type="HSlider" parent="."]
+margin_left = 163.424
+margin_top = 127.711
+margin_right = 432.424
+margin_bottom = 143.711
+min_value = -60.0
+max_value = 0.0
+value = -20.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MusicVolumeSlider"]
+margin_left = -132.267
+margin_top = -0.93
+margin_right = -42.2666
+margin_bottom = 13.07
+text = "Music volume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GlobalVolumeSlider" type="HSlider" parent="."]
+margin_left = 164.684
+margin_top = 93.6932
+margin_right = 433.684
+margin_bottom = 109.693
+min_value = -60.0
+max_value = 0.0
+value = -20.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GlobalVolumeSlider"]
+margin_left = -134.974
+margin_top = -2.3022
+margin_right = -41.9737
+margin_bottom = 11.6978
+text = "Global volume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SfxVolumeSlider" type="HSlider" parent="."]
+margin_left = 162.825
+margin_top = 161.839
+margin_right = 431.825
+margin_bottom = 177.839
+min_value = -60.0
+max_value = 0.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="SfxVolumeSlider"]
+margin_left = -152.348
+margin_top = 1.06799
+margin_right = -21.348
+margin_bottom = 15.068
+text = "Sound effect volume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
