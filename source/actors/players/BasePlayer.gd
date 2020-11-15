@@ -203,7 +203,7 @@ func handleJumpInput() -> void:
 		changeStateTo(STATES.JUMPING)
 
 func handleLaunchGrapplingHookInput() -> void:
-	if Input.is_action_just_pressed("use_grappel"):
+	if Input.is_action_just_pressed("launch_hook"):
 		_addHook()
 
 func handleRemoveGrapplingHookInput() -> void:

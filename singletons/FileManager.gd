@@ -1,9 +1,6 @@
 extends Node
 
-signal save_finished()
-signal load_finished()
-
-const _dataFilePath : String = "user://data.dat"
+# const _dataFilePath : String = "user://data.dat"
 const _configFilePath : String = "user://settings.cfg"
 
 func _ready() -> void:
@@ -14,32 +11,32 @@ func _on_exiting_tree() -> void:
     if file.file_exists(_configFilePath) and file.is_open():
         file.close()
 
-func saveData() -> void:
-    var data : Dictionary = {}
-    var nodesToSave : Array = SceneManager.getLoadAndSaveNode()
-    for node in nodesToSave:
-        var dictionaryToSave : Dictionary = node.saveData()
-        for key in dictionaryToSave:
-            data[key] = dictionaryToSave[key]
-    var file : File = File.new()
-    file.open(_configFilePath, File.WRITE)
-    file.store_line(to_json(data))
-    file.close()
-    emit_signal("save_finished")
+# func saveData() -> void:
+#     var data : Dictionary = {}
+#     var nodesToSave : Array = SceneManager.getLoadAndSaveNode()
+#     for node in nodesToSave:
+#         var dictionaryToSave : Dictionary = node.saveData()
+#         for key in dictionaryToSave:
+#             data[key] = dictionaryToSave[key]
+#     var file : File = File.new()
+#     file.open(_configFilePath, File.WRITE)
+#     file.store_line(to_json(data))
+#     file.close()
+#     emit_signal("save_finished")
 
-func getData() -> Dictionary:
-    var data : Dictionary = {}
-    var file : File = File.new()
-    if file.file_exists(_configFilePath):
-        file.open(_configFilePath, File.READ)
-        while not file.eof_reached():
-            var line : String  = file.get_line()
-            if line == null or line.empty():
-                break
-            data = parse_json(line)
-            file.close()
-    emit_signal("load_finished")
-    return data
+# func getData() -> Dictionary:
+#     var data : Dictionary = {}
+#     var file : File = File.new()
+#     if file.file_exists(_configFilePath):
+#         file.open(_configFilePath, File.READ)
+#         while not file.eof_reached():
+#             var line : String  = file.get_line()
+#             if line == null or line.empty():
+#                 break
+#             data = parse_json(line)
+#             file.close()
+#     emit_signal("load_finished")
+#     return data
 
 func saveSettingData() -> void:
     var configDatas : Array = getConfigDatasFromNodeToSave()
