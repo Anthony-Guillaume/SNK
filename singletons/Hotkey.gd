@@ -2,6 +2,8 @@ extends Resource
 
 class_name Hotkey
 
+signal event_changed()
+
 var _description : String = ""
 var _action : String = ""
 var _hotkeys : Array = []
@@ -16,6 +18,7 @@ func get_class() -> String:
 
 func updateHotkey() -> void:
     _hotkeys = InputMap.get_action_list(_action)
+    emit_signal("event_changed")
 
 func getDescription() -> String:
     return _description

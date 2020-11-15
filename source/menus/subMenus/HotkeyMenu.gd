@@ -46,21 +46,14 @@ func _assignHotkey(event : InputEvent) -> void:
 	get_tree().set_input_as_handled()
 
 func _setHotKeyToAction(event : InputEvent) -> void:
-	resetButtonWhichHaveEvent(event)
+	HotkeyManager.resetHotkeyWhichHaveEvent(event)
 	var action : String = _selectedHotKeyButton.getAction()
-	InputMap.action_erase_events(action)
-	InputMap.action_add_event(action, event)
-	_selectedHotKeyButton.setHotkey(event)
-	updateButtons()
+	HotkeyManager.addHotkey(action, event)
+	_updateButtons()
 
-func resetButtonWhichHaveEvent(event : InputEvent) -> void:
+func _updateButtons() -> void:
 	for button in _buttons.get_children():
-		if HotkeyManager.areSameHotkey(button.getEvent(), event):
-			button.resetHotkey()
-
-func updateButtons() -> void:
-	for button in _buttons.get_children():
-		button.updateHotkey()
+		button.updateText()
 
 func saveData() -> ConfigData:
 	var configData : ConfigData = ConfigData.new(configSection)
@@ -75,14 +68,5 @@ func loadData(data : Dictionary) -> void:
 	for action in data.keys():
 		InputMap.action_erase_events(action)
 		for inputEvent in data[action]:
-			var hotkeyButton : HotkeyButton = _findHotkeyButtonForAction(action)
-			if hotkeyButton != null:
-				hotkeyButton.setHotkey(inputEvent)
-				InputMap.action_add_event(action, inputEvent)
-	updateButtons()
-
-func _findHotkeyButtonForAction(action : String) -> HotkeyButton:
-	for button in _buttons.get_children():
-		if button.getAction() == action:
-			return button
-	return null
+			InputMap.action_add_event(action, inputEvent)
+	_updateButtons()

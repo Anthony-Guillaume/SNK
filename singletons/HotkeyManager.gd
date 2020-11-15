@@ -20,29 +20,39 @@ const _mouseHotkeyAuthorized : Array = [    BUTTON_LEFT,
                                             BUTTON_XBUTTON1, 
                                             BUTTON_XBUTTON2]
 
-var hotkeys : Array = [     Hotkey.new("move_up", "Déplacement en haut"),
-                            Hotkey.new("move_right", "Déplacement à droite"),
-                            Hotkey.new("move_down", "Déplacement en bas"),
-                            Hotkey.new("move_left", "Déplacement à gauche"),
-                            Hotkey.new("jump", "Sauter"),
-                            Hotkey.new("launch_hook", "Lancer le grappin"),
-                            Hotkey.new("release_hook", "Relâcher le grappin"),
-                            Hotkey.new("ascend_hook", "Monter à la corde du grappin"),
-                            Hotkey.new("descend_hook", "Descendre à la corde du grappin"),
-                            Hotkey.new("melee_attack", "Attaquer au corps à corps"),
-                            Hotkey.new("range_attack", "Attaquer à distance") ]
+const actionDescriptions : Dictionary = {   "move_up"       : "Déplacement en haut",
+                                            "move_right"    : "Déplacement à droite",
+                                            "move_down"     : "Déplacement en bas",
+                                            "move_left"     : "Déplacement à gauche",
+                                            "jump"          : "Sauter",
+                                            "launch_hook"   : "Lancer le grappin",
+                                            "release_hook"  : "Relâcher le grappin",
+                                            "ascend_hook"   : "Monter à la corde du grappin",
+                                            "descend_hook"  : "Descendre à la corde du grappin",
+                                            "melee_attack"  : "Attaquer au corps à corps",
+                                            "range_attack"  : "Attaquer à distance" }
 
-func setHotkey(action : String, events : Array) -> void:
+func addHotkey(action : String, event : InputEvent) -> void:
+    var linkedAction : String = findLinkedAction(action)
+    if linkedAction != "":
+        setEventToAction(linkedAction, event)
+    setEventToAction(action, event)
+
+func setEventToAction(action : String, event : InputEvent) -> void:
     InputMap.action_erase_events(action)
-    for event in events:
-	    InputMap.action_add_event(action, event)
+    InputMap.action_add_event(action, event)
 
-func getHotkey(action : String) -> Hotkey:
-    for hotkey in hotkeys:
-        if hotkey.getAction() == action:
-            return hotkey
-    assert(false)
-    return null
+func findLinkedAction(action : String) -> String:
+    if action == "launch_hook":
+        return "release_hook"
+    if action == "release_hook":
+        return "launch_hook"
+    return ""
+
+func resetHotkeyWhichHaveEvent(event : InputEvent) -> void:
+    for action in InputMap.get_actions():
+        if InputMap.action_has_event(action, event):
+            InputMap.action_erase_events(action)
 
 func getMouseButtonAsText(buttonIndex : int) -> String:
     var text : String = ""
@@ -70,11 +80,3 @@ func isMouseButtonAuthorized(event : InputEventMouseButton) -> bool:
 
 func isKeyAuthorized(scancode : int) -> bool:
     return 32 <= scancode and scancode <= 90
-    
-func areSameHotkey(event1 : InputEvent, event2 : InputEvent) -> bool:
-    if event1 is InputEventMouseButton and event2 is InputEventMouseButton:
-        return event1.get_button_index() == event2.get_button_index()
-    elif event1 is InputEventKey and event2 is InputEventKey:
-        return event1.get_scancode() == event2.get_scancode()
-    else:
-        return false

@@ -3,38 +3,28 @@ extends Button
 class_name HotkeyButton
 
 export var _action : String = ""
-var _hotkey : InputEvent = null
 
 func get_class() -> String:
 	return "HotkeyButton"
 
 func _ready() -> void:
 	assert(_action != "")
-	assert(InputMap.get_action_list(_action).size() == 1)
-	var event = InputMap.get_action_list(_action).front()
-	setHotkey(event)
-	_setText()
+	updateText()
 
 func getAction() -> String:
 	return _action
 
-func getEvent() -> InputEvent:
-	return _hotkey
+func updateText() -> void:
+	var event : InputEvent = null
+	var events : Array = InputMap.get_action_list(_action)
+	if not events.empty():
+		event = events.front()
+	_setText(event)
 
-func resetHotkey() -> void:
-	_hotkey = null
-
-func updateHotkey() -> void:
-	setHotkey(_hotkey)
-	_setText()
-
-func setHotkey(hotkey : InputEvent) -> void:
-	_hotkey = hotkey
-
-func _setText() -> void:
+func _setText(event : InputEvent) -> void:
 	var text : String = ""
-	if _hotkey is InputEventMouseButton:
-		text = HotkeyManager.getMouseButtonAsText(_hotkey.get_button_index())
-	elif _hotkey is InputEventKey:
-		text = _hotkey.as_text()
+	if event is InputEventMouseButton:
+		text = HotkeyManager.getMouseButtonAsText(event.get_button_index())
+	elif event is InputEventKey:
+		text = event.as_text()
 	set_text(text)
