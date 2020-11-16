@@ -16,7 +16,8 @@ func get_class() -> String:
 
 func _ready() -> void:
 	for button in _buttons.get_children():
-		button.connect("pressed", self, "_on_Button_pressed", [button])
+		button.connect("pressed", self, "_on_HotkeyButton_pressed", [button])
+	$ResetButton.connect("pressed", self, "_on_ResetButton_pressed")
 
 func _input(event : InputEvent) -> void:
 	if _waitingForInput:
@@ -29,7 +30,11 @@ func _input(event : InputEvent) -> void:
 		elif event is InputEventMouse and event.is_pressed() and HotkeyManager.isMouseButtonAuthorized(event):
 			_assignHotkey(event)
 
-func _on_Button_pressed(button : HotkeyButton) -> void:
+func _on_ResetButton_pressed() -> void:
+	InputMap.load_from_globals()
+	_updateButtons()
+
+func _on_HotkeyButton_pressed(button : HotkeyButton) -> void:
 	_popup.show()
 	button.release_focus()
 	_selectedHotKeyButton = button

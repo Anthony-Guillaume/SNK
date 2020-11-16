@@ -87,3 +87,13 @@ text = "Sound effect volume"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ResetButton" type="Button" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+margin_right = 103.0
+text = "Reset settings"
+__meta__ = {
+"_edit_use_anchors_": false
+}

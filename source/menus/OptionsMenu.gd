@@ -8,6 +8,9 @@ func get_class() -> String:
 	return "OptionsMenu"
 
 func _ready() -> void:
+	$SubMenus.set_tab_title(0, "Vidéo")
+	$SubMenus.set_tab_title(1, "Son")
+	$SubMenus.set_tab_title(2, "Commande")
 	$BackToMainMenuButton.connect("pressed", self, "_on_BackToMainMenuButton_pressed")
 	loadData()
 

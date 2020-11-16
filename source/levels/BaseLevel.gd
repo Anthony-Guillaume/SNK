@@ -7,7 +7,7 @@ onready var _ais : Node2D = $Actors/Ais
 onready var sceneTransitor : SceneTransitor = $SceneTransitor
 onready var skillStore : Node = $SkillStore
 
-var duration : float = 0
+var duration : float = 0.0
 var secretFound : int = 0
 var deadAisCount : int = 0
 var win : bool = false
