@@ -130,7 +130,7 @@ func attackPlayer(attackName : String) -> void:
 	skillSet.activate(attackName)
 
 func stand() -> void:
-	velocity = Vector2.ZERO
+	velocity.x = 0.0
 
 func patrol() -> void:
 	if abs(velocity.x) < 1.0:

@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/actors/stats/AttributeModifier.gd"
 }, {
+"base": "BaseAi",
+"class": "AxeThrower",
+"language": "GDScript",
+"path": "res://source/actors/ais/standardAis/AxeThrower.gd"
+}, {
 "base": "Actor",
 "class": "BaseAi",
 "language": "GDScript",
@@ -52,7 +57,7 @@ _global_script_classes=[ {
 "base": "BaseAi",
 "class": "Cannonier",
 "language": "GDScript",
-"path": "res://source/actors/ais/Cannonier.gd"
+"path": "res://source/actors/ais/standardAis/Cannonier.gd"
 }, {
 "base": "Resource",
 "class": "ConfigData",
@@ -77,7 +82,7 @@ _global_script_classes=[ {
 "base": "Actor",
 "class": "DumbAi",
 "language": "GDScript",
-"path": "res://source/actors/ais/DumbAi.gd"
+"path": "res://source/actors/ais/standardAis/DumbAi.gd"
 }, {
 "base": "RigidBody2D",
 "class": "ExplosiveBall",
@@ -92,7 +97,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Giant",
 "language": "GDScript",
-"path": "res://source/actors/ais/Giant.gd"
+"path": "res://source/actors/ais/giants/Giant.gd"
 }, {
 "base": "Node2D",
 "class": "GrapplingHook",
@@ -157,7 +162,7 @@ _global_script_classes=[ {
 "base": "BaseAi",
 "class": "Patroller",
 "language": "GDScript",
-"path": "res://source/actors/ais/Patroller.gd"
+"path": "res://source/actors/ais/standardAis/Patroller.gd"
 }, {
 "base": "Menu",
 "class": "PauseMenu",
@@ -227,7 +232,7 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "SolidHibox",
 "language": "GDScript",
-"path": "res://source/actors/ais/SolidHitbox.gd"
+"path": "res://source/actors/ais/giants/SolidHitbox.gd"
 }, {
 "base": "SubMenu",
 "class": "SoundMenu",
@@ -254,10 +259,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/skills/scenes/SuicideExplosion.gd"
 }, {
+"base": "Area2D",
+"class": "ThrowingAxe",
+"language": "GDScript",
+"path": "res://source/skills/scenes/ThrowingAxe.gd"
+}, {
 "base": "BaseAi",
 "class": "Tracker",
 "language": "GDScript",
-"path": "res://source/actors/ais/Tracker.gd"
+"path": "res://source/actors/ais/standardAis/Tracker.gd"
 }, {
 "base": "TextureProgress",
 "class": "ValueBar",
@@ -275,6 +285,7 @@ _global_script_class_icons={
 "ActorStats": "",
 "Attribute": "",
 "AttributeModifier": "",
+"AxeThrower": "",
 "BaseAi": "",
 "BaseLevel": "",
 "BasePlayer": "",
@@ -319,6 +330,7 @@ _global_script_class_icons={
 "StatusEffectSlot": "",
 "SubMenu": "",
 "SuicideExplosion": "",
+"ThrowingAxe": "",
 "Tracker": "",
 "ValueBar": "",
 "VideoMenu": ""

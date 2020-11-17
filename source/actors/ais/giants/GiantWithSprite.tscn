@@ -1,8 +1,9 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/sprites/giant001.png" type="Texture" id=1]
-[ext_resource path="res://source/actors/ais/GiantWithSprite.gd" type="Script" id=2]
-[ext_resource path="res://source/actors/ais/SolidHitbox.gd" type="Script" id=3]
+[ext_resource path="res://source/actors/ais/giants/GiantWithSprite.gd" type="Script" id=2]
+[ext_resource path="res://source/actors/ais/giants/SolidHitbox.gd" type="Script" id=3]
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 45.1397

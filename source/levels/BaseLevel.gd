@@ -40,6 +40,15 @@ func goToScoreMenu() -> void:
 
 func setupCamera() -> void:
 	SceneManager.makeCurrentCamera(_player.camera)
+	setCameraLimitsToWorldLimits()
+
+func setCameraLimitsToWorldLimits():
+	var worldLimits : Rect2 = $World.get_used_rect()
+	var worldCellSize : Vector2 = $World.get_cell_size()
+	_player.camera.limit_left = int(worldLimits.position.x * worldCellSize.x)
+	_player.camera.limit_right = int(worldLimits.end.x * worldCellSize.x)
+	_player.camera.limit_top = int(worldLimits.position.y * worldCellSize.y)
+	_player.camera.limit_bottom = int(worldLimits.end.y * worldCellSize.y)
 
 func setupActors() -> void:
 	setupPlayer()
