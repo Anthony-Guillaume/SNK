@@ -179,6 +179,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/objects/traps/Pikes.gd"
 }, {
+"base": "Resource",
+"class": "Platform",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/Platform.gd"
+}, {
 "base": "Sprite",
 "class": "PlayerGraphics",
 "language": "GDScript",
@@ -264,6 +269,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/skills/scenes/ThrowingAxe.gd"
 }, {
+"base": "Node2D",
+"class": "TileNavigator",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/TileNavigator.gd"
+}, {
 "base": "BaseAi",
 "class": "Tracker",
 "language": "GDScript",
@@ -278,6 +288,16 @@ _global_script_classes=[ {
 "class": "VideoMenu",
 "language": "GDScript",
 "path": "res://source/menus/subMenus/VideoMenu.gd"
+}, {
+"base": "Resource",
+"class": "Waypoint",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/Waypoint.gd"
+}, {
+"base": "Resource",
+"class": "WaypointLink",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/WaypointLink.gd"
 } ]
 _global_script_class_icons={
 "AbilitieAnimation": "",
@@ -314,6 +334,7 @@ _global_script_class_icons={
 "PauseMenu": "",
 "PendulumSolver": "",
 "Pikes": "",
+"Platform": "",
 "PlayerGraphics": "",
 "Projectile": "",
 "SceneData": "",
@@ -331,9 +352,12 @@ _global_script_class_icons={
 "SubMenu": "",
 "SuicideExplosion": "",
 "ThrowingAxe": "",
+"TileNavigator": "",
 "Tracker": "",
 "ValueBar": "",
-"VideoMenu": ""
+"VideoMenu": "",
+"Waypoint": "",
+"WaypointLink": ""
 }
 
 [application]

@@ -6,6 +6,7 @@ var _player : BasePlayer = null
 onready var _ais : Node2D = $Actors/Ais
 onready var sceneTransitor : SceneTransitor = $SceneTransitor
 onready var skillStore : Node = $SkillStore
+var tileNavigator : TileNavigator = TileNavigator.new()
 
 var duration : float = 0.0
 var secretFound : int = 0
@@ -16,6 +17,27 @@ func _ready() -> void:
 	setupActors()
 	setupCamera()
 	activateAis()
+	testWaypoints()
+
+func testWaypoints() -> void:
+	tileNavigator.create($World)
+
+func _draw() -> void:
+	for waypoint in tileNavigator.waypoints:
+		var rect : Rect2 = Rect2(waypoint.tile * 64, Vector2(20,20))
+		var color : Color = Color.red if waypoint.type >= Waypoint.TYPE.PLATFORM else Color.green
+		match waypoint.type:
+			Waypoint.TYPE.NONE:
+				color = Color.black
+			Waypoint.TYPE.PLATFORM:
+				color = Color.red
+			Waypoint.TYPE.LEFT_EDGE:
+				color = Color.purple
+			Waypoint.TYPE.RIGHT_EDGE:
+				color = Color.orange
+			Waypoint.TYPE.SOLO:
+				color = Color.gray
+		draw_rect(rect, color)
 
 func _process(delta) -> void:
 	duration += delta
