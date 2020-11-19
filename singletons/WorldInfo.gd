@@ -17,3 +17,6 @@ enum LAYER_BIT {	WORLD = 0,
 					GRAPPABLE = 5,
 					LOOTABLE = 6,
 					PLAFORM_ONE_WAY = 7 }
+
+func getUntraversableOjectLayer() -> int:
+	return LAYER.WORLD + LAYER.CLIMBABLE + LAYER.PLAFORM_ONE_WAY

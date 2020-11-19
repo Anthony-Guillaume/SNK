@@ -83,7 +83,9 @@ format = 1
 [node name="Actors" type="Node2D" parent="."]
 
 [node name="BasePlayer" parent="Actors" instance=ExtResource( 6 )]
-position = Vector2( 283.664, 580.07 )
+position = Vector2( 205.82, 396.58 )
+baseHealth = 800.0
+maxHealth = 800.0
 
 [node name="Ais" type="Node2D" parent="Actors"]
 

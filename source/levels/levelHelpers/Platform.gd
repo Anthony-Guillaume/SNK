@@ -2,12 +2,11 @@ extends Resource
 
 class_name Platform
 
-var rightEdge : Vector2
-var leftEdge : Vector2
+var id : int = -1
+var waypoints : Array = []
 
 func get_class() -> String:
     return "Platform"
 
-func _init(leftEdge : Vector2, rightEdge : Vector2) -> void:
-    self.leftEdge = leftEdge
-    self.rightEdge = leftEdge
+func _init(waypoints : Array) -> void:
+    self.waypoints = waypoints

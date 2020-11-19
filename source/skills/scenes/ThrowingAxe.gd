@@ -35,7 +35,10 @@ func _physics_process(_delta : float) -> void:
 	distance += speed
 
 func _backToShooter() -> void:
-	_velocity = global_position.direction_to(_shooter.global_position) * speed
+	if _shooter == null:
+		queue_free()
+	else:
+		_velocity = global_position.direction_to(_shooter.global_position) * speed
 
 func _on_body_entered(target) -> void:
 	if comeBacking:

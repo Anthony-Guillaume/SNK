@@ -17,27 +17,28 @@ func _ready() -> void:
 	setupActors()
 	setupCamera()
 	activateAis()
-	testWaypoints()
+# 	testWaypoints()
 
-func testWaypoints() -> void:
-	tileNavigator.create($World)
+# func testWaypoints() -> void:
+# 	tileNavigator.create($World)
+	
 
-func _draw() -> void:
-	for waypoint in tileNavigator.waypoints:
-		var rect : Rect2 = Rect2(waypoint.tile * 64, Vector2(20,20))
-		var color : Color = Color.red if waypoint.type >= Waypoint.TYPE.PLATFORM else Color.green
-		match waypoint.type:
-			Waypoint.TYPE.NONE:
-				color = Color.black
-			Waypoint.TYPE.PLATFORM:
-				color = Color.red
-			Waypoint.TYPE.LEFT_EDGE:
-				color = Color.purple
-			Waypoint.TYPE.RIGHT_EDGE:
-				color = Color.orange
-			Waypoint.TYPE.SOLO:
-				color = Color.gray
-		draw_rect(rect, color)
+# func _draw() -> void:
+# 	for waypoint in tileNavigator.waypoints:
+# 		var rect : Rect2 = Rect2(waypoint.tileCoordinates * 64, Vector2(10,10))
+# 		var color : Color = Color.red if waypoint.type >= Waypoint.TYPE.PLATFORM else Color.green
+# 		match waypoint.type:
+# 			Waypoint.TYPE.NONE:
+# 				color = Color.black
+# 			Waypoint.TYPE.PLATFORM:
+# 				color = Color.red
+# 			Waypoint.TYPE.LEFT_EDGE:
+# 				color = Color.purple
+# 			Waypoint.TYPE.RIGHT_EDGE:
+# 				color = Color.orange
+# 			Waypoint.TYPE.SOLO:
+# 				color = Color.gray
+# 		draw_rect(rect, color)
 
 func _process(delta) -> void:
 	duration += delta
@@ -86,12 +87,12 @@ func setupPlayer() -> void:
 		if node.get_class() == "BasePlayer":
 			_player = node
 	_player.connect("death", self, "_on_player_death")
-	_player.skillSet.skillStore = skillStore
+	_player.setSkillSet(skillStore)
 
 func setupAi(ai) -> void:
 	ai.setup(_player)
+	ai.setSkillSet(skillStore)
 	ai.connect("death", self, "_on_ai_death", [ai])
-	ai.skillSet.skillStore = skillStore
 
 func addAi(ai) -> void:
 	yield(get_tree().create_timer(1), "timeout") # wait if caller is freeing

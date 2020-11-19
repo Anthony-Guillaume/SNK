@@ -28,8 +28,6 @@ export var maxSpeed : float = 500
 
 func _ready() -> void:
 	setStats()
-	setSkills()
-	add_child(skillSet)
 
 func setStats() -> void:
 	var health : Attribute = Attribute.new(baseHealth, 0, maxHealth)
@@ -37,6 +35,11 @@ func setStats() -> void:
 	stats = ActorStats.new(health, runSpeed)
 	stats.health.connect("valueChanged", self, "_on_health_changed")
 	runAcceleration = baseSpeed * 0.35
+
+func setSkillSet(skillStore : Node) -> void:
+	skillSet.skillStore = skillStore
+	setSkills()
+	add_child(skillSet)
 
 func setSkills() -> void:
 	pass

@@ -87,19 +87,29 @@ func canFall() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var from : Vector2 = global_position + Vector2(hitboxHalfWidth * 1.5, 0.0) * sign(velocity.x)
 	var to : Vector2 = from + Vector2(0.0, hitboxHalfHeight + 10.0)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.getUntraversableOjectLayer())
 	return collisionInfo.empty()
 
 func isPlayerOnSamePlatform() -> bool:
+	return isPlayerIsInSamePlatformRightSide() or isPlayerIsInSamePlatformLeftSide()
+
+func isPlayerIsInSamePlatformRightSide() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var from : Vector2 = global_position
-	var to : Vector2 = from + Vector2(sightDistance, 0.0) * sign(velocity.x)
-	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.PLAYER)
+	var to : Vector2 = from + Vector2.RIGHT * sightDistance
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.getUntraversableOjectLayer() + WorldInfo.LAYER.PLAYER)
+	return not collisionInfo.empty() and collisionInfo.collider == player
+
+func isPlayerIsInSamePlatformLeftSide() -> bool:
+	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
+	var from : Vector2 = global_position
+	var to : Vector2 = from + Vector2.LEFT * sightDistance
+	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.getUntraversableOjectLayer() + WorldInfo.LAYER.PLAYER)
 	return not collisionInfo.empty() and collisionInfo.collider == player
 
 func isPlayerIsInSight() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [], WorldInfo.LAYER.WORLD + WorldInfo.LAYER.CLIMBABLE + WorldInfo.LAYER.PLAYER)
+	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [], WorldInfo.getUntraversableOjectLayer() + WorldInfo.LAYER.PLAYER)
 	return collisionInfo.collider == player and isPlayerWithinSightDistance()
 
 func isPlayerWithinSightDistance() -> bool:
@@ -123,6 +133,8 @@ func moveTo(globalPosition : Vector2) -> void:
 
 func moveTowardPlayer() -> void:
 	moveTo(player.global_position)
+	if canFall():
+		stand()
 
 func attackPlayer(attackName : String) -> void:
 	stand()

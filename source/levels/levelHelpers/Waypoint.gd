@@ -8,10 +8,9 @@ enum TYPE { NONE,
             RIGHT_EDGE,
             SOLO }
 
-var tile : Vector2
+var tileCoordinates : Vector2
 var platformId : int = -1
 var type : int = TYPE.NONE
-var link
 
 func get_class() -> String:
     return "Waypoint"

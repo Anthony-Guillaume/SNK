@@ -134,6 +134,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/menus/subMenus/HotkeyMenu.gd"
 }, {
+"base": "Node2D",
+"class": "JumpTrajectoryCalculator",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/JumpTrajectoryCalculator.gd"
+}, {
 "base": "Menu",
 "class": "LevelMenu",
 "language": "GDScript",
@@ -183,6 +188,11 @@ _global_script_classes=[ {
 "class": "Platform",
 "language": "GDScript",
 "path": "res://source/levels/levelHelpers/Platform.gd"
+}, {
+"base": "Resource",
+"class": "PlatformLink",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/PlatformLink.gd"
 }, {
 "base": "Sprite",
 "class": "PlayerGraphics",
@@ -269,7 +279,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/skills/scenes/ThrowingAxe.gd"
 }, {
-"base": "Node2D",
+"base": "Resource",
 "class": "TileNavigator",
 "language": "GDScript",
 "path": "res://source/levels/levelHelpers/TileNavigator.gd"
@@ -293,11 +303,6 @@ _global_script_classes=[ {
 "class": "Waypoint",
 "language": "GDScript",
 "path": "res://source/levels/levelHelpers/Waypoint.gd"
-}, {
-"base": "Resource",
-"class": "WaypointLink",
-"language": "GDScript",
-"path": "res://source/levels/levelHelpers/WaypointLink.gd"
 } ]
 _global_script_class_icons={
 "AbilitieAnimation": "",
@@ -325,6 +330,7 @@ _global_script_class_icons={
 "Hotkey": "",
 "HotkeyButton": "",
 "HotkeyMenu": "",
+"JumpTrajectoryCalculator": "",
 "LevelMenu": "",
 "Links": "",
 "MainMenu": "",
@@ -335,6 +341,7 @@ _global_script_class_icons={
 "PendulumSolver": "",
 "Pikes": "",
 "Platform": "",
+"PlatformLink": "",
 "PlayerGraphics": "",
 "Projectile": "",
 "SceneData": "",
@@ -356,8 +363,7 @@ _global_script_class_icons={
 "Tracker": "",
 "ValueBar": "",
 "VideoMenu": "",
-"Waypoint": "",
-"WaypointLink": ""
+"Waypoint": ""
 }
 
 [application]

@@ -23,6 +23,8 @@ func get_class() -> String:
 	return "FlexibleGrapplingHook"
 
 func _ready() -> void:
+	ray1.set_collision_mask(WorldInfo.getUntraversableOjectLayer())
+	ray2.set_collision_mask(WorldInfo.getUntraversableOjectLayer())
 	hook.shooter = shooter
 	hook.connect("hookHit", self, "_on_hook_hit")
 	timer.connect("timeout", self, "_on_timer_timeout")
