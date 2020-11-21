@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/animations/AbilitieAnimation.gd"
 }, {
-"base": "Node",
-"class": "ActionTree",
-"language": "GDScript",
-"path": "res://source/actors/ais/HFSMBTH/PatrolTree.gd"
-}, {
 "base": "KinematicBody2D",
 "class": "Actor",
 "language": "GDScript",
@@ -361,7 +356,6 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AbilitieAnimation": "",
-"ActionTree": "",
 "Actor": "",
 "ActorStats": "",
 "Attribute": "",
@@ -455,7 +449,6 @@ config/icon="res://icon.png"
 ActorStatusHandler="*res://singletons/ActorStatusHandler.gd"
 WorldInfo="*res://singletons/WorldInfo.gd"
 SceneManager="*res://singletons/SceneManager.tscn"
-BTDebugServer="*res://addons/btree/script/bt_debug_server.gd"
 FileManager="*res://singletons/FileManager.gd"
 AudioManager="*res://singletons/AudioManager.gd"
 HotkeyManager="*res://singletons/HotkeyManager.gd"
@@ -467,7 +460,7 @@ gdscript/warnings/unsafe_cast=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "WAT", "btree" )
+enabled=PoolStringArray( "WAT" )
 
 [input]
 
@@ -537,11 +530,6 @@ move_up={
 2d_physics/layer_6="grappable"
 2d_physics/layer_7="lootable"
 2d_physics/layer_8="platform_on_way"
-
-[network]
-
-limits/websocket_server/max_in_buffer_kb=4096
-limits/websocket_server/max_out_buffer_kb=4096
 
 [rendering]
 
