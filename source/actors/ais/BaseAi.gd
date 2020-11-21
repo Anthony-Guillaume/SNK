@@ -128,8 +128,12 @@ func isPlayerTooClose() -> bool:
 func changeDirection() -> void:
 	velocity.x = - stats.runSpeed.getValue() * sign(velocity.x)
 
-func moveTo(globalPosition : Vector2) -> void:
-	velocity.x = stats.runSpeed.getValue() * sign(globalPosition.x - global_position.x)
+func moveTo(destination : Vector2) -> void:
+	velocity.x = stats.runSpeed.getValue() * sign(destination.x - global_position.x)
+
+func jump() -> void:
+	velocity.y -= jumpForce
+	snap = Vector2.ZERO
 
 func moveTowardPlayer() -> void:
 	moveTo(player.global_position)

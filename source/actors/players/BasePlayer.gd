@@ -26,13 +26,13 @@ enum DIRECTION { 	LEFT = -1,
 
 var state : int = STATES.RUNNING
 
-const skidCoefficient : float = GRAVITY * 0.2
-const skidCoefficientMin : float = skidCoefficient * 0.05
-const diveForce : float = 700.0
-const airRunningCoefficient : float = 0.41
-const wallJumpForce : Vector2 = Vector2(280, 0)
-const climbSpeed : float = 450.0
-const minimalVelocityToBeFalling : float = 1500.0
+var skidCoefficient : float = WorldInfo.GRAVITY * 0.2
+var skidCoefficientMin : float = skidCoefficient * 0.05
+var diveForce : float = 700.0
+var airRunningCoefficient : float = 0.41
+var wallJumpForce : Vector2 = Vector2(280, 0)
+var climbSpeed : float = 450.0
+var minimalVelocityToBeFalling : float = 1500.0
 
 onready var hitboxHalfWidth : float = $CollisionShape2D.shape.get_radius()
 onready var hitboxHalfHeight : float = $CollisionShape2D.shape.get_height()

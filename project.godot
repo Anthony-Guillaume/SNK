@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/animations/AbilitieAnimation.gd"
 }, {
+"base": "Node",
+"class": "ActionTree",
+"language": "GDScript",
+"path": "res://source/actors/ais/HFSMBTH/PatrolTree.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Actor",
 "language": "GDScript",
@@ -134,15 +139,40 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/menus/subMenus/HotkeyMenu.gd"
 }, {
-"base": "Node2D",
+"base": "Link",
+"class": "JumpLink",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/JumpLink.gd"
+}, {
+"base": "Reference",
+"class": "JumpNavigatorCalculator",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/JumpNavigatorCalculator.gd"
+}, {
+"base": "Reference",
 "class": "JumpTrajectoryCalculator",
 "language": "GDScript",
-"path": "res://source/levels/levelHelpers/JumpTrajectoryCalculator.gd"
+"path": "res://source/levels/levelHelpers/navigators/JumpTrajectoryCalculator.gd"
 }, {
 "base": "Menu",
 "class": "LevelMenu",
 "language": "GDScript",
 "path": "res://source/menus/LevelMenu.gd"
+}, {
+"base": "Node2D",
+"class": "LevelNavigatorCompiler",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/LevelNagivationCompiler.gd"
+}, {
+"base": "Reference",
+"class": "Link",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/Link.gd"
+}, {
+"base": "Reference",
+"class": "LinkFiller",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/LinkFiller.gd"
 }, {
 "base": "Node2D",
 "class": "Links",
@@ -163,6 +193,11 @@ _global_script_classes=[ {
 "class": "OptionsMenu",
 "language": "GDScript",
 "path": "res://source/menus/OptionsMenu.gd"
+}, {
+"base": "Node",
+"class": "Patrol",
+"language": "GDScript",
+"path": "res://source/actors/ais/standardAis/states/Patrol.gd"
 }, {
 "base": "BaseAi",
 "class": "Patroller",
@@ -187,12 +222,12 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "Platform",
 "language": "GDScript",
-"path": "res://source/levels/levelHelpers/Platform.gd"
+"path": "res://source/levels/levelHelpers/navigators/Platform.gd"
 }, {
 "base": "Resource",
 "class": "PlatformLink",
 "language": "GDScript",
-"path": "res://source/levels/levelHelpers/PlatformLink.gd"
+"path": "res://source/levels/levelHelpers/navigators/PlatformLink.gd"
 }, {
 "base": "Sprite",
 "class": "PlayerGraphics",
@@ -279,10 +314,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/skills/scenes/ThrowingAxe.gd"
 }, {
-"base": "Resource",
+"base": "Reference",
 "class": "TileNavigator",
 "language": "GDScript",
-"path": "res://source/levels/levelHelpers/TileNavigator.gd"
+"path": "res://source/levels/levelHelpers/navigators/TileNavigator.gd"
 }, {
 "base": "BaseAi",
 "class": "Tracker",
@@ -299,13 +334,34 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://source/menus/subMenus/VideoMenu.gd"
 }, {
-"base": "Resource",
+"base": "Reference",
+"class": "WAT",
+"language": "GDScript",
+"path": "res://addons/WAT/namespace.gd"
+}, {
+"base": "",
+"class": "WATTest",
+"language": "GDScript",
+"path": "res://addons/WAT/core/test/test.gd"
+}, {
+"base": "Reference",
 "class": "Waypoint",
 "language": "GDScript",
-"path": "res://source/levels/levelHelpers/Waypoint.gd"
+"path": "res://source/levels/levelHelpers/navigators/Waypoint.gd"
+}, {
+"base": "Reference",
+"class": "WaypointFiller",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/WaypointFiller.gd"
+}, {
+"base": "Reference",
+"class": "WaypointGraph",
+"language": "GDScript",
+"path": "res://source/levels/levelHelpers/navigators/WaypointGraph.gd"
 } ]
 _global_script_class_icons={
 "AbilitieAnimation": "",
+"ActionTree": "",
 "Actor": "",
 "ActorStats": "",
 "Attribute": "",
@@ -330,12 +386,18 @@ _global_script_class_icons={
 "Hotkey": "",
 "HotkeyButton": "",
 "HotkeyMenu": "",
+"JumpLink": "",
+"JumpNavigatorCalculator": "",
 "JumpTrajectoryCalculator": "",
 "LevelMenu": "",
+"LevelNavigatorCompiler": "",
+"Link": "",
+"LinkFiller": "",
 "Links": "",
 "MainMenu": "",
 "Menu": "",
 "OptionsMenu": "",
+"Patrol": "",
 "Patroller": "",
 "PauseMenu": "",
 "PendulumSolver": "",
@@ -363,8 +425,24 @@ _global_script_class_icons={
 "Tracker": "",
 "ValueBar": "",
 "VideoMenu": "",
-"Waypoint": ""
+"WAT": "",
+"WATTest": "",
+"Waypoint": "",
+"WaypointFiller": "",
+"WaypointGraph": ""
 }
+
+[WAT]
+
+Test_Directory="res://tests"
+Results_Directory="res://tests/results/WAT"
+Minimize_Window_When_Running_Tests=false
+TestStrategy={
+"repeat": 1,
+"strategy": "RunAll"
+}
+Tags=PoolStringArray(  )
+Display=8
 
 [application]
 
@@ -389,7 +467,7 @@ gdscript/warnings/unsafe_cast=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "btree" )
+enabled=PoolStringArray( "WAT", "btree" )
 
 [input]
 
@@ -415,7 +493,7 @@ launch_hook={
 }
 release_hook={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
 ascend_hook={

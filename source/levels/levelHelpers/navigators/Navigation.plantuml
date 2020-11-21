@@ -1,0 +1,33 @@
+@startuml
+
+class Waypoint
+{
+    platformId
+    type
+    position
+}
+
+class Link
+{
+    weight
+}
+
+class JumpLink
+{
+    velocityNeeded
+}
+
+class Graph
+{
+
+}
+
+Link <|-- JumpLink
+Graph *- Waypoint
+Graph *- Link
+
+@enduml
+
+Hypothèses :
+- le graphe est dit "sparse", car le graphe est peu connecté (<< N²)
+ --> Liste adjacence semble le moyen le plus efficace de stocker les données

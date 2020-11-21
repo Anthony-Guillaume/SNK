@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/btree/script/btree.gd" type="Script" id=1]
+[ext_resource path="res://source/actors/ais/HFSMBTH/PatrolTree.gd" type="Script" id=2]
+
+[node name="PatrolTree" type="Node"]
+script = ExtResource( 2 )
+
+[node name="BTREE" type="Node" parent="."]
+script = ExtResource( 1 )
+_tree_id = "2622174961215533367"

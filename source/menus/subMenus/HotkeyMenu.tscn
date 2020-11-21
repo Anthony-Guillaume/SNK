@@ -67,12 +67,12 @@ rect_min_size = Vector2( 80, 50 )
 text = "Climb down"
 valign = 1
 
-[node name="Label5" type="Label" parent="HBoxContainer/ActionLabels"]
+[node name="Label9" type="Label" parent="HBoxContainer/ActionLabels"]
 margin_top = 216.0
 margin_right = 91.0
 margin_bottom = 266.0
 rect_min_size = Vector2( 80, 50 )
-text = "Launch hook"
+text = "Jump"
 valign = 1
 
 [node name="Label6" type="Label" parent="HBoxContainer/ActionLabels"]
@@ -83,28 +83,28 @@ rect_min_size = Vector2( 80, 50 )
 text = "Release hook"
 valign = 1
 
-[node name="Label7" type="Label" parent="HBoxContainer/ActionLabels"]
+[node name="Label5" type="Label" parent="HBoxContainer/ActionLabels"]
 margin_top = 324.0
 margin_right = 91.0
 margin_bottom = 374.0
+rect_min_size = Vector2( 80, 50 )
+text = "Launch hook"
+valign = 1
+
+[node name="Label7" type="Label" parent="HBoxContainer/ActionLabels"]
+margin_top = 378.0
+margin_right = 91.0
+margin_bottom = 428.0
 rect_min_size = Vector2( 80, 50 )
 text = "Acend hook"
 valign = 1
 
 [node name="Label8" type="Label" parent="HBoxContainer/ActionLabels"]
-margin_top = 378.0
-margin_right = 91.0
-margin_bottom = 428.0
-rect_min_size = Vector2( 80, 50 )
-text = "Descend hook"
-valign = 1
-
-[node name="Label9" type="Label" parent="HBoxContainer/ActionLabels"]
 margin_top = 432.0
 margin_right = 91.0
 margin_bottom = 482.0
 rect_min_size = Vector2( 80, 50 )
-text = "Jump"
+text = "Descend hook"
 valign = 1
 
 [node name="Label10" type="Label" parent="HBoxContainer/ActionLabels"]
@@ -162,13 +162,13 @@ margin_right = 120.0
 margin_bottom = 212.0
 _action = "move_down"
 
-[node name="HotkeyButton5" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
+[node name="HotkeyButton9" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 216.0
 margin_right = 120.0
 margin_bottom = 266.0
-_action = "launch_hook"
+_action = "jump"
 
 [node name="HotkeyButton6" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
 anchor_right = 0.0
@@ -178,29 +178,29 @@ margin_right = 120.0
 margin_bottom = 320.0
 _action = "release_hook"
 
-[node name="HotkeyButton7" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
+[node name="HotkeyButton5" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 324.0
 margin_right = 120.0
 margin_bottom = 374.0
-_action = "ascend_hook"
+_action = "launch_hook"
 
-[node name="HotkeyButton8" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
+[node name="HotkeyButton7" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 378.0
 margin_right = 120.0
 margin_bottom = 428.0
-_action = "descend_hook"
+_action = "ascend_hook"
 
-[node name="HotkeyButton9" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
+[node name="HotkeyButton8" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 432.0
 margin_right = 120.0
 margin_bottom = 482.0
-_action = "jump"
+_action = "descend_hook"
 
 [node name="HotkeyButton10" parent="HBoxContainer/Buttons" instance=ExtResource( 2 )]
 anchor_right = 0.0

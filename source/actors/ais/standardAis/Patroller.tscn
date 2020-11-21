@@ -11,6 +11,7 @@ extents = Vector2( 30.9557, 29.646 )
 collision_layer = 8
 collision_mask = 131
 script = ExtResource( 2 )
+meleeReach = 580.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -38,153 +39,75 @@ tree = {
 "to": "selector",
 "to_port": 0
 }, {
-"from": "selector",
-"from_port": 1,
-"to": "task2",
-"to_port": 0
-}, {
-"from": "sequence2",
+"from": "sequence",
 "from_port": 0,
 "to": "task",
 "to_port": 0
 }, {
-"from": "sequence2",
-"from_port": 1,
-"to": "task3",
-"to_port": 0
-}, {
-"from": "selector2",
-"from_port": 0,
-"to": "sequence",
-"to_port": 0
-}, {
-"from": "selector2",
-"from_port": 1,
-"to": "sequence2",
-"to_port": 0
-}, {
-"from": "selector",
-"from_port": 0,
-"to": "selector2",
-"to_port": 0
-}, {
 "from": "sequence",
-"from_port": 0,
+"from_port": 1,
 "to": "task6",
-"to_port": 0
-}, {
-"from": "sequence",
-"from_port": 1,
-"to": "task4",
 "to_port": 0
 } ],
 "nodes": [ {
 "child": [ {
-"child": [ {
-"child": [ {
-"child": [ {
 "child": [  ],
 "data": {
-"fn": "task_check_if_player_is_within_melee_reach",
-"offset": Vector2( 850, -420 ),
-"params": [  ],
-"size": Vector2( 500, 85 ),
-"values": [  ]
-},
-"name": "task6",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_attack_player",
-"offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall", 1 ] ],
-"size": Vector2( 490, 109 ),
-"values": [ "PistolBall" ]
-},
-"name": "task4",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 650, -430 ),
-"size": Vector2( 138, 163 )
-},
-"name": "sequence",
-"type": 2
-}, {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_on_same_platform",
-"offset": Vector2( 850, -190 ),
-"params": [  ],
-"size": Vector2( 490.001, 84.9998 ),
-"values": [  ]
-},
-"name": "task",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_move_toward_player",
-"offset": Vector2( 850, -90 ),
-"params": [  ],
-"size": Vector2( 420, 85 ),
-"values": [  ]
-},
-"name": "task3",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 640, -170 ),
-"size": Vector2( 146, 109 )
-},
-"name": "sequence2",
-"type": 2
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 460, -270 ),
-"size": Vector2( 134, 109 )
-},
-"name": "selector2",
-"type": 3
-}, {
-"child": [  ],
-"data": {
-"fn": "task_patrol",
-"offset": Vector2( 400, 110 ),
-"params": [  ],
-"size": Vector2( 420.001, 85.0001 ),
-"values": [  ]
-},
-"name": "task2",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 160, -20 ),
-"size": Vector2( 126, 109 )
+"count": 3,
+"offset": Vector2( 160, 0 ),
+"size": Vector2( 126, 136 )
 },
 "name": "selector",
 "type": 3
 } ],
 "data": {
 "offset": Vector2( 0, 0 ),
-"size": Vector2( 95.9999, 82.0007 )
+"size": Vector2( 95.9998, 82.0007 )
 },
 "name": "root",
 "type": 0
 }, {
-"child": [ {
-"child": [ {
-"child": [ {
-"child": [  ],
 "data": {
-"fn": "task_check_if_player_is_within_melee_reach",
-"offset": Vector2( 850, -420 ),
+"fn": "task_move_toward_player",
+"offset": Vector2( 840, -140 ),
+"params": [  ],
+"size": Vector2( 419.999, 85 ),
+"values": [  ]
+},
+"name": "task3",
+"type": 1
+}, {
+"data": {
+"fn": "task_attack_player",
+"offset": Vector2( 380, -260 ),
+"params": [ [ "PistolBall", 1 ] ],
+"size": Vector2( 490, 109 ),
+"values": [ "PistolBall" ]
+},
+"name": "task4",
+"type": 1
+}, {
+"data": {
+"count": 3,
+"offset": Vector2( 360, 0 ),
+"size": Vector2( 138, 136 )
+},
+"name": "sequence",
+"type": 2
+}, {
+"data": {
+"fn": "task_check_if_player_is_in_sight",
+"offset": Vector2( 560, 0 ),
+"params": [  ],
+"size": Vector2( 490, 84.9998 ),
+"values": [  ]
+},
+"name": "task",
+"type": 1
+}, {
+"data": {
+"fn": "task_attack_player",
+"offset": Vector2( 1080, 0 ),
 "params": [  ],
 "size": Vector2( 500, 85 ),
 "values": [  ]
@@ -194,365 +117,35 @@ tree = {
 }, {
 "child": [  ],
 "data": {
-"fn": "task_attack_player",
-"offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall", 1 ] ],
-"size": Vector2( 490, 109 ),
-"values": [ "PistolBall" ]
-},
-"name": "task4",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 650, -430 ),
-"size": Vector2( 138, 163 )
-},
-"name": "sequence",
-"type": 2
-}, {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_on_same_platform",
-"offset": Vector2( 850, -190 ),
-"params": [  ],
-"size": Vector2( 490.001, 84.9998 ),
-"values": [  ]
-},
-"name": "task",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_move_toward_player",
-"offset": Vector2( 850, -90 ),
-"params": [  ],
-"size": Vector2( 420, 85 ),
-"values": [  ]
-},
-"name": "task3",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 640, -170 ),
-"size": Vector2( 146, 109 )
-},
-"name": "sequence2",
-"type": 2
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 460, -270 ),
-"size": Vector2( 134, 109 )
-},
-"name": "selector2",
-"type": 3
-}, {
-"child": [  ],
-"data": {
-"fn": "task_patrol",
-"offset": Vector2( 400, 110 ),
-"params": [  ],
-"size": Vector2( 420.001, 85.0001 ),
-"values": [  ]
-},
-"name": "task2",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 160, -20 ),
-"size": Vector2( 126, 109 )
+"count": 3,
+"offset": Vector2( 160, 0 ),
+"size": Vector2( 126, 136 )
 },
 "name": "selector",
 "type": 3
 }, {
-"child": [  ],
 "data": {
-"fn": "task_patrol",
-"offset": Vector2( 400, 110 ),
-"params": [  ],
-"size": Vector2( 420.001, 85.0001 ),
-"values": [  ]
+"count": 0.0,
+"offset": Vector2( 558.253, 118.125 ),
+"size": Vector2( 196, 55 )
 },
-"name": "task2",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_on_same_platform",
-"offset": Vector2( 850, -190 ),
-"params": [  ],
-"size": Vector2( 490.001, 84.9998 ),
-"values": [  ]
-},
-"name": "task",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_move_toward_player",
-"offset": Vector2( 850, -90 ),
-"params": [  ],
-"size": Vector2( 420, 85 ),
-"values": [  ]
-},
-"name": "task3",
-"type": 1
-}, {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_on_same_platform",
-"offset": Vector2( 850, -190 ),
-"params": [  ],
-"size": Vector2( 490.001, 84.9998 ),
-"values": [  ]
-},
-"name": "task",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_move_toward_player",
-"offset": Vector2( 850, -90 ),
-"params": [  ],
-"size": Vector2( 420, 85 ),
-"values": [  ]
-},
-"name": "task3",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 640, -170 ),
-"size": Vector2( 146, 109 )
-},
-"name": "sequence2",
-"type": 2
-}, {
-"child": [ {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_within_melee_reach",
-"offset": Vector2( 850, -420 ),
-"params": [  ],
-"size": Vector2( 500, 85 ),
-"values": [  ]
-},
-"name": "task6",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_attack_player",
-"offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall", 1 ] ],
-"size": Vector2( 490, 109 ),
-"values": [ "PistolBall" ]
-},
-"name": "task4",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 650, -430 ),
-"size": Vector2( 138, 163 )
-},
-"name": "sequence",
-"type": 2
-}, {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_on_same_platform",
-"offset": Vector2( 850, -190 ),
-"params": [  ],
-"size": Vector2( 490.001, 84.9998 ),
-"values": [  ]
-},
-"name": "task",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_move_toward_player",
-"offset": Vector2( 850, -90 ),
-"params": [  ],
-"size": Vector2( 420, 85 ),
-"values": [  ]
-},
-"name": "task3",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 640, -170 ),
-"size": Vector2( 146, 109 )
-},
-"name": "sequence2",
-"type": 2
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 460, -270 ),
-"size": Vector2( 134, 109 )
-},
-"name": "selector2",
-"type": 3
-}, {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_within_melee_reach",
-"offset": Vector2( 850, -420 ),
-"params": [  ],
-"size": Vector2( 500, 85 ),
-"values": [  ]
-},
-"name": "task6",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_attack_player",
-"offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall", 1 ] ],
-"size": Vector2( 490, 109 ),
-"values": [ "PistolBall" ]
-},
-"name": "task4",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 650, -430 ),
-"size": Vector2( 138, 163 )
-},
-"name": "sequence",
-"type": 2
-}, {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_within_melee_reach",
-"offset": Vector2( 850, -420 ),
-"params": [  ],
-"size": Vector2( 500, 85 ),
-"values": [  ]
-},
-"name": "task6",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_attack_player",
-"offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall", 1 ] ],
-"size": Vector2( 490, 109 ),
-"values": [ "PistolBall" ]
-},
-"name": "task4",
-"type": 1
+"name": "repeat",
+"type": 8
 } ],
 "root": {
 "child": [ {
-"child": [ {
-"child": [ {
-"child": [ {
 "child": [  ],
 "data": {
-"fn": "task_check_if_player_is_within_melee_reach",
-"offset": Vector2( 850, -420 ),
-"params": [  ],
-"size": Vector2( 500, 85 ),
-"values": [  ]
-},
-"name": "task6",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_attack_player",
-"offset": Vector2( 850, -310 ),
-"params": [ [ "PistolBall", 1 ] ],
-"size": Vector2( 490, 109 ),
-"values": [ "PistolBall" ]
-},
-"name": "task4",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 650, -430 ),
-"size": Vector2( 138, 163 )
-},
-"name": "sequence",
-"type": 2
-}, {
-"child": [ {
-"child": [  ],
-"data": {
-"fn": "task_check_if_player_is_on_same_platform",
-"offset": Vector2( 850, -190 ),
-"params": [  ],
-"size": Vector2( 490.001, 84.9998 ),
-"values": [  ]
-},
-"name": "task",
-"type": 1
-}, {
-"child": [  ],
-"data": {
-"fn": "task_move_toward_player",
-"offset": Vector2( 850, -90 ),
-"params": [  ],
-"size": Vector2( 420, 85 ),
-"values": [  ]
-},
-"name": "task3",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 640, -170 ),
-"size": Vector2( 146, 109 )
-},
-"name": "sequence2",
-"type": 2
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 460, -270 ),
-"size": Vector2( 134, 109 )
-},
-"name": "selector2",
-"type": 3
-}, {
-"child": [  ],
-"data": {
-"fn": "task_patrol",
-"offset": Vector2( 400, 110 ),
-"params": [  ],
-"size": Vector2( 420.001, 85.0001 ),
-"values": [  ]
-},
-"name": "task2",
-"type": 1
-} ],
-"data": {
-"count": 2,
-"offset": Vector2( 160, -20 ),
-"size": Vector2( 126, 109 )
+"count": 3,
+"offset": Vector2( 160, 0 ),
+"size": Vector2( 126, 136 )
 },
 "name": "selector",
 "type": 3
 } ],
 "data": {
 "offset": Vector2( 0, 0 ),
-"size": Vector2( 95.9999, 82.0007 )
+"size": Vector2( 95.9998, 82.0007 )
 },
 "name": "root",
 "type": 0

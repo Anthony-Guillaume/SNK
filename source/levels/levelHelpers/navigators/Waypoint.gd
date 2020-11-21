@@ -1,4 +1,4 @@
-extends Resource
+extends Reference
 
 class_name Waypoint
 
@@ -8,9 +8,10 @@ enum TYPE { NONE,
             RIGHT_EDGE,
             SOLO }
 
-var tileCoordinates : Vector2
+var position : Vector2
 var platformId : int = -1
 var type : int = TYPE.NONE
+var links : Array = []
 
 func get_class() -> String:
     return "Waypoint"

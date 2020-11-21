@@ -20,17 +20,17 @@ const _mouseHotkeyAuthorized : Array = [    BUTTON_LEFT,
                                             BUTTON_XBUTTON1, 
                                             BUTTON_XBUTTON2]
 
-const actionDescriptions : Dictionary = {   "move_up"       : "Déplacement en haut",
-                                            "move_right"    : "Déplacement à droite",
-                                            "move_down"     : "Déplacement en bas",
-                                            "move_left"     : "Déplacement à gauche",
-                                            "jump"          : "Sauter",
-                                            "launch_hook"   : "Lancer le grappin",
-                                            "release_hook"  : "Relâcher le grappin",
-                                            "ascend_hook"   : "Monter à la corde du grappin",
-                                            "descend_hook"  : "Descendre à la corde du grappin",
-                                            "melee_attack"  : "Attaquer au corps à corps",
-                                            "range_attack"  : "Attaquer à distance" }
+# const actionDescriptions : Dictionary = {   "move_up"       : "Déplacement en haut",
+#                                             "move_right"    : "Déplacement à droite",
+#                                             "move_down"     : "Déplacement en bas",
+#                                             "move_left"     : "Déplacement à gauche",
+#                                             "jump"          : "Sauter",
+#                                             "launch_hook"   : "Lancer le grappin",
+#                                             "release_hook"  : "Relâcher le grappin",
+#                                             "ascend_hook"   : "Monter à la corde du grappin",
+#                                             "descend_hook"  : "Descendre à la corde du grappin",
+#                                             "melee_attack"  : "Attaquer au corps à corps",
+#                                             "range_attack"  : "Attaquer à distance" }
 
 func addHotkey(action : String, event : InputEvent) -> void:
     var linkedAction : String = findLinkedAction(action)
@@ -43,10 +43,10 @@ func setEventToAction(action : String, event : InputEvent) -> void:
     InputMap.action_add_event(action, event)
 
 func findLinkedAction(action : String) -> String:
-    if action == "launch_hook":
+    if action == "jump":
         return "release_hook"
     if action == "release_hook":
-        return "launch_hook"
+        return "jump"
     return ""
 
 func resetHotkeyWhichHaveEvent(event : InputEvent) -> void:

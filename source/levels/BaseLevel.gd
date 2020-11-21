@@ -17,28 +17,58 @@ func _ready() -> void:
 	setupActors()
 	setupCamera()
 	activateAis()
-# 	testWaypoints()
+	testWaypoints()
 
-# func testWaypoints() -> void:
-# 	tileNavigator.create($World)
+func testWaypoints() -> void:
+	tileNavigator.createWaypoints($World)
+	# tileNavigator.fillAStarPoints()
+	# tileNavigator.fillLinks()
 	
 
-# func _draw() -> void:
-# 	for waypoint in tileNavigator.waypoints:
-# 		var rect : Rect2 = Rect2(waypoint.tileCoordinates * 64, Vector2(10,10))
-# 		var color : Color = Color.red if waypoint.type >= Waypoint.TYPE.PLATFORM else Color.green
-# 		match waypoint.type:
-# 			Waypoint.TYPE.NONE:
-# 				color = Color.black
-# 			Waypoint.TYPE.PLATFORM:
-# 				color = Color.red
-# 			Waypoint.TYPE.LEFT_EDGE:
-# 				color = Color.purple
-# 			Waypoint.TYPE.RIGHT_EDGE:
-# 				color = Color.orange
-# 			Waypoint.TYPE.SOLO:
-# 				color = Color.gray
-# 		draw_rect(rect, color)
+func _draw() -> void:
+	drawWaypoints()
+	# drawParabola()
+	drawLinks()
+	drawPlatformId()
+
+func drawParabola() -> void:
+	var from : Vector2 = Vector2(1, 21) * 64 + Vector2.RIGHT * 32
+	var to : Vector2 = Vector2(11, 36) * 64 + Vector2.RIGHT * 32
+	var jumpT : JumpTrajectoryCalculator = JumpTrajectoryCalculator.new(from, to, Vector2(300, -300), WorldInfo.GRAVITY)
+	for trajectory in jumpT.computeTrajectoryToTest():
+		for pointIndex in range(trajectory.size() - 1):
+			draw_line(trajectory[pointIndex], trajectory[pointIndex + 1], Color.green)
+
+func drawPlatformId() -> void:
+	for waypoint in tileNavigator.graph.waypoints:
+		var label : Label = Label.new()
+		label.rect_global_position = waypoint.position
+		label.text = str(waypoint.platformId)
+		add_child(label)
+
+func drawWaypoints() -> void:
+	for waypoint in tileNavigator.graph.waypoints:
+		var rect : Rect2 = Rect2(waypoint.position, Vector2(10,10))
+		var color : Color = Color.red if waypoint.type >= Waypoint.TYPE.PLATFORM else Color.green
+		match waypoint.type:
+			Waypoint.TYPE.NONE:
+				color = Color.black
+			Waypoint.TYPE.PLATFORM:
+				color = Color.red
+			Waypoint.TYPE.LEFT_EDGE:
+				color = Color.purple
+			Waypoint.TYPE.RIGHT_EDGE:
+				color = Color.orange
+			Waypoint.TYPE.SOLO:
+				color = Color.gray
+		draw_rect(rect, color)
+
+func drawLinks() -> void:
+	var waypoints : Array = tileNavigator.graph.waypoints
+	for waypoint in waypoints:
+		var point : Vector2 = waypoint.position
+		for link in waypoint.links:
+			draw_line(point, waypoints[link.destination].position, Color.whitesmoke)
 
 func _process(delta) -> void:
 	duration += delta

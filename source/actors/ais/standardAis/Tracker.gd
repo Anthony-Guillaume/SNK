@@ -2,7 +2,7 @@ extends BaseAi
 
 class_name Tracker
 
-# pseudo SFM for this
+# Wait until player is in sight. Follow him decriving circle and shoot at him until death.
 
 var theta0 : float = 0.0
 var time : float = 0.0

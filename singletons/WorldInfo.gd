@@ -1,5 +1,7 @@
 extends Node
 
+const GRAVITY : float = 750.0
+
 enum LAYER {	WORLD = int(pow(2, 0)),
 				CLIMBABLE = int(pow(2, 1)),
 				PLAYER = int(pow(2, 2)),

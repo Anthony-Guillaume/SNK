@@ -1,0 +1,104 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://source/levels/Level2.gd" type="Script" id=2]
+[ext_resource path="res://source/levels/levelHelpers/SceneTransitor.tscn" type="PackedScene" id=3]
+[ext_resource path="res://source/objects/traps/Pikes.tscn" type="PackedScene" id=5]
+[ext_resource path="res://source/actors/players/BasePlayer.tscn" type="PackedScene" id=6]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+
+[sub_resource type="TileSet" id=2]
+0/name = "icon.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 0.729412, 0.729412, 0.729412, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 1 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 1 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+
+[sub_resource type="ConvexPolygonShape2D" id=3]
+points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
+
+[sub_resource type="TileSet" id=4]
+0/name = "icon.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 0.521569, 0, 0, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 3 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 3 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 153.322, 105.014 )
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="World" type="TileMap" parent="."]
+tile_set = SubResource( 2 )
+collision_layer = 33
+collision_mask = 0
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 65536, 0, 0, 65551, 0, 0, 131072, 0, 0, 131079, 0, 0, 131087, 0, 0, 196608, 0, 0, 196623, 0, 0, 262144, 0, 0, 262148, 0, 0, 262149, 0, 0, 262154, 0, 0, 262159, 0, 0, 327680, 0, 0, 327690, 0, 0, 327691, 0, 0, 327695, 0, 0, 393216, 0, 0, 393230, 0, 0, 393231, 0, 0, 458752, 0, 0, 458753, 0, 0, 458765, 0, 0, 458767, 0, 0, 524288, 0, 0, 524290, 0, 0, 524300, 0, 0, 524303, 0, 0, 589824, 0, 0, 589827, 0, 0, 589835, 0, 0, 589839, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0 )
+
+[node name="ClimbTile" type="TileMap" parent="."]
+tile_set = SubResource( 4 )
+collision_layer = 34
+collision_mask = 0
+format = 1
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="BasePlayer" parent="Actors" instance=ExtResource( 6 )]
+position = Vector2( 205.82, 396.58 )
+baseHealth = 800.0
+maxHealth = 800.0
+
+[node name="Ais" type="Node2D" parent="Actors"]
+
+[node name="SceneTransitor" parent="." instance=ExtResource( 3 )]
+
+[node name="EndArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndArea"]
+position = Vector2( -529.666, 787.572 )
+shape = SubResource( 5 )
+
+[node name="SkillStore" type="Node" parent="."]
+
+[node name="Traps" type="Node2D" parent="."]
+
+[node name="Pikes" parent="Traps" instance=ExtResource( 5 )]
+position = Vector2( 1358.6, 884.802 )
