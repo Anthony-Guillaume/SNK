@@ -2,6 +2,7 @@ extends Area2D
 
 class_name Projectile
 
+const castDuration : float = 0.0
 var damage : float = 20.0
 var speed : float = 20
 var _velocity : Vector2

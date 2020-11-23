@@ -63,7 +63,7 @@ func setGrapplingHook() -> void:
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
+	move_and_slide_with_snap(velocity, snap, WorldInfo.FLOOR_NORMAL)
 
 func computeWallCollisionSide() -> int:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()

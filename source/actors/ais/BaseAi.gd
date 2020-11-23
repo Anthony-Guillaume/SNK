@@ -2,6 +2,10 @@ extends Actor
 
 class_name BaseAi
 
+var state : String = ""
+var states : Dictionary = {} # state name : handle method name ( MUST HAVE delta as parameter and void return)
+var stateHandler : FuncRef = funcref(self, "")
+
 var player : BasePlayer = null
 
 export var meleeReach : float = 150.0
@@ -10,74 +14,34 @@ export var securityDistance : float = 200.0
 
 const minimalStepDistance : float = 30.0
 
-onready var _logicTree = $LogicTree
 onready var hitboxHalfWidth : float = $CollisionShape2D.shape.get_extents().x
 onready var hitboxHalfHeight : float = $CollisionShape2D.shape.get_extents().y
 
 # DEBUG PART
 onready var label : Label = $Label
+
+func _draw() -> void:
+	draw_line(Vector2.LEFT * meleeReach , Vector2.RIGHT * meleeReach, Color.red, 3)
+	draw_line(Vector2.LEFT * securityDistance , Vector2.RIGHT * securityDistance, Color.blueviolet, 2)
+	draw_line(Vector2.LEFT * sightDistance , Vector2.RIGHT * sightDistance, Color.black)
+
+func _process(_delta):
+	update()
 #
 
 func get_class() -> String:
 	return "BaseAi"
-	
-func activateLogicTree() -> void:
-	_logicTree.set_process(true)
-	_logicTree.set_physics_process(true)
-
-func deactivateLogicTree() -> void:
-	_logicTree.set_process(false)
-	_logicTree.set_physics_process(false)
 
 func setup(player : BasePlayer) -> void:
 	self.player = player
 
-################################################################################
-# BASIC TASKS
-################################################################################
+func changeStateHandler(newState : String) -> void:
+	stateHandler.set_function(newState)
 
-func task_check_if_player_is_on_same_platform(task) -> void:
-	if isPlayerOnSamePlatform():
-		task.succeed()
-	else:
-		task.failed()
-
-func task_check_if_player_is_in_sight(task) -> void:
-	if isPlayerIsInSight():
-		task.succeed()
-	else:
-		task.failed()
-
-func task_check_if_player_is_too_close(task) -> void:
-	if isPlayerTooClose():
-		task.succeed()
-	else:
-		task.failed()
-
-func task_check_if_player_is_within_melee_reach(task) -> void:
-	if isPlayerWithinMeleeReach():
-		task.succeed()
-	else:
-		task.failed()
-
-func task_check_if_player_is_in_sight_distance(task) -> void:
-	if isPlayerWithinSightDistance():
-		task.succeed()
-	else:
-		task.failed()
-
-func task_move_toward_player(task) -> void:
-	moveTowardPlayer()
-	task.succeed()
-
-func task_attack_player(task) -> void:
-	var skillName : String = task.get_param(0)
-	attackPlayer(skillName)
-	task.succeed()
-
-func task_patrol(task) -> void:
-    patrol()
-    task.succeed()
+func changeStateTo(newState : String) -> void:
+	state = newState
+	stateHandler.set_function(states[newState])
+	label.set_text(state)
 
 ################################################################################
 # BASIC CONDITIONS
@@ -129,6 +93,7 @@ func changeDirection() -> void:
 	velocity.x = - stats.runSpeed.getValue() * sign(velocity.x)
 
 func moveTo(destination : Vector2) -> void:
+	snap = SNAP
 	velocity.x = stats.runSpeed.getValue() * sign(destination.x - global_position.x)
 
 func jump() -> void:
@@ -137,8 +102,6 @@ func jump() -> void:
 
 func moveTowardPlayer() -> void:
 	moveTo(player.global_position)
-	if canFall():
-		stand()
 
 func attackPlayer(attackName : String) -> void:
 	stand()
@@ -153,3 +116,8 @@ func patrol() -> void:
 		velocity.x = stats.runSpeed.getValue()
 	if is_on_wall() or canFall():
 		changeDirection()
+
+func castSkill(attackName : String) -> void:
+	stand()
+	attackDirection = (player.global_position - global_position).normalized()
+	skillSet.activate(attackName)

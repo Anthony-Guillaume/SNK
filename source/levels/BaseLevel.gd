@@ -16,18 +16,13 @@ var win : bool = false
 func _ready() -> void:
 	setupActors()
 	setupCamera()
-	activateAis()
-	testWaypoints()
+	# testWaypoints()
 
 func testWaypoints() -> void:
 	tileNavigator.createWaypoints($World)
-	# tileNavigator.fillAStarPoints()
-	# tileNavigator.fillLinks()
 	
-
 func _draw() -> void:
 	drawWaypoints()
-	# drawParabola()
 	drawLinks()
 	drawPlatformId()
 
@@ -108,10 +103,6 @@ func setupActors() -> void:
 	for ai in _ais.get_children():
 		setupAi(ai)
 
-func activateAis() -> void:
-	for ai in _ais.get_children():
-		ai.activateLogicTree()
-
 func setupPlayer() -> void:
 	for node in $Actors.get_children():
 		if node.get_class() == "BasePlayer":
@@ -136,7 +127,6 @@ func createAi(aiScenePath : String, globalPosition : Vector2) -> void:
 	newAi.global_position = globalPosition
 	setupAi(newAi)
 	_ais.add_child(newAi)
-	newAi.activateLogicTree()
 
 func killAi(ai) -> void:
 	ai.call_deferred("queue_free")

@@ -2,6 +2,8 @@ extends RigidBody2D
 
 class_name ExplosiveBall
 
+
+const castDuration : float = 1.0
 var damage : float = 20.0
 var forceAmplitude : float = 350.0
 var _initialForce : Vector2

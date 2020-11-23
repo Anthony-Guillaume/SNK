@@ -4,7 +4,6 @@ class_name Actor
 
 signal death()
 
-const FLOOR_NORMAL : Vector2 = Vector2(0, -1)
 const SNAP : Vector2 = Vector2(0, 10)
 
 var muzzle : float = 50.0

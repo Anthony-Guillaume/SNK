@@ -7,6 +7,11 @@ var casting : bool = false
 func get_class() -> String:
 	return "Cannonier"
 
+func _ready() -> void:
+	states = { 	"PATROLLING" : "handlePatrol",
+				"PURSUING" : "handlePursue"}
+	changeStateTo("PATROLLING")
+
 func setSkills() -> void:
 	skillSet.create("Cut", 1.25)
 	skillSet.create("ExplosiveBall", 1.25)
@@ -15,24 +20,26 @@ func _physics_process(delta : float) -> void:
 	endureGravity(delta)
 	if is_on_floor():
 		preventSinkingIntoFloor()
-	move_and_slide_with_snap(velocity, snap, FLOOR_NORMAL)
+	move_and_slide_with_snap(velocity, snap, WorldInfo.FLOOR_NORMAL)
 
-################################################################################
-# TASKS
-################################################################################
+func handlePatrol(_delta : float) -> void:
+	patrol()
+	if isPlayerOnSamePlatform():
+		changeStateTo("PURSUING")
+	
+func handlePursue(_delta : float) -> void:
+	moveTowardPlayer()
+	if isPlayerWithinMeleeReach():
+		stand()
+		attack()
+	if not isPlayerIsInSight():
+		changeStateTo("PATROLLING")
 
-func task_cast_skill_against_player(task) -> void:
-	var skillName : String = task.get_param(0)
-	castSpell(skillName)
-	task.succeed()
-
-################################################################################
-# CONDITIONS
-################################################################################
-
-################################################################################
-# ACTIONS
-################################################################################
+func attack() -> void:
+	if not skillSet.isOnCooldown("Cut"):
+		attackPlayer("ThrowingAxe")
+	else:
+		attackPlayer("Cut")
 
 func castSpell(attackName : String) -> void:
 	stand()

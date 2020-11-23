@@ -1,6 +1,7 @@
 extends Node
 
 const GRAVITY : float = 750.0
+const FLOOR_NORMAL : Vector2 = Vector2(0, -1)
 
 enum LAYER {	WORLD = int(pow(2, 0)),
 				CLIMBABLE = int(pow(2, 1)),

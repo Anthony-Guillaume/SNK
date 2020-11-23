@@ -1,9 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://source/actors/ais/standardAis/Tracker.gd" type="Script" id=2]
-[ext_resource path="res://addons/btree/script/btree.gd" type="Script" id=3]
-
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30.9557, 29.646 )
@@ -29,28 +27,4 @@ custom_colors/font_color = Color( 1, 0.0196078, 0.0196078, 1 )
 text = "AI"
 __meta__ = {
 "_edit_use_anchors_": false
-}
-
-[node name="LogicTree" type="Node" parent="."]
-script = ExtResource( 3 )
-tree = {
-"connection": [  ],
-"nodes": [ {
-"child": [  ],
-"data": {
-"offset": Vector2( 0, 0 ),
-"size": Vector2( 95.9999, 82.0007 )
-},
-"name": "root",
-"type": 0
-} ],
-"root": {
-"child": [  ],
-"data": {
-"offset": Vector2( 0, 0 ),
-"size": Vector2( 95.9999, 82.0007 )
-},
-"name": "root",
-"type": 0
-}
 }
