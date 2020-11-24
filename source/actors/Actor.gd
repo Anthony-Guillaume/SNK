@@ -3,12 +3,11 @@ extends KinematicBody2D
 class_name Actor
 
 signal death()
-signal velocityChanged(newVelocity)
 
 const SNAP : Vector2 = Vector2(0, 10)
 
 var muzzle : float = 50.0
-var velocity : Vector2 = Vector2.ZERO setget _setVelocity
+var velocity : Vector2 = Vector2.ZERO
 var runAcceleration : float
 var attackDirection : Vector2
 
@@ -27,10 +26,6 @@ export var maxSpeed : float = 500
 
 func _ready() -> void:
 	setStats()
-
-func _setVelocity(newVelocity : Vector2) -> void:
-	velocity = newVelocity
-	emit_signal("velocityChanged", newVelocity)
 
 func setStats() -> void:
 	var health : Attribute = Attribute.new(baseHealth, 0, maxHealth)

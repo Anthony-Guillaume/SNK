@@ -20,6 +20,42 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/Area2D/MeleeHurtBox:shape:extents")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.564, 0.846 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 79.4084, 84.342 ), Vector2( 10, 10 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/Area2D/MeleeHurtBox:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.564, 0.846 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite/Area2D/MeleeHurtBox:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.564, 0.846 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 48.507, -30.8681 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "attack2"
@@ -35,6 +71,42 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/Area2D/MeleeHurtBox:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.594, 0.858 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/Area2D/MeleeHurtBox:shape:extents")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.594, 0.858 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 76.8886, 81.1922 ), Vector2( 10, 10 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite/Area2D/MeleeHurtBox:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.594, 0.858 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 55.4365, -5.66965 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -52,6 +124,42 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite/Area2D/MeleeHurtBox:shape:extents")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.574, 0.902 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 84.448, 96.9413 ), Vector2( 10, 10 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite/Area2D/MeleeHurtBox:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.574, 0.902 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite/Area2D/MeleeHurtBox:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.574, 0.902 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 44.0973, -13.8591 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "idle"
@@ -67,6 +175,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 72, 73, 74, 75, 96, 97, 98, 99, 120, 121, 122, 123, 144, 145, 146, 147 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.248, 0.496, 0.744 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -8.96681 ), Vector2( -0.471924, -4.24744 ), Vector2( 0, 0 ), Vector2( 0, 5.19131 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -89,14 +209,19 @@ tracks/0/keys = {
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -8.96681 )
 texture = ExtResource( 1 )
 vframes = 8
 hframes = 24
-frame = 174
+frame = 76
 
 [node name="Area2D" type="Area2D" parent="Sprite"]
+visible = false
+collision_layer = 16
+collision_mask = 0
 
 [node name="MeleeHurtBox" type="CollisionShape2D" parent="Sprite/Area2D"]
+visible = false
 shape = SubResource( 1 )
 disabled = true
 
@@ -106,3 +231,6 @@ anims/attack2 = SubResource( 3 )
 anims/attack3 = SubResource( 4 )
 anims/idle = SubResource( 5 )
 anims/run = SubResource( 6 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 0.471939, 78.8135 )

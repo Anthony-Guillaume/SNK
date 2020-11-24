@@ -2,12 +2,18 @@ extends Actor
 
 class_name BaseAi
 
+signal runDirectionChanged(newDirection)
+
+enum DIRECTION { 	LEFT = -1,
+					UNDEFINED = 0,
+					RIGHT = 1 }
+
 var state : String = ""
 var states : Dictionary = {} # state name : handle method name ( MUST HAVE delta as parameter and void return)
 var stateHandler : FuncRef = funcref(self, "")
 
 var player : BasePlayer = null
-
+var runDirection : int = DIRECTION.RIGHT
 export var meleeReach : float = 150.0
 export var sightDistance : float = 600.0
 export var securityDistance : float = 200.0
@@ -89,22 +95,33 @@ func isPlayerTooClose() -> bool:
 # BASIC ACTIONS
 ################################################################################
 
-func changeDirection() -> void:
-	velocity.x = - stats.runSpeed.getValue() * sign(velocity.x)
-
-func moveTo(destination : Vector2) -> void:
+func _run() -> void:
 	snap = SNAP
-	velocity.x = stats.runSpeed.getValue() * sign(destination.x - global_position.x)
+	velocity.x = stats.runSpeed.getValue() * runDirection
+
+func changeDirection() -> void:
+	runDirection *= -1
+
+func facePlayer() -> void:
+	runDirection = int(sign((player.global_position - global_position).x))
 
 func jump() -> void:
 	velocity.y -= jumpForce
 	snap = Vector2.ZERO
+
+func moveTo(destination : Vector2) -> void:
+	runDirection = int(sign(destination.x - global_position.x))
+	_run()
+
+func moveForward() -> void:
+	_run()
 
 func moveTowardPlayer() -> void:
 	moveTo(player.global_position)
 
 func attackPlayer(attackName : String) -> void:
 	stand()
+	facePlayer()
 	attackDirection = (player.global_position - global_position).normalized()
 	skillSet.activate(attackName)
 
@@ -112,10 +129,9 @@ func stand() -> void:
 	velocity.x = 0.0
 
 func patrol() -> void:
-	if abs(velocity.x) < 1.0:
-		velocity.x = stats.runSpeed.getValue()
 	if is_on_wall() or canFall():
 		changeDirection()
+	moveForward()
 
 func castSkill(attackName : String) -> void:
 	stand()

@@ -2,21 +2,20 @@ extends BaseAi
 
 class_name DumbAi
 
-onready var animation : Node2D = $SamuraiAnimation
+onready var animator : Node2D = $SamuraiAnimation
 
 func get_class() -> String:
 	return "DumbAi"
 
 func _ready() -> void:
-	states = { 	"IDLE" : "handleWaiting",
-				"COMBAT" : "handleCombat"}
+	animator.setup(self)
+	states = { 	"IDLE" : "handleIdling",
+				"COMBAT" : "handleCombat",
+				"ATTACK" : "handleAttack"}
 	changeStateTo("IDLE")
 
 func setSkills() -> void:
 	skillSet.create("Cut", 0.5)
-
-func _on_animation_finished(animationName : String) -> void:
-	print("a = ", animationName)
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)
@@ -24,8 +23,10 @@ func _physics_process(delta : float) -> void:
 	if is_on_floor():
 		preventSinkingIntoFloor()
 	move_and_slide_with_snap(velocity, snap, WorldInfo.FLOOR_NORMAL)
+	emit_signal("runDirectionChanged", runDirection)
 
-func handleWaiting(_delta : float) -> void:
+func handleIdling(_delta : float) -> void:
+	animator.play("idle")
 	stand()
 	if isPlayerWithinMeleeReach():
 		changeStateTo("COMBAT")
@@ -33,7 +34,22 @@ func handleWaiting(_delta : float) -> void:
 func handleCombat(_delta : float) -> void:
 	if isPlayerIsInSight():
 		if isPlayerWithinMeleeReach():
-			animation.play("swing2")
+			changeStateTo("ATTACK")
 		else:
 			moveTowardPlayer()
-			animation.play("run")
+			animator.play("run")
+	else:
+		changeStateTo("IDLE")
+
+func handleAttack(_delta : float) -> void:
+	if animator.isAttackAnimationRunning():
+		return
+	if isPlayerWithinMeleeReach():
+		attack()
+	else:
+		changeStateTo("COMBAT")
+
+func attack() -> void:
+	stand()
+	facePlayer()
+	animator.playAttack()
