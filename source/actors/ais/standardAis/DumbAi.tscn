@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://source/actors/ais/standardAis/DumbAi.gd" type="Script" id=1]
+[ext_resource path="res://assets/fortest/SamuraiAnimation.tscn" type="PackedScene" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30.3355, 45.4128 )
@@ -20,3 +21,5 @@ margin_bottom = 14.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SamuraiAnimation" parent="." instance=ExtResource( 2 )]

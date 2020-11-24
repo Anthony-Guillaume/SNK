@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/PC_AttackSwing3.png-80f0c9dd5f5e6feaf9028579af6fbff5.stex"
+path="res://.import/spritesheet.png-d840c51e00ad21aea5134485f7772ba2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fortest/PC_AttackSwing3.png"
-dest_files=[ "res://.import/PC_AttackSwing3.png-80f0c9dd5f5e6feaf9028579af6fbff5.stex" ]
+source_file="res://assets/fortest/spritesheet.png"
+dest_files=[ "res://.import/spritesheet.png-d840c51e00ad21aea5134485f7772ba2.stex" ]
 
 [params]
 
