@@ -13,8 +13,8 @@ func _ready() -> void:
 	changeStateTo("PATROLLING")
 
 func setSkills() -> void:
-	skillSet.create("Cut", 1.25)
-	skillSet.create("ExplosiveBall", 1.25)
+	skillSet.add("Cut")
+	skillSet.add("ExplosiveBall")
 
 func _physics_process(delta : float) -> void:
 	endureGravity(delta)

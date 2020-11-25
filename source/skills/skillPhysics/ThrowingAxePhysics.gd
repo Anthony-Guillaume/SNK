@@ -1,21 +1,20 @@
 extends Area2D
 
-class_name ThrowingAxe
+class_name ThrowingAxePhysics
 
-const castDuration : float = 6.0
+var damage : float = 0.0
+var speed : float = 0.0
+var maxDistance : float = 0.0
 
-const damage : float = 20.0
-const speed : float = 12.0
-var _velocity : Vector2
 var _shooter = null
+
+var _velocity : Vector2
 var ennemyLayer : int = -1
 var comeBacking : bool = false
 var distance : float = 0.0
-const maxDistance : float = 800.0
-
 
 func get_class() -> String:
-	return "PistolBall"
+	return "ThrowingAxePhysics"
 
 func _ready() -> void:
 	connect("body_entered", self, "_on_body_entered")

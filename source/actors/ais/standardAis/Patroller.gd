@@ -11,8 +11,8 @@ func _ready() -> void:
 	changeStateTo("PATROLLING")
 
 func setSkills() -> void:
-	skillSet.create("PistolBall", 0.5)
-	skillSet.create("Evade", 2.0)
+	skillSet.add("PistolBall")
+	skillSet.add("Evade")
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)

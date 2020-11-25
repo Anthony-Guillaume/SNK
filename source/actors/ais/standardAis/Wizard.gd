@@ -1,21 +1,25 @@
 extends BaseAi
 
-class_name DumbAi
+class_name Wizard
 
-onready var animator : Node2D = $SamuraiAnimation
+var rangedDistance : float = 500.0
+
+onready var animator : Node2D = $Animation
+onready var HpLabel : Label = $HpLabel
 
 func get_class() -> String:
-	return "DumbAi"
+	return "Wizard"
 
 func _ready() -> void:
 	animator.setup(self)
+	skillSet = animator.skillSet
 	states = { 	"IDLE" : "handleIdling",
 				"COMBAT" : "handleCombat",
 				"ATTACK" : "handleAttack"}
 	changeStateTo("IDLE")
 
-func setSkills() -> void:
-	skillSet.add("Cut")
+func _process(_delta : float) -> void:
+	HpLabel.set_text(str(stats.health.getValue()))
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)
@@ -28,12 +32,12 @@ func _physics_process(delta : float) -> void:
 func handleIdling(_delta : float) -> void:
 	animator.play("idle")
 	stand()
-	if isPlayerWithinMeleeReach():
+	if isPlayerIsInSight():
 		changeStateTo("COMBAT")
 	
 func handleCombat(_delta : float) -> void:
 	if isPlayerIsInSight():
-		if isPlayerWithinMeleeReach():
+		if global_position.distance_to(player.global_position) < rangedDistance:
 			changeStateTo("ATTACK")
 		else:
 			moveTowardPlayer()
@@ -45,11 +49,25 @@ func handleAttack(_delta : float) -> void:
 	if animator.isAttackAnimationRunning():
 		return
 	if isPlayerWithinMeleeReach():
-		attack()
+		attack("Swing")
+	elif global_position.distance_to(player.global_position) < rangedDistance:
+		attack("PistolBall")
 	else:
 		changeStateTo("COMBAT")
 
-func attack() -> void:
+func attack(attackName : String) -> void:
 	stand()
 	facePlayer()
-	animator.playAttack()
+	attackDirection = (player.global_position - global_position).normalized()
+	animator.use(attackName)
+
+"""
+select hightPrioritySkillInThisSItuation # not in cooldown, at range, cost ...
+else : evade
+	skillSet.activate(attackName)
+
+if skillSet.isOnCooldown(skillName) is skillSet.getData(skillName):
+	use skill1
+elif ...
+
+"""

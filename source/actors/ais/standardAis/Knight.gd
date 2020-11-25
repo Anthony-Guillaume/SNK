@@ -1,21 +1,23 @@
 extends BaseAi
 
-class_name DumbAi
+class_name Knight
 
-onready var animator : Node2D = $SamuraiAnimation
+onready var animator : Node2D = $Animation
+onready var HpLabel : Label = $HpLabel
 
 func get_class() -> String:
-	return "DumbAi"
+	return "Knight"
 
 func _ready() -> void:
 	animator.setup(self)
+	skillSet = animator.skillSet
 	states = { 	"IDLE" : "handleIdling",
 				"COMBAT" : "handleCombat",
 				"ATTACK" : "handleAttack"}
 	changeStateTo("IDLE")
 
-func setSkills() -> void:
-	skillSet.add("Cut")
+func _process(_delta : float) -> void:
+	HpLabel.set_text(str(stats.health.getValue()))
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)
@@ -28,7 +30,7 @@ func _physics_process(delta : float) -> void:
 func handleIdling(_delta : float) -> void:
 	animator.play("idle")
 	stand()
-	if isPlayerWithinMeleeReach():
+	if isPlayerIsInSight():
 		changeStateTo("COMBAT")
 	
 func handleCombat(_delta : float) -> void:
@@ -37,7 +39,7 @@ func handleCombat(_delta : float) -> void:
 			changeStateTo("ATTACK")
 		else:
 			moveTowardPlayer()
-			animator.play("run")
+			animator.play("walk")
 	else:
 		changeStateTo("IDLE")
 
@@ -45,11 +47,12 @@ func handleAttack(_delta : float) -> void:
 	if animator.isAttackAnimationRunning():
 		return
 	if isPlayerWithinMeleeReach():
-		attack()
+		attack("Swing")
 	else:
 		changeStateTo("COMBAT")
 
-func attack() -> void:
+func attack(attackName : String) -> void:
 	stand()
 	facePlayer()
-	animator.playAttack()
+	attackDirection = (player.global_position - global_position).normalized()
+	animator.use(attackName)

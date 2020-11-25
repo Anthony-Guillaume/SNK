@@ -17,7 +17,7 @@ func get_class() -> String:
 	return "Tracker"
 
 func setSkills() -> void:
-	skillSet.create("PistolBall", 0.4)
+	skillSet.add("PistolBall")
 
 func _physics_process(delta : float) -> void:
 	stateHandler.call_func(delta)

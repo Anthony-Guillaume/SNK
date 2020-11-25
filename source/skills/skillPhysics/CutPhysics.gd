@@ -1,16 +1,17 @@
 extends RayCast2D
 
-class_name Cut
+class_name CutPhysics
 
-const castDuration : float = 0.0
 var damage : float = 35.0
 var reach : float = 55.0
+
 var _shooter = null
+
 var _hit : bool = false
 var ennemyLayer : int = -1
 
 func get_class() -> String:
-	return "Cut"
+	return "CutPhysics"
 
 func setup(shooter) -> void:
 	if shooter.get_collision_layer() == WorldInfo.LAYER.PLAYER:

@@ -55,8 +55,8 @@ func _ready() -> void:
 	hud.initialize(stats.health)
 
 func setSkills() -> void:
-	skillSet.create("PistolBall", 0.5)
-	skillSet.create("Cut", 0.3)
+	skillSet.add("PistolBall")
+	skillSet.add("Cut")
 
 func setGrapplingHook() -> void:
 	hookHandler.setup(self)

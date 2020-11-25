@@ -35,9 +35,9 @@ func setStats() -> void:
 	runAcceleration = baseSpeed * 0.35
 
 func setSkillSet(skillStore : Node) -> void:
-	skillSet.skillStore = skillStore
+	skillSet.setSkillStore(skillStore)
 	setSkills()
-	add_child(skillSet)
+#	add_child(skillSet)
 
 func setSkills() -> void:
 	pass

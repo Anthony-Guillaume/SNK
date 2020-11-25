@@ -4,25 +4,28 @@ class_name SkillSet
 
 signal skillActivated(skillName)
 
-onready var globalTimer : Cooldown = Cooldown.new()
-var globalDuration : float = 0.175
-var skills : Dictionary
-var _shooter = null
-const _pathToSkillFolder : String = "res://source/skills/scenes/"
-var skillStore : Node = self
+onready var _globalTimer : Cooldown = Cooldown.new()
+var _globalDuration : float = 0.175
+var skills : Dictionary = {}
+var _actor
+const _pathToSkillFolder : String = "res://source/skills/skillObjects/"
+var _skillStore : Node = self
 
 func get_class() -> String:
 	return "SkillSet"
 
-func _init(shooter) -> void:
-	_shooter = shooter
-	assert(shooter != null)
+func _init(actor) -> void:
+	_actor = actor
+	assert(actor != null)
+
+func setSkillStore(skillStore : Node) -> void:
+	_skillStore = skillStore
 
 func _ready() -> void:
-	globalTimer.setDuration(globalDuration)
-	for cd in skills.values():
-		add_child(cd)
-	add_child(globalTimer)
+	_globalTimer.setDuration(_globalDuration)
+	for skill in skills.values():
+		add_child(skill)
+	add_child(_globalTimer)
 
 func activate(skillName : String) -> void:
 	if not isOnCooldown(skillName):
@@ -30,15 +33,17 @@ func activate(skillName : String) -> void:
 
 func forceActivate(skillName : String) -> void:
 	skills[skillName].activate()
-	globalTimer.start()
+	_globalTimer.start()
 	emit_signal("skillActivated", skillName)
 
 func isOnCooldown(skillName : String) -> bool:
-	return globalTimer.isOnCooldown() or skills[skillName].isOnCooldown()
+	return _globalTimer.isOnCooldown() or skills[skillName].isOnCooldown()
 
-func create(skillName : String, coolDownDuration : float) -> void:
-	var pathToSkillScene : String = _pathToSkillFolder + skillName + ".tscn"
-	skills[skillName] = Skill.new(_shooter, coolDownDuration, load(pathToSkillScene), skillStore)
+func add(skillName : String) -> void:
+	assert(not skills.has(skillName))
+	var pathToSkillScene : String = _pathToSkillFolder + skillName + ".gd"
+	var skill : Skill = load(pathToSkillScene).new(_actor, _skillStore)
+	skills[skillName] = skill
 
-func add(skill : Skill) -> void:
-	skills[skill.get_class()] = skill
+func getData(skillName : String) -> SkillData:
+	return skills[skillName].getData()

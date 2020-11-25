@@ -1,16 +1,17 @@
 extends Area2D
 
-class_name Projectile
+class_name ProjectilePhysics
 
-const castDuration : float = 0.0
 var damage : float = 20.0
 var speed : float = 20
-var _velocity : Vector2
+
 var _shooter = null
+
+var _velocity : Vector2
 var ennemyLayer : int = -1
 
 func get_class() -> String:
-	return "PistolBall"
+	return "ProjectilePhysics"
 
 func _ready() -> void:
 	connect("body_entered", self, "_on_body_entered")

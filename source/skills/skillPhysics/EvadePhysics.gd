@@ -1,20 +1,21 @@
 extends Node2D
 
-class_name Evade
+class_name EvadePhysics
 
 # Make Ai evade for _duration or until it reaches floor. Ai physics process disable during evade
 
-var _shooter : BaseAi = null
+var duration : float = 1.5
+
+var _shooter = null
 var _direction : int = 0
-var _duration : float = 1.5
 
 func get_class() -> String:
-	return "Evade"
+	return "EvadePhysics"
 	
 func _ready() -> void:
 	_shooter.set_physics_process(false)
 	$Timer.connect("timeout", self, "_on_timer_timeout")
-	$Timer.set_wait_time(_duration)
+	$Timer.set_wait_time(duration)
 	$Timer.start()
 	_shooter.velocity.y = -_shooter.jumpForce
 

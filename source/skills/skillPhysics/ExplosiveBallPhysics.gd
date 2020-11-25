@@ -1,17 +1,17 @@
 extends RigidBody2D
 
-class_name ExplosiveBall
+class_name ExplosiveBallPhysics
 
-
-const castDuration : float = 1.0
 var damage : float = 20.0
 var forceAmplitude : float = 350.0
-var _initialForce : Vector2
+
 var _shooter = null
+
+var _initialForce : Vector2
 var ennemyLayer : int = -1
 
 func get_class() -> String:
-	return "ExplosiveBall"
+	return "ExplosiveBallPhysics"
 
 func _ready() -> void:
 	connect("body_entered", self, "_on_body_entered")
