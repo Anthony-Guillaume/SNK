@@ -3,7 +3,7 @@ extends Area2D
 class_name ProjectilePhysics
 
 var damage : float = 20.0
-var speed : float = 20
+var speed : float = 800
 
 var _shooter = null
 
@@ -21,14 +21,15 @@ func setup(shooter) -> void:
 		ennemyLayer = WorldInfo.LAYER.AI
 	else:
 		ennemyLayer = WorldInfo.LAYER.PLAYER
-	var direction : Vector2 = shooter.attackDirection
+#	var direction : Vector2 = shooter.attackDirection
 	_shooter = shooter
-	_velocity = direction * speed
-	global_position = shooter.global_position
-	rotate(direction.angle())
+#	_velocity = direction * speed
+#	global_position = shooter.global_position
+#	rotate(direction.angle())
 
-func _physics_process(_delta : float) -> void:
-	global_position += _velocity
+func _physics_process(delta : float) -> void:
+	position += transform.x * speed * delta
+#	global_position += _velocity
 
 func _on_body_entered(target) -> void:
 	if target == _shooter:

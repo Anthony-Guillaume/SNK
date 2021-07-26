@@ -19,6 +19,8 @@ func _ready() -> void:
 	add_child(_cooldown)
 
 func activate() -> void:
+	if _skillScene == null:
+		return
 	var instance : Node = _skillScene.instance()
 	_data.synchronize(instance)
 	instance.setup(_actor)

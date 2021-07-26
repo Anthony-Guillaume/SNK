@@ -8,7 +8,7 @@ func SkillMelee() -> String:
 	return "Skill"
 
 func _init(actor, skillStore : Node).(actor, skillStore) -> void:
-    pass
+	pass
 
 func activate() -> void:
 	_cooldown.start()

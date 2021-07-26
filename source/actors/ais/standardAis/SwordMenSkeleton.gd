@@ -1,12 +1,12 @@
 extends BaseAi
 
-class_name Knight
+class_name SwordMenSkeleton
 
 onready var animator : Node2D = $Animation
 onready var HpLabel : Label = $HpLabel
 
 func get_class() -> String:
-	return "Knight"
+	return "SwordMenSkeleton"
 
 func _ready() -> void:
 	animator.setup(self)
@@ -36,13 +36,13 @@ func _physics_process(delta : float) -> void:
 func handleIdling(_delta : float) -> void:
 	animator.play("idle")
 	stand()
+	if isPlayerInSight():
+		changeStateTo("COMBAT")
 	
 func handleCombat(_delta : float) -> void:
-	if isPlayerInSight():
+	if isRaycastIntersectPlayer():
 		if isPlayerInsideDistance(meleeReach):
 			changeStateTo("ATTACK")
-		elif canFall():
-			changeStateTo("IDLE")
 		else:
 			moveTowardPlayer()
 			animator.play("walk")
@@ -53,8 +53,17 @@ func handleAttack(_delta : float) -> void:
 	if animator.isAttackAnimationRunning():
 		return
 	if isPlayerInsideDistance(meleeReach):
-		attack("Swing")
+		if not skillSet.getSkill("DoubleSwing").isOnCooldown():
+			attack("DoubleSwing")
+		elif not skillSet.getSkill("Swing").isOnCooldown():
+			attack("Swing")
 	else:
+		changeStateTo("COMBAT")
+
+func handlePatrol(_delta : float) -> void:
+	animator.play("walk")
+	patrol()
+	if isPlayerInSight():
 		changeStateTo("COMBAT")
 
 func handleDeath(_delta : float) -> void:
@@ -62,12 +71,6 @@ func handleDeath(_delta : float) -> void:
 	stand()
 	yield(animator.animation, "animation_finished")
 	emit_signal("death")
-
-func handlePatrol(_delta : float) -> void:
-	animator.play("walk")
-	patrol()
-	if isPlayerInSight():
-		changeStateTo("COMBAT")
 
 func attack(attackName : String) -> void:
 	stand()

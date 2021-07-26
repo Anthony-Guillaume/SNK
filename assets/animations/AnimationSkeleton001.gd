@@ -1,16 +1,26 @@
-extends Node2D
+extends Animator
 
+class_name AnimatorSkeleton001
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+export var hurtboxIndex : int = 0
+onready var _spriteGap : float = $Sprite.position.x
 
+func _init() -> void:
+	skillAnimations = {	"Swing" : "attack1",
+						"DoubleSwing" : "attack2"}
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func faceRight() -> void:
+	sprite.position.x = _spriteGap
+	sprite.set_flip_h(false)
+	hurtbox.scale.x = 1.0
 
+func faceLeft() -> void:
+	sprite.position.x = - _spriteGap
+	sprite.set_flip_h(true)
+	hurtbox.scale.x = -1.0
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _on_Hurtbox_hit(target : Actor) -> void:
+	if hurtboxIndex == 0:
+		skillSet.getSkill(currentSkillName).hit(target)
+	else:
+		skillSet.getSkill(currentSkillName).secondHit(target)

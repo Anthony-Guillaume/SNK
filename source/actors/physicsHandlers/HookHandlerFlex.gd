@@ -24,8 +24,6 @@ func computeHookLength(shooterPosition : Vector2, pivotPosition : Vector2) -> fl
 	return (shooterPosition - pivotPosition).length()
 
 func addHook() -> void:
-	if grapplingHook != null:
-		return
 	grapplingHook = grapplingHookScene.instance()
 	grapplingHook.setup(shooter)
 	add_child(grapplingHook)

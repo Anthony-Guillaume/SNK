@@ -84,6 +84,20 @@ tracks/3/keys = {
 "update": 1,
 "values": [ Vector2( 57.6014, -15.5566 ), Vector2( 0, 0 ) ]
 }
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "castSkill"
+} ]
+}
 
 [sub_resource type="Animation" id=4]
 step = 0.142
@@ -182,6 +196,7 @@ script = ExtResource( 2 )
 texture = ExtResource( 1 )
 vframes = 8
 hframes = 8
+frame = 8
 
 [node name="Hurtbox" type="Area2D" parent="Sprite"]
 collision_layer = 16

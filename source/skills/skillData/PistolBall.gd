@@ -6,7 +6,7 @@ var damage : float = 20.0
 var speed : float = 12.0
 
 func _init() -> void:
-    coolDown = 2.0
+    coolDown = 0.3
 
 func synchronize(instance : PistolBallPhysics) -> void:
     instance.damage = damage

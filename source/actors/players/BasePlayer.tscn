@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/animations/actors/PlayerGraphics.gd" type="Script" id=1]
 [ext_resource path="res://source/actors/players/BasePlayer.gd" type="Script" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://source/actors/physicsHandlers/HookHandlerFlex.gd" type="Script" id=4]
 [ext_resource path="res://icon.png" type="Texture" id=5]
 [ext_resource path="res://source/hud/HUD.tscn" type="PackedScene" id=6]
+[ext_resource path="res://source/skills/WeaponSet.tscn" type="PackedScene" id=7]
+[ext_resource path="res://source/skills/weapons/Gun.tscn" type="PackedScene" id=8]
+[ext_resource path="res://source/skills/weapons/Sword.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 30.2967
@@ -49,3 +52,17 @@ __meta__ = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 6 )]
+
+[node name="WeaponSet" parent="." instance=ExtResource( 7 )]
+
+[node name="Gun" parent="WeaponSet" instance=ExtResource( 8 )]
+
+[node name="Sword" parent="WeaponSet" instance=ExtResource( 9 )]
+
+[node name="Muzzle" type="Position2D" parent="."]
+position = Vector2( 56.0632, 0 )
+
+[node name="Sprite" type="Sprite" parent="Muzzle"]
+visible = false
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 5 )

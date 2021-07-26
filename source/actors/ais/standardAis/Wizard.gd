@@ -15,8 +15,14 @@ func _ready() -> void:
 	skillSet = animator.skillSet
 	states = { 	"IDLE" : "handleIdling",
 				"COMBAT" : "handleCombat",
-				"ATTACK" : "handleAttack"}
-	changeStateTo("IDLE")
+				"PATROL" : "handlePatrol",
+				"ATTACK" : "handleAttack",
+				"DEATH" : "handleDeath"}
+	changeStateTo("PATROL")
+
+func _on_health_changed(value : float) -> void:
+	if value < 0.1:
+		changeStateTo("DEATH")
 
 func _process(_delta : float) -> void:
 	HpLabel.set_text(str(stats.health.getValue()))
@@ -32,42 +38,43 @@ func _physics_process(delta : float) -> void:
 func handleIdling(_delta : float) -> void:
 	animator.play("idle")
 	stand()
-	if isPlayerIsInSight():
+	if isPlayerInSight():
 		changeStateTo("COMBAT")
 	
 func handleCombat(_delta : float) -> void:
-	if isPlayerIsInSight():
-		if global_position.distance_to(player.global_position) < rangedDistance:
+	if isRaycastIntersectPlayer():
+		if isPlayerInsideDistance(rangedDistance):
 			changeStateTo("ATTACK")
 		else:
 			moveTowardPlayer()
 			animator.play("run")
 	else:
-		changeStateTo("IDLE")
+		changeStateTo("PATROL")
 
 func handleAttack(_delta : float) -> void:
 	if animator.isAttackAnimationRunning():
 		return
-	if isPlayerWithinMeleeReach():
+	if isPlayerInsideDistance(meleeReach):
 		attack("Swing")
 	elif global_position.distance_to(player.global_position) < rangedDistance:
 		attack("PistolBall")
 	else:
 		changeStateTo("COMBAT")
 
+func handlePatrol(_delta : float) -> void:
+	animator.play("run")
+	patrol()
+	if isPlayerInSight():
+		changeStateTo("COMBAT")
+
+func handleDeath(_delta : float) -> void:
+	animator.play("death")
+	stand()
+	yield(animator.animation, "animation_finished")
+	emit_signal("death")
+
 func attack(attackName : String) -> void:
 	stand()
 	facePlayer()
 	attackDirection = (player.global_position - global_position).normalized()
 	animator.use(attackName)
-
-"""
-select hightPrioritySkillInThisSItuation # not in cooldown, at range, cost ...
-else : evade
-	skillSet.activate(attackName)
-
-if skillSet.isOnCooldown(skillName) is skillSet.getData(skillName):
-	use skill1
-elif ...
-
-"""

@@ -28,9 +28,9 @@ func handlePatrol(_delta : float) -> void:
 
 func handlePursue(_delta : float) -> void:
 	if is_on_floor():
-		if isPlayerIsInSight():
+		if isPlayerInSight():
 			moveTowardPlayer()
-			if isPlayerWithinMeleeReach() and not skillSet.isOnCooldown("Evade") and canEvade():
+			if isPlayerInsideDistance(meleeReach) and not skillSet.isOnCooldown("Evade") and canEvade():
 				attackPlayer("Evade")
 			attackPlayer("PistolBall")
 			if canFall():

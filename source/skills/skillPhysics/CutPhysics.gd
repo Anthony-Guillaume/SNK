@@ -19,8 +19,9 @@ func setup(shooter) -> void:
 	else:
 		ennemyLayer = WorldInfo.LAYER.PLAYER
 	_shooter = shooter
-	global_position = shooter.global_position
-	set_cast_to(reach * shooter.attackDirection)
+#	global_position = shooter.global_position
+	cast_to *= reach
+#	set_cast_to(reach * shooter.attackDirection)
 	add_exception(shooter)
 
 func _physics_process(_delta : float) -> void:

@@ -16,7 +16,7 @@ const stateHandlers : Dictionary = {	STATES.RUNNING: "handleRunningState",
 										STATES.DIVING: "handleDivingState",
 										STATES.CLIMBING: "handleClimbingState",
 										STATES.HOOKING: "handleHookingState",
-										STATES.FALLING: "handleFallingState" }					
+										STATES.FALLING: "handleFallingState" }
 											
 var stateHandler : FuncRef = funcref(self, stateHandlers[STATES.RUNNING]);
 
@@ -42,7 +42,8 @@ onready var hookHandler = $HookHandler
 onready var animationComponent = $PlayerGraphics
 onready var camera : Camera2D = $Camera2D
 onready var hud : HUD = $CanvasLayer/HUD
-
+onready var weaponSet : WeaponSet = $WeaponSet
+onready var muzzleNode : Position2D = $Muzzle
 # DEBUG PART
 onready var labelState : Label = $Label
 #
@@ -58,12 +59,25 @@ func setSkills() -> void:
 	skillSet.add("PistolBall")
 	skillSet.add("Cut")
 
+func setSkillSet(skillStore : Node) -> void:
+#	skillSet.setSkillStore(skillStore)
+#	setSkills()
+	weaponSet.setProjectileStore(skillStore, muzzleNode, self)
+#	add_child(skillSet)
+
 func setGrapplingHook() -> void:
 	hookHandler.setup(self)
 
 func _physics_process(delta : float) -> void:
+	updateMuzzle()
 	stateHandler.call_func(delta)
 	move_and_slide_with_snap(velocity, snap, WorldInfo.FLOOR_NORMAL)
+
+func updateMuzzle() -> void:
+	(get_global_mouse_position() - global_position).normalized() * 60
+	muzzleNode.position = Vector2.ZERO
+	muzzleNode.rotation = (get_global_mouse_position() - global_position).angle()
+	muzzleNode.position += muzzleNode.transform.x * 60
 
 func computeWallCollisionSide() -> int:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
@@ -204,6 +218,7 @@ func handleJumpInput() -> void:
 
 func handleLaunchGrapplingHookInput() -> void:
 	if Input.is_action_just_pressed("launch_hook"):
+		print("e")
 		_addHook()
 
 func handleRemoveGrapplingHookInput() -> void:
@@ -267,12 +282,14 @@ func _wallJump(direction : float) -> void:
 	_jump()
 
 func _cut() -> void:
-	attackDirection = (get_global_mouse_position() - global_position).normalized()
-	skillSet.activate("Cut")
+	weaponSet.fire("Sword")
+#	attackDirection = (get_global_mouse_position() - global_position).normalized()
+#	skillSet.activate("Cut")
 
 func _shoot() -> void:
 	attackDirection = (get_global_mouse_position() - global_position).normalized()
-	skillSet.activate("PistolBall")
+#	skillSet.activate("PistolBall")
+	weaponSet.fire("Gun")
 
 func _addHook() -> void:
 	hookHandler.addHook()

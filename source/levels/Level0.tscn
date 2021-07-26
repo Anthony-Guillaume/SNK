@@ -3,10 +3,10 @@
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://source/levels/Level0.gd" type="Script" id=2]
 [ext_resource path="res://source/levels/levelHelpers/SceneTransitor.tscn" type="PackedScene" id=3]
-[ext_resource path="res://source/actors/ais/standardAis/Patroller.tscn" type="PackedScene" id=4]
 [ext_resource path="res://source/actors/players/BasePlayer.tscn" type="PackedScene" id=5]
 [ext_resource path="res://source/actors/ais/standardAis/Wizard.tscn" type="PackedScene" id=6]
 [ext_resource path="res://source/actors/ais/standardAis/Knight.tscn" type="PackedScene" id=7]
+[ext_resource path="res://source/actors/ais/standardAis/SwordMenSkeleton.tscn" type="PackedScene" id=8]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -85,20 +85,20 @@ tile_data = PoolIntArray( 1507356, 0, 0, 1572892, 0, 0, 1638428, 0, 0, 1638441, 
 
 [node name="Ais" type="Node2D" parent="Actors"]
 
-[node name="Patroller" parent="Actors/Ais" instance=ExtResource( 4 )]
-position = Vector2( 1616.06, 2324.62 )
-meleeReach = 120.0
-
-[node name="Wizard" parent="Actors/Ais" instance=ExtResource( 6 )]
-position = Vector2( 169.187, 1281.53 )
-
 [node name="Knight" parent="Actors/Ais" instance=ExtResource( 7 )]
-position = Vector2( 285.547, 1288.11 )
+position = Vector2( 284.917, 1311.73 )
 baseSpeed = 130.0
 meleeReach = 50.0
 
+[node name="SwordMenSkeleton" parent="Actors/Ais" instance=ExtResource( 8 )]
+position = Vector2( 1249.41, 2298.59 )
+
+[node name="Wizard" parent="Actors/Ais" instance=ExtResource( 6 )]
+position = Vector2( 2028.96, 2295.92 )
+baseSpeed = 200.0
+
 [node name="BasePlayer" parent="Actors" instance=ExtResource( 5 )]
-position = Vector2( 445.788, 1292.96 )
+position = Vector2( 526.175, 1256.53 )
 baseHealth = 800.0
 maxHealth = 800.0
 

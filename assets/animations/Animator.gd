@@ -6,6 +6,7 @@ var _actor : Actor = null
 var skillSet : SkillSet 
 var skillAnimations : Dictionary
 var currentSkillName : String = ""
+var previousRunDirection : int = 0
 
 onready var sprite : Sprite = $Sprite
 onready var animation : AnimationPlayer = $AnimationPlayer
@@ -50,17 +51,19 @@ func isAttackAnimationRunning() -> bool:
 	return skillAnimations.values().has(currentAnimationName) and animation.is_playing() 
 
 func _on_runDirectionChanged(direction : int) -> void:
+	if previousRunDirection == direction:
+		return
 	if direction == 1:
 		faceRight()
 	elif direction == -1:
 		faceLeft()
+	previousRunDirection = direction
 
 func _on_animation_finished(_animationName : String) -> void:
 	pass
 
 func _on_Hurtbox_hit(target : Actor) -> void:
-	var meleeDamage : float = skillSet.getData(currentSkillName).damage
-	ActorStatusHandler.applyDamage(_actor.stats, target.stats, meleeDamage)
+	skillSet.getSkill(currentSkillName).hit(target)
 
 func castSkill() -> void:
 	skillSet.forceActivate(currentSkillName)

@@ -22,7 +22,7 @@ func setSkillStore(skillStore : Node) -> void:
 	_skillStore = skillStore
 
 func _ready() -> void:
-	_globalTimer.setDuration(_globalDuration)
+#	_globalTimer.setDuration(_globalDuration)
 	for skill in skills.values():
 		add_child(skill)
 	add_child(_globalTimer)
@@ -33,11 +33,10 @@ func activate(skillName : String) -> void:
 
 func forceActivate(skillName : String) -> void:
 	skills[skillName].activate()
-	_globalTimer.start()
 	emit_signal("skillActivated", skillName)
 
 func isOnCooldown(skillName : String) -> bool:
-	return _globalTimer.isOnCooldown() or skills[skillName].isOnCooldown()
+	return skills[skillName].isOnCooldown()
 
 func add(skillName : String) -> void:
 	assert(not skills.has(skillName))
@@ -47,3 +46,6 @@ func add(skillName : String) -> void:
 
 func getData(skillName : String) -> SkillData:
 	return skills[skillName].getData()
+
+func getSkill(skillName : String) -> Skill:
+	return skills[skillName]

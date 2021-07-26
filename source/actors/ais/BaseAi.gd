@@ -55,8 +55,8 @@ func changeStateTo(newState : String) -> void:
 
 func canFall() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
-	var from : Vector2 = global_position + Vector2(hitboxHalfWidth * 1.5, 0.0) * sign(velocity.x)
-	var to : Vector2 = from + Vector2(0.0, hitboxHalfHeight + 10.0)
+	var from : Vector2 = global_position + Vector2(hitboxHalfWidth * 1.5, 0.0) * runDirection
+	var to : Vector2 = from + Vector2(0.0, hitboxHalfHeight + 15.0)
 	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.getUntraversableOjectLayer())
 	return collisionInfo.empty()
 
@@ -77,20 +77,21 @@ func isPlayerIsInSamePlatformLeftSide() -> bool:
 	var collisionInfo : Dictionary = spaceState.intersect_ray(from, to, [], WorldInfo.getUntraversableOjectLayer() + WorldInfo.LAYER.PLAYER)
 	return not collisionInfo.empty() and collisionInfo.collider == player
 
-func isPlayerIsInSight() -> bool:
+func isPlayerInSight() -> bool:
+	return isFacingPlayer() and isPlayerInsideDistance(sightDistance) and isRaycastIntersectPlayer()
+
+func isRaycastIntersectPlayer() -> bool:
 	var spaceState : Physics2DDirectSpaceState = get_world_2d().get_direct_space_state()
 	var collisionInfo : Dictionary = spaceState.intersect_ray(global_position, player.global_position, [], WorldInfo.getUntraversableOjectLayer() + WorldInfo.LAYER.PLAYER)
-	return collisionInfo.collider == player and isPlayerWithinSightDistance()
+	return collisionInfo.collider == player
 
-func isPlayerWithinSightDistance() -> bool:
-	return player.global_position.distance_to(global_position) < sightDistance
-
-func isPlayerWithinMeleeReach() -> bool:
-	return player.global_position.distance_to(global_position) < meleeReach
-
-func isPlayerTooClose() -> bool:
-	return player.global_position.distance_to(global_position) < securityDistance
+func isPlayerInsideDistance(distance : float) -> bool:
+	return player.global_position.distance_to(global_position) < distance
 	
+func isFacingPlayer() -> bool:
+	var playerSide : int = int(sign((player.global_position - global_position).x))
+	return playerSide == runDirection
+
 ################################################################################
 # BASIC ACTIONS
 ################################################################################
